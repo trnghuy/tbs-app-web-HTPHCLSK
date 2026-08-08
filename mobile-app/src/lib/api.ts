@@ -48,6 +48,7 @@ export type FiveMOneESubmission = {
   method: string;
   measurement: string;
   environment: string;
+  rootCause: string;
   submittedAt: string;
 };
 
@@ -209,6 +210,7 @@ export const api = {
       method: string;
       measurement: string;
       environment: string;
+      rootCause: string;
     },
   ) =>
     request<FiveMOneESubmission>(`/api/mobile/issues/${issueId}/submissions`, {
@@ -223,6 +225,12 @@ export const api = {
       token,
       body: { history },
     }),
+
+  synthesizeRootCause: (token: string, issueId: string) =>
+    request<{ rootCause: string; solution: string }>(
+      `/api/mobile/issues/${issueId}/synthesize-root-cause`,
+      { method: "POST", token },
+    ),
 
   decideRootCause: (token: string, issueId: string, payload: { rootCause: string; solution?: string }) =>
     request<QualityIssue>(`/api/mobile/issues/${issueId}/root-cause`, {

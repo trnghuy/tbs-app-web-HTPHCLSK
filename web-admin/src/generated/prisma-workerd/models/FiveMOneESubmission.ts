@@ -37,6 +37,7 @@ export type FiveMOneESubmissionMinAggregateOutputType = {
   method: string | null
   measurement: string | null
   environment: string | null
+  rootCause: string | null
   submittedAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type FiveMOneESubmissionMaxAggregateOutputType = {
   method: string | null
   measurement: string | null
   environment: string | null
+  rootCause: string | null
   submittedAt: Date | null
   updatedAt: Date | null
 }
@@ -71,6 +73,7 @@ export type FiveMOneESubmissionCountAggregateOutputType = {
   method: number
   measurement: number
   environment: number
+  rootCause: number
   submittedAt: number
   updatedAt: number
   _all: number
@@ -90,6 +93,7 @@ export type FiveMOneESubmissionMinAggregateInputType = {
   method?: true
   measurement?: true
   environment?: true
+  rootCause?: true
   submittedAt?: true
   updatedAt?: true
 }
@@ -107,6 +111,7 @@ export type FiveMOneESubmissionMaxAggregateInputType = {
   method?: true
   measurement?: true
   environment?: true
+  rootCause?: true
   submittedAt?: true
   updatedAt?: true
 }
@@ -124,6 +129,7 @@ export type FiveMOneESubmissionCountAggregateInputType = {
   method?: true
   measurement?: true
   environment?: true
+  rootCause?: true
   submittedAt?: true
   updatedAt?: true
   _all?: true
@@ -214,6 +220,7 @@ export type FiveMOneESubmissionGroupByOutputType = {
   method: string
   measurement: string
   environment: string
+  rootCause: string
   submittedAt: Date
   updatedAt: Date
   _count: FiveMOneESubmissionCountAggregateOutputType | null
@@ -252,6 +259,7 @@ export type FiveMOneESubmissionWhereInput = {
   method?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   measurement?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   environment?: Prisma.StringFilter<"FiveMOneESubmission"> | string
+  rootCause?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   submittedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
   issue?: Prisma.XOR<Prisma.QualityIssueScalarRelationFilter, Prisma.QualityIssueWhereInput>
@@ -271,6 +279,7 @@ export type FiveMOneESubmissionOrderByWithRelationInput = {
   method?: Prisma.SortOrder
   measurement?: Prisma.SortOrder
   environment?: Prisma.SortOrder
+  rootCause?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   issue?: Prisma.QualityIssueOrderByWithRelationInput
@@ -294,6 +303,7 @@ export type FiveMOneESubmissionWhereUniqueInput = Prisma.AtLeast<{
   method?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   measurement?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   environment?: Prisma.StringFilter<"FiveMOneESubmission"> | string
+  rootCause?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   submittedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
   issue?: Prisma.XOR<Prisma.QualityIssueScalarRelationFilter, Prisma.QualityIssueWhereInput>
@@ -313,6 +323,7 @@ export type FiveMOneESubmissionOrderByWithAggregationInput = {
   method?: Prisma.SortOrder
   measurement?: Prisma.SortOrder
   environment?: Prisma.SortOrder
+  rootCause?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FiveMOneESubmissionCountOrderByAggregateInput
@@ -336,6 +347,7 @@ export type FiveMOneESubmissionScalarWhereWithAggregatesInput = {
   method?: Prisma.StringWithAggregatesFilter<"FiveMOneESubmission"> | string
   measurement?: Prisma.StringWithAggregatesFilter<"FiveMOneESubmission"> | string
   environment?: Prisma.StringWithAggregatesFilter<"FiveMOneESubmission"> | string
+  rootCause?: Prisma.StringWithAggregatesFilter<"FiveMOneESubmission"> | string
   submittedAt?: Prisma.DateTimeWithAggregatesFilter<"FiveMOneESubmission"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FiveMOneESubmission"> | Date | string
 }
@@ -351,6 +363,7 @@ export type FiveMOneESubmissionCreateInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
   issue: Prisma.QualityIssueCreateNestedOneWithoutSubmissionsInput
@@ -370,6 +383,7 @@ export type FiveMOneESubmissionUncheckedCreateInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -385,6 +399,7 @@ export type FiveMOneESubmissionUpdateInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   issue?: Prisma.QualityIssueUpdateOneRequiredWithoutSubmissionsNestedInput
@@ -404,6 +419,7 @@ export type FiveMOneESubmissionUncheckedUpdateInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -421,6 +437,7 @@ export type FiveMOneESubmissionCreateManyInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -436,6 +453,7 @@ export type FiveMOneESubmissionUpdateManyMutationInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -453,6 +471,7 @@ export type FiveMOneESubmissionUncheckedUpdateManyInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -485,6 +504,7 @@ export type FiveMOneESubmissionCountOrderByAggregateInput = {
   method?: Prisma.SortOrder
   measurement?: Prisma.SortOrder
   environment?: Prisma.SortOrder
+  rootCause?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -502,6 +522,7 @@ export type FiveMOneESubmissionMaxOrderByAggregateInput = {
   method?: Prisma.SortOrder
   measurement?: Prisma.SortOrder
   environment?: Prisma.SortOrder
+  rootCause?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -519,6 +540,7 @@ export type FiveMOneESubmissionMinOrderByAggregateInput = {
   method?: Prisma.SortOrder
   measurement?: Prisma.SortOrder
   environment?: Prisma.SortOrder
+  rootCause?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -622,6 +644,7 @@ export type FiveMOneESubmissionCreateWithoutSubmitterInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
   issue: Prisma.QualityIssueCreateNestedOneWithoutSubmissionsInput
@@ -639,6 +662,7 @@ export type FiveMOneESubmissionUncheckedCreateWithoutSubmitterInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -684,6 +708,7 @@ export type FiveMOneESubmissionScalarWhereInput = {
   method?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   measurement?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   environment?: Prisma.StringFilter<"FiveMOneESubmission"> | string
+  rootCause?: Prisma.StringFilter<"FiveMOneESubmission"> | string
   submittedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FiveMOneESubmission"> | Date | string
 }
@@ -699,6 +724,7 @@ export type FiveMOneESubmissionCreateWithoutIssueInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
   submitter: Prisma.UserCreateNestedOneWithoutFiveMOneESubmissionsInput
@@ -716,6 +742,7 @@ export type FiveMOneESubmissionUncheckedCreateWithoutIssueInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -757,6 +784,7 @@ export type FiveMOneESubmissionCreateManySubmitterInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -772,6 +800,7 @@ export type FiveMOneESubmissionUpdateWithoutSubmitterInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   issue?: Prisma.QualityIssueUpdateOneRequiredWithoutSubmissionsNestedInput
@@ -789,6 +818,7 @@ export type FiveMOneESubmissionUncheckedUpdateWithoutSubmitterInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -805,6 +835,7 @@ export type FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -821,6 +852,7 @@ export type FiveMOneESubmissionCreateManyIssueInput = {
   method: string
   measurement: string
   environment: string
+  rootCause?: string
   submittedAt?: Date | string
   updatedAt?: Date | string
 }
@@ -836,6 +868,7 @@ export type FiveMOneESubmissionUpdateWithoutIssueInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submitter?: Prisma.UserUpdateOneRequiredWithoutFiveMOneESubmissionsNestedInput
@@ -853,6 +886,7 @@ export type FiveMOneESubmissionUncheckedUpdateWithoutIssueInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -869,6 +903,7 @@ export type FiveMOneESubmissionUncheckedUpdateManyWithoutIssueInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   measurement?: Prisma.StringFieldUpdateOperationsInput | string
   environment?: Prisma.StringFieldUpdateOperationsInput | string
+  rootCause?: Prisma.StringFieldUpdateOperationsInput | string
   submittedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -888,6 +923,7 @@ export type FiveMOneESubmissionSelect<ExtArgs extends runtime.Types.Extensions.I
   method?: boolean
   measurement?: boolean
   environment?: boolean
+  rootCause?: boolean
   submittedAt?: boolean
   updatedAt?: boolean
   issue?: boolean | Prisma.QualityIssueDefaultArgs<ExtArgs>
@@ -907,6 +943,7 @@ export type FiveMOneESubmissionSelectCreateManyAndReturn<ExtArgs extends runtime
   method?: boolean
   measurement?: boolean
   environment?: boolean
+  rootCause?: boolean
   submittedAt?: boolean
   updatedAt?: boolean
   issue?: boolean | Prisma.QualityIssueDefaultArgs<ExtArgs>
@@ -926,6 +963,7 @@ export type FiveMOneESubmissionSelectUpdateManyAndReturn<ExtArgs extends runtime
   method?: boolean
   measurement?: boolean
   environment?: boolean
+  rootCause?: boolean
   submittedAt?: boolean
   updatedAt?: boolean
   issue?: boolean | Prisma.QualityIssueDefaultArgs<ExtArgs>
@@ -945,11 +983,12 @@ export type FiveMOneESubmissionSelectScalar = {
   method?: boolean
   measurement?: boolean
   environment?: boolean
+  rootCause?: boolean
   submittedAt?: boolean
   updatedAt?: boolean
 }
 
-export type FiveMOneESubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "issueId" | "submitterId" | "submitterRole" | "poCode" | "images" | "man" | "machine" | "material" | "method" | "measurement" | "environment" | "submittedAt" | "updatedAt", ExtArgs["result"]["fiveMOneESubmission"]>
+export type FiveMOneESubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "issueId" | "submitterId" | "submitterRole" | "poCode" | "images" | "man" | "machine" | "material" | "method" | "measurement" | "environment" | "rootCause" | "submittedAt" | "updatedAt", ExtArgs["result"]["fiveMOneESubmission"]>
 export type FiveMOneESubmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   issue?: boolean | Prisma.QualityIssueDefaultArgs<ExtArgs>
   submitter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -982,6 +1021,7 @@ export type $FiveMOneESubmissionPayload<ExtArgs extends runtime.Types.Extensions
     method: string
     measurement: string
     environment: string
+    rootCause: string
     submittedAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["fiveMOneESubmission"]>
@@ -1421,6 +1461,7 @@ export interface FiveMOneESubmissionFieldRefs {
   readonly method: Prisma.FieldRef<"FiveMOneESubmission", 'String'>
   readonly measurement: Prisma.FieldRef<"FiveMOneESubmission", 'String'>
   readonly environment: Prisma.FieldRef<"FiveMOneESubmission", 'String'>
+  readonly rootCause: Prisma.FieldRef<"FiveMOneESubmission", 'String'>
   readonly submittedAt: Prisma.FieldRef<"FiveMOneESubmission", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FiveMOneESubmission", 'DateTime'>
 }

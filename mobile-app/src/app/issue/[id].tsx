@@ -229,6 +229,12 @@ export default function IssueDetailScreen() {
               {issue.submissions.map((s) => (
                 <View key={s.id} style={styles.card}>
                   <Text style={styles.cardPo}>{submitterRoleLabel[s.submitterRole]} — {s.submitter?.name}</Text>
+                  {s.rootCause && (
+                    <View style={styles.rootCauseHighlight}>
+                      <Text style={styles.rootCauseHighlightLabel}>🧩 Nguyên nhân gốc (theo {s.submitter?.name})</Text>
+                      <Text style={styles.rootCauseHighlightValue}>{s.rootCause}</Text>
+                    </View>
+                  )}
                   <Field label="Man (Con người)" value={s.man} />
                   <Field label="Machine (Máy móc)" value={s.machine} />
                   <Field label="Material (Nguyên liệu)" value={s.material} />
@@ -287,6 +293,7 @@ function FiveMOneEForm({ token, issueId, onDone }: { token: string | null; issue
   const [aiError, setAiError] = useState<string | null>(null);
 
   const [conclusion, setConclusion] = useState<ChatConclusion | null>(null);
+  const [rootCause, setRootCause] = useState("");
   const [man, setMan] = useState("");
   const [machine, setMachine] = useState("");
   const [material, setMaterial] = useState("");
@@ -316,6 +323,7 @@ function FiveMOneEForm({ token, issueId, onDone }: { token: string | null; issue
           { role: "model", text: `Đã chốt nguyên nhân gốc rễ: ${result.rootCause}` },
         ]);
         setConclusion(result);
+        setRootCause(result.rootCause);
         setMan(result.man);
         setMachine(result.machine);
         setMaterial(result.material);
@@ -349,7 +357,15 @@ function FiveMOneEForm({ token, issueId, onDone }: { token: string | null; issue
 
   async function handleSubmit() {
     if (!token) return;
-    if (!man.trim() || !machine.trim() || !material.trim() || !method.trim() || !measurement.trim() || !environment.trim()) {
+    if (
+      !rootCause.trim() ||
+      !man.trim() ||
+      !machine.trim() ||
+      !material.trim() ||
+      !method.trim() ||
+      !measurement.trim() ||
+      !environment.trim()
+    ) {
       setSubmitError("Vui lòng điền đầy đủ các mục");
       return;
     }
@@ -365,6 +381,7 @@ function FiveMOneEForm({ token, issueId, onDone }: { token: string | null; issue
         method: method.trim(),
         measurement: measurement.trim(),
         environment: environment.trim(),
+        rootCause: rootCause.trim(),
       });
       await onDone();
     } catch (e) {
@@ -436,6 +453,7 @@ function FiveMOneEForm({ token, issueId, onDone }: { token: string | null; issue
           {conclusion && (
             <View style={{ marginTop: 8 }}>
               <Text style={styles.sectionTitle}>Kết quả AI tổng hợp — kiểm tra lại trước khi gửi</Text>
+              <LabeledArea label="🧩 Nguyên nhân gốc" value={rootCause} onChangeText={setRootCause} />
               <LabeledArea label="Man (Con người)" value={man} onChangeText={setMan} />
               <LabeledArea label="Machine (Máy móc)" value={machine} onChangeText={setMachine} />
               <LabeledArea label="Material (Nguyên liệu)" value={material} onChangeText={setMaterial} />
@@ -479,6 +497,23 @@ function RootCauseForm({ token, issueId, onDone }: { token: string | null; issue
   const [solution, setSolution] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [synthesizing, setSynthesizing] = useState(false);
+  const [synthesizeError, setSynthesizeError] = useState<string | null>(null);
+
+  async function handleSynthesize() {
+    if (!token) return;
+    setSynthesizing(true);
+    setSynthesizeError(null);
+    try {
+      const result = await api.synthesizeRootCause(token, issueId);
+      setRootCause(result.rootCause);
+      setSolution(result.solution);
+    } catch (e) {
+      setSynthesizeError(e instanceof ApiError ? e.message : "Không thể tổng hợp bằng AI");
+    } finally {
+      setSynthesizing(false);
+    }
+  }
 
   async function handleSubmit() {
     if (!token) return;
@@ -502,8 +537,17 @@ function RootCauseForm({ token, issueId, onDone }: { token: string | null; issue
     <View style={styles.card}>
       <Text style={styles.sectionTitle}>🧩 Tổng hợp nguyên nhân & Giải pháp</Text>
       <Text style={styles.cardMeta}>
-        Xem lại 3 bản 5M+1E ở trên, viết nguyên nhân gốc rễ cuối cùng và giải pháp xử lý.
+        Xem lại 3 bản 5M+1E ở trên, viết nguyên nhân gốc rễ cuối cùng và giải pháp xử lý — hoặc bấm
+        AI tổng hợp để có gợi ý.
       </Text>
+
+      <TouchableOpacity style={styles.aiSynthesizeBtn} onPress={handleSynthesize} disabled={synthesizing}>
+        <Text style={styles.aiSynthesizeBtnText}>
+          {synthesizing ? "AI đang tổng hợp..." : "🤖 AI tổng hợp 3 nguyên nhân & gợi ý giải pháp"}
+        </Text>
+      </TouchableOpacity>
+      {synthesizeError && <Text style={styles.errorText}>{synthesizeError}</Text>}
+
       <LabeledArea label="Nguyên nhân gốc" value={rootCause} onChangeText={setRootCause} />
       <LabeledArea label="Giải pháp đề xuất (không bắt buộc)" value={solution} onChangeText={setSolution} />
       {error && <Text style={styles.errorText}>{error}</Text>}
@@ -967,6 +1011,25 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 14, fontWeight: "700", color: colors.text },
   fieldLabel: { fontSize: 11, fontWeight: "600", color: colors.textMuted },
   fieldValue: { fontSize: 13, color: colors.text, marginTop: 2 },
+  rootCauseHighlight: {
+    backgroundColor: colors.statusAcceptedBg,
+    borderRadius: radius.sm,
+    padding: 10,
+    marginTop: 8,
+    marginBottom: 4,
+  },
+  rootCauseHighlightLabel: { fontSize: 11, fontWeight: "700", color: colors.statusAcceptedText },
+  rootCauseHighlightValue: { fontSize: 13.5, color: colors.text, marginTop: 3, lineHeight: 19 },
+  aiSynthesizeBtn: {
+    backgroundColor: colors.accentSoft,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  aiSynthesizeBtnText: { color: colors.primaryDark, fontWeight: "700", fontSize: 13 },
   formLabel: { fontSize: 13, fontWeight: "600", color: colors.text, marginTop: 10, marginBottom: 6 },
   input: {
     borderWidth: 1,

@@ -159,6 +159,7 @@ export const FiveMOneESubmissionScalarFieldEnum = {
   method: 'method',
   measurement: 'measurement',
   environment: 'environment',
+  rootCause: 'rootCause',
   submittedAt: 'submittedAt',
   updatedAt: 'updatedAt'
 } as const

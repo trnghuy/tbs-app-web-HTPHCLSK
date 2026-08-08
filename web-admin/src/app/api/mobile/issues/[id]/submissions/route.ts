@@ -33,10 +33,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     );
   }
 
-  const { poCode, images, man, machine, material, method, measurement, environment } =
+  const { poCode, images, man, machine, material, method, measurement, environment, rootCause } =
     await req.json();
-  if (!poCode || !man || !machine || !material || !method || !measurement || !environment) {
-    return NextResponse.json({ error: "Vui lòng điền đủ 6 mục 5M+1E và mã PO" }, { status: 400 });
+  if (!poCode || !man || !machine || !material || !method || !measurement || !environment || !rootCause) {
+    return NextResponse.json(
+      { error: "Vui lòng điền đủ 6 mục 5M+1E, nguyên nhân gốc và mã PO" },
+      { status: 400 },
+    );
   }
 
   const submission = await prisma.fiveMOneESubmission.upsert({
@@ -50,6 +53,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       method,
       measurement,
       environment,
+      rootCause,
     },
     create: {
       issueId: id,
@@ -63,6 +67,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       method,
       measurement,
       environment,
+      rootCause,
     },
   });
 

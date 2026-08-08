@@ -170,6 +170,7 @@ model FiveMOneESubmission {
   method      String
   measurement String
   environment String
+  rootCause   String @default("") // Kết luận nguyên nhân gốc rễ riêng của người này (AI hỏi xoáy 5 Whys tổng hợp)
 
   submittedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
