@@ -64,29 +64,48 @@ export async function POST(req: Request) {
   if (response) return response;
   const prisma = await getPrisma();
 
-  const { teamId, productionLineId, failureCategoryId, poCode, description, images } =
+  const { areaId, teamId, productionLineId, failureCategoryId, otherFailureNote, severity, poCode, description, images } =
     await req.json();
 
   if (!poCode || !description) {
     return NextResponse.json({ error: "Thiếu mã PO hoặc mô tả" }, { status: 400 });
   }
+  const VALID_SEVERITIES = ["LOW", "MEDIUM", "HIGH", "URGENT"];
+  if (!severity || !VALID_SEVERITIES.includes(severity)) {
+    return NextResponse.json({ error: "Vui lòng chọn mức độ nghiêm trọng" }, { status: 400 });
+  }
+  // Chọn "Khác" ở danh mục lỗi (không có failureCategoryId thật) thì bắt buộc mô tả riêng.
+  if (!failureCategoryId && !otherFailureNote) {
+    return NextResponse.json({ error: "Vui lòng chọn danh mục lỗi hoặc mô tả lỗi khác" }, { status: 400 });
+  }
 
-  // Phiếu luôn thuộc khu vực của chính người báo cáo — mọi nhân viên (trừ Admin) đều gắn với
-  // đúng 1 khu vực, dùng để định tuyến thông báo/phân việc cho đúng QA/Trưởng line/Công nghệ/
-  // Trưởng phòng ban/Bảo trì cùng khu vực. Không lấy areaId từ client vì mobile không có picker
-  // chọn khu vực (chỉ chọn Tổ/Chuyền).
-  const reporter = await prisma.user.findUnique({
-    where: { id: payload.userId },
-    select: { areaId: true },
-  });
+  // Khu vực dùng để định tuyến thông báo/phân việc cho đúng QA/Trưởng line/Công nghệ/Trưởng
+  // phòng ban/Bảo trì cùng khu vực đó — người báo cáo chọn trực tiếp trong form (combobox); mặc
+  // định gợi ý khu vực của chính họ nhưng có thể đổi (VD: NV vận hành phát hiện sự cố ở khu vực
+  // khác). Nếu client không gửi (client cũ), fallback về khu vực của người báo cáo.
+  let resolvedAreaId: string | null = areaId || null;
+  if (resolvedAreaId) {
+    const area = await prisma.category.findUnique({ where: { id: resolvedAreaId } });
+    if (!area || area.type !== "AREA") {
+      return NextResponse.json({ error: "Khu vực/Xưởng không hợp lệ" }, { status: 400 });
+    }
+  } else {
+    const reporter = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { areaId: true },
+    });
+    resolvedAreaId = reporter?.areaId ?? null;
+  }
 
   const issue = await prisma.qualityIssue.create({
     data: {
       reporterId: payload.userId,
-      areaId: reporter?.areaId ?? null,
+      areaId: resolvedAreaId,
       teamId: teamId || null,
       productionLineId: productionLineId || null,
       failureCategoryId: failureCategoryId || null,
+      otherFailureNote: failureCategoryId ? null : otherFailureNote,
+      severity,
       poCode,
       description,
       images: images ? JSON.stringify(images) : null,
@@ -96,12 +115,13 @@ export async function POST(req: Request) {
     include: issueInclude,
   });
 
+  const severityPrefix = severity === "URGENT" ? "🚨 KHẨN CẤP — " : severity === "HIGH" ? "⚠️ Mức cao — " : "";
   await sendPushToUsersByRoleInArea(
     prisma,
     INVESTIGATOR_ROLES,
     issue.areaId,
     {
-      title: `Sự cố mới — PO ${issue.poCode}`,
+      title: `${severityPrefix}Sự cố mới — PO ${issue.poCode}`,
       body: `${payload.name} báo cáo: ${description}`,
       data: { type: "NEED_INVESTIGATE", issueId: issue.id },
     },

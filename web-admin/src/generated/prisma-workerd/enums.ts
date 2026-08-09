@@ -44,6 +44,16 @@ export const IssueStatus = {
 export type IssueStatus = (typeof IssueStatus)[keyof typeof IssueStatus]
 
 
+export const Severity = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+} as const
+
+export type Severity = (typeof Severity)[keyof typeof Severity]
+
+
 export const SubmitterRole = {
   QA: 'QA',
   LINE_LEADER: 'LINE_LEADER',

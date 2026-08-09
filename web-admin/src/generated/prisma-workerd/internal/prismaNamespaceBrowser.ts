@@ -79,7 +79,9 @@ export const CategoryScalarFieldEnum = {
   name: 'name',
   colorHex: 'colorHex',
   order: 'order',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  parentAreaId: 'parentAreaId',
+  parentLineId: 'parentLineId'
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -129,10 +131,12 @@ export const QualityIssueScalarFieldEnum = {
   images: 'images',
   poCode: 'poCode',
   status: 'status',
+  severity: 'severity',
   areaId: 'areaId',
   teamId: 'teamId',
   productionLineId: 'productionLineId',
   failureCategoryId: 'failureCategoryId',
+  otherFailureNote: 'otherFailureNote',
   investigationDeadline: 'investigationDeadline',
   investigationLocked: 'investigationLocked',
   rootCause: 'rootCause',

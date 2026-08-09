@@ -23,9 +23,22 @@ type Category = {
   name: string;
   colorHex?: string | null;
   order: number;
+  parentAreaId?: string | null;
+  parentArea?: { id: string; name: string } | null;
+  parentLineId?: string | null;
+  parentLine?: { id: string; name: string; parentAreaId?: string | null } | null;
 };
 
-const emptyForm = { name: "", colorHex: "#1F5C3F", order: 0 };
+const emptyForm = { name: "", colorHex: "#1F5C3F", order: 0, parentAreaId: "", parentLineId: "" };
+
+// Chuyền cần chọn Khu vực/Xưởng. Tổ cần chọn cả Khu vực/Xưởng lẫn Chuyền (Tổ nằm trong Chuyền,
+// Chuyền nằm trong Khu vực) — phân cấp 3 tầng: Xưởng > Chuyền > Tổ.
+function needsParentArea(type: CategoryType) {
+  return type === "TEAM" || type === "PRODUCTION_LINE";
+}
+function needsParentLine(type: CategoryType) {
+  return type === "TEAM";
+}
 
 function apiBase(type: CategoryType) {
   if (type === "FAILURE_CATEGORY") return "/api/issue-failure-categories";
@@ -38,6 +51,7 @@ function usesCategoryTypeQuery(type: CategoryType) {
 }
 
 const VALID_TYPES = TYPE_OPTIONS.map((o) => o.value);
+const EXTRA_COLS = { PRODUCTION_LINE: 1, TEAM: 2 } as Record<string, number>;
 
 export default function CategoriesPage() {
   return (
@@ -53,6 +67,8 @@ function CategoriesPageInner() {
   const type: CategoryType =
     typeParam && (VALID_TYPES as string[]).includes(typeParam) ? (typeParam as CategoryType) : "AREA";
   const [items, setItems] = useState<Category[]>([]);
+  const [areas, setAreas] = useState<Category[]>([]);
+  const [lines, setLines] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Category | null>(null);
@@ -61,11 +77,19 @@ function CategoriesPageInner() {
   const [viewing, setViewing] = useState<Category | null>(null);
   const [search, setSearch] = useState("");
 
+  const extraCols = EXTRA_COLS[type] || 0;
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return items;
     return items.filter((c) => c.name.toLowerCase().includes(q));
   }, [items, search]);
+
+  // Chuyền hiển thị trong combobox chọn của form Tổ — lọc theo đúng Khu vực đang chọn trong form.
+  const linesInSelectedArea = useMemo(
+    () => lines.filter((l) => l.parentAreaId === form.parentAreaId),
+    [lines, form.parentAreaId],
+  );
 
   async function load() {
     setLoading(true);
@@ -79,6 +103,16 @@ function CategoriesPageInner() {
   useEffect(() => {
     load();
     setSearch("");
+    if (needsParentArea(type)) {
+      fetch("/api/categories?type=AREA")
+        .then((r) => r.json())
+        .then(setAreas);
+    }
+    if (needsParentLine(type)) {
+      fetch("/api/categories?type=PRODUCTION_LINE")
+        .then((r) => r.json())
+        .then(setLines);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
@@ -91,7 +125,13 @@ function CategoriesPageInner() {
 
   function openEdit(c: Category) {
     setEditing(c);
-    setForm({ name: c.name, colorHex: c.colorHex || "#1F5C3F", order: c.order });
+    setForm({
+      name: c.name,
+      colorHex: c.colorHex || "#1F5C3F",
+      order: c.order,
+      parentAreaId: c.parentAreaId || "",
+      parentLineId: c.parentLineId || "",
+    });
     setError(null);
     setShowForm(true);
   }
@@ -101,7 +141,14 @@ function CategoriesPageInner() {
     setError(null);
 
     const body: Record<string, unknown> = usesCategoryTypeQuery(type)
-      ? { type, name: form.name, order: form.order, colorHex: form.colorHex }
+      ? {
+          type,
+          name: form.name,
+          order: form.order,
+          colorHex: form.colorHex,
+          ...(needsParentArea(type) ? { parentAreaId: form.parentAreaId } : {}),
+          ...(needsParentLine(type) ? { parentLineId: form.parentLineId } : {}),
+        }
       : { name: form.name, order: form.order };
 
     const url = editing ? `${apiBase(type)}/${editing.id}` : apiBase(type);
@@ -149,20 +196,22 @@ function CategoriesPageInner() {
             <tr>
               <th className="px-4 py-3">Thứ tự</th>
               <th className="px-4 py-3">Tên</th>
+              {needsParentLine(type) && <th className="px-4 py-3">Chuyền</th>}
+              {needsParentArea(type) && <th className="px-4 py-3">Khu vực / Xưởng</th>}
               <th className="px-4 py-3 text-right">Hành động</th>
             </tr>
           </thead>
           <tbody>
             {loading && (
               <tr>
-                <td className="px-4 py-4 text-slate-400" colSpan={3}>
+                <td className="px-4 py-4 text-slate-400" colSpan={3 + extraCols}>
                   Đang tải...
                 </td>
               </tr>
             )}
             {!loading && filtered.length === 0 && (
               <tr>
-                <td className="px-4 py-4 text-slate-400" colSpan={3}>
+                <td className="px-4 py-4 text-slate-400" colSpan={3 + extraCols}>
                   {items.length === 0 ? "Chưa có mục nào" : "Không tìm thấy mục phù hợp"}
                 </td>
               </tr>
@@ -175,6 +224,12 @@ function CategoriesPageInner() {
               >
                 <td className="px-4 py-3">{c.order}</td>
                 <td className="px-4 py-3">{c.name}</td>
+                {needsParentLine(type) && (
+                  <td className="px-4 py-3 text-slate-600">{c.parentLine?.name || "—"}</td>
+                )}
+                {needsParentArea(type) && (
+                  <td className="px-4 py-3 text-slate-600">{c.parentArea?.name || "—"}</td>
+                )}
                 <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
                   <button onClick={() => openEdit(c)} className="mr-3 text-slate-600 hover:underline">
                     Sửa
@@ -213,6 +268,47 @@ function CategoriesPageInner() {
                   onChange={(e) => setForm({ ...form, colorHex: e.target.value })}
                   className="mb-3 h-10 w-full rounded-md border border-slate-300 px-1 py-1"
                 />
+              </>
+            )}
+
+            {needsParentArea(type) && (
+              <>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Khu vực / Xưởng</label>
+                <select
+                  value={form.parentAreaId}
+                  onChange={(e) => setForm({ ...form, parentAreaId: e.target.value, parentLineId: "" })}
+                  className="mb-3 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  required
+                >
+                  <option value="">— Chọn khu vực/xưởng —</option>
+                  {areas.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.name}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
+
+            {needsParentLine(type) && (
+              <>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Chuyền</label>
+                <select
+                  value={form.parentLineId}
+                  onChange={(e) => setForm({ ...form, parentLineId: e.target.value })}
+                  className="mb-3 w-full rounded-md border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-100"
+                  required
+                  disabled={!form.parentAreaId}
+                >
+                  <option value="">
+                    {form.parentAreaId ? "— Chọn chuyền —" : "— Chọn khu vực/xưởng trước —"}
+                  </option>
+                  {linesInSelectedArea.map((l) => (
+                    <option key={l.id} value={l.id}>
+                      {l.name}
+                    </option>
+                  ))}
+                </select>
               </>
             )}
 

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Modal, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -10,6 +10,9 @@ import { api, ApiError, resolveImageUrl } from "@/lib/api";
 import { colors } from "@/constants/colors";
 import { radius, raisedShadow } from "@/constants/ui-theme";
 import { PressableScale } from "@/components/pressable-scale";
+import { Text } from "@/components/scaled-text";
+import { FontSizeSlider } from "@/components/font-size-slider";
+import { TEXT_SCALE_MAX, TEXT_SCALE_MIN, useTextScale } from "@/lib/text-scale-context";
 
 const roleLabel: Record<string, string> = {
   OPERATOR: "Nhân viên vận hành",
@@ -24,6 +27,7 @@ const roleLabel: Record<string, string> = {
 
 export default function ProfileScreen() {
   const { user, token, logout, refreshUser } = useAuth();
+  const { scale, setScale } = useTextScale();
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -119,6 +123,14 @@ export default function ProfileScreen() {
           <Text style={styles.infoLabel}>Khu vực / Xưởng</Text>
           <Text style={styles.infoValue}>{user?.area?.name || "-"}</Text>
         </View>
+      </Animated.View>
+
+      <Animated.View entering={FadeInUp.delay(110).duration(320)} style={styles.infoCard}>
+        <View style={styles.fontSizeHeaderRow}>
+          <Text style={styles.infoLabel}>Cỡ chữ</Text>
+          <Text style={styles.fontSizeValue}>{Math.round(scale * 100)}%</Text>
+        </View>
+        <FontSizeSlider min={TEXT_SCALE_MIN} max={TEXT_SCALE_MAX} value={scale} onChange={setScale} />
       </Animated.View>
 
       {user?.role === "MAINTENANCE" && (
@@ -243,6 +255,8 @@ const styles = StyleSheet.create({
   infoRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 8 },
   infoLabel: { color: colors.textMuted },
   infoValue: { color: colors.text, fontWeight: "600" },
+  fontSizeHeaderRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  fontSizeValue: { color: colors.primary, fontWeight: "700", fontSize: 13 },
   statsCard: {
     flexDirection: "row",
     backgroundColor: colors.white,

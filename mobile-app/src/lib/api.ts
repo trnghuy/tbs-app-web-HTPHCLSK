@@ -34,6 +34,8 @@ export type IssueStatus =
   | "IN_PROGRESS"
   | "DONE";
 
+export type Severity = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+
 export type FiveMOneESubmission = {
   id: string;
   issueId: string;
@@ -95,10 +97,12 @@ export type QualityIssue = {
   images: string | null;
   poCode: string;
   status: IssueStatus;
+  severity: Severity;
   area: CategoryRef;
   team: CategoryRef;
   productionLine: CategoryRef;
   failureCategory: FailureCategory | null;
+  otherFailureNote: string | null;
   investigationDeadline: string | null;
   investigationLocked: boolean;
   rootCause: string | null;
@@ -173,10 +177,16 @@ export const api = {
 
   listAreas: (token: string) =>
     request<{ id: string; name: string }[]>("/api/mobile/categories?type=AREA", { token }),
-  listTeams: (token: string) =>
-    request<{ id: string; name: string }[]>("/api/mobile/categories?type=TEAM", { token }),
-  listProductionLines: (token: string) =>
-    request<{ id: string; name: string }[]>("/api/mobile/categories?type=PRODUCTION_LINE", { token }),
+  listTeams: (token: string, lineId?: string) =>
+    request<{ id: string; name: string }[]>(
+      `/api/mobile/categories?type=TEAM${lineId ? `&lineId=${lineId}` : ""}`,
+      { token },
+    ),
+  listProductionLines: (token: string, areaId?: string) =>
+    request<{ id: string; name: string }[]>(
+      `/api/mobile/categories?type=PRODUCTION_LINE${areaId ? `&areaId=${areaId}` : ""}`,
+      { token },
+    ),
   listFailureCategories: (token: string) =>
     request<FailureCategory[]>("/api/mobile/issue-failure-categories", { token }),
   listPartCategories: (token: string) =>
@@ -186,12 +196,18 @@ export const api = {
 
   getIssue: (token: string, id: string) => request<QualityIssue>(`/api/mobile/issues/${id}`, { token }),
 
+  searchIssuesByPoCode: (token: string, poCode: string) =>
+    request<QualityIssue[]>(`/api/mobile/issues/search?poCode=${encodeURIComponent(poCode)}`, { token }),
+
   reportIssue: (
     token: string,
     payload: {
+      areaId?: string;
       teamId?: string;
       productionLineId?: string;
       failureCategoryId?: string;
+      otherFailureNote?: string;
+      severity: Severity;
       poCode: string;
       description: string;
       images?: string[];
@@ -227,10 +243,17 @@ export const api = {
     }),
 
   synthesizeRootCause: (token: string, issueId: string) =>
-    request<{ rootCause: string; solution: string }>(
+    request<{ rootCause: string; solution: string; outOfScope: boolean; sosReason: string }>(
       `/api/mobile/issues/${issueId}/synthesize-root-cause`,
       { method: "POST", token },
     ),
+
+  sendSos: (token: string, issueId: string, reason: string) =>
+    request<{ ok: true }>(`/api/mobile/issues/${issueId}/sos`, {
+      method: "POST",
+      token,
+      body: { reason },
+    }),
 
   decideRootCause: (token: string, issueId: string, payload: { rootCause: string; solution?: string }) =>
     request<QualityIssue>(`/api/mobile/issues/${issueId}/root-cause`, {

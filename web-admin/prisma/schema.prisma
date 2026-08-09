@@ -44,6 +44,18 @@ model Category {
   order     Int          @default(0)
   createdAt DateTime     @default(now())
 
+  // Phân cấp: AREA (Khu vực/Xưởng) > PRODUCTION_LINE (Chuyền) > TEAM (Tổ).
+  // - PRODUCTION_LINE: parentAreaId trỏ tới 1 Category type=AREA (bắt buộc).
+  // - TEAM: parentAreaId (Khu vực, bắt buộc) + parentLineId (Chuyền, bắt buộc) — Tổ luôn thuộc
+  //   1 Chuyền cụ thể, Chuyền đó lại thuộc 1 Khu vực.
+  parentAreaId String?
+  parentArea   Category?  @relation("CategoryParentArea", fields: [parentAreaId], references: [id])
+  childrenByArea Category[] @relation("CategoryParentArea")
+
+  parentLineId String?
+  parentLine   Category?  @relation("CategoryParentLine", fields: [parentLineId], references: [id])
+  childrenByLine Category[] @relation("CategoryParentLine")
+
   usersByArea             User[]         @relation("UserArea")
   issuesByArea            QualityIssue[] @relation("IssueArea")
   issuesByTeam            QualityIssue[] @relation("IssueTeam")
@@ -109,6 +121,13 @@ enum IssueStatus {
   DONE // Đã xác nhận hoàn thành (thủ công hoặc tự động sau 48h)
 }
 
+enum Severity {
+  LOW // Thấp
+  MEDIUM // Trung bình
+  HIGH // Cao
+  URGENT // Khẩn cấp
+}
+
 model QualityIssue {
   id          String      @id @default(cuid())
   reporter    User        @relation("Reporter", fields: [reporterId], references: [id])
@@ -117,6 +136,7 @@ model QualityIssue {
   images      String? // JSON array đường dẫn ảnh
   poCode      String // Mã PO — text tự do, nhập tay
   status      IssueStatus @default(REPORTED)
+  severity    Severity    @default(MEDIUM)
 
   areaId String?
   area   Category? @relation("IssueArea", fields: [areaId], references: [id])
@@ -129,6 +149,7 @@ model QualityIssue {
 
   failureCategoryId String?
   failureCategory   IssueFailureCategory? @relation(fields: [failureCategoryId], references: [id])
+  otherFailureNote   String? // Khi người báo cáo chọn "Khác" ở danh mục lỗi — mô tả bắt buộc
 
   investigationDeadline DateTime? // createdAt + 15 phút — hạn nộp 5M+1E
   investigationLocked   Boolean   @default(false) // true khi hết 15p mà còn thiếu bản nộp

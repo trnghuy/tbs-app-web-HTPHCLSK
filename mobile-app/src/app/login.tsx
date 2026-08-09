@@ -3,13 +3,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Redirect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Text } from "@/components/scaled-text";
 import { useAuth } from "@/lib/auth-context";
 import { ApiError } from "@/lib/api";
 import { colors } from "@/constants/colors";

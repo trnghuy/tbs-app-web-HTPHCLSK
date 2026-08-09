@@ -31,10 +31,12 @@ export type QualityIssueMinAggregateOutputType = {
   images: string | null
   poCode: string | null
   status: $Enums.IssueStatus | null
+  severity: $Enums.Severity | null
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
   failureCategoryId: string | null
+  otherFailureNote: string | null
   investigationDeadline: Date | null
   investigationLocked: boolean | null
   rootCause: string | null
@@ -52,10 +54,12 @@ export type QualityIssueMaxAggregateOutputType = {
   images: string | null
   poCode: string | null
   status: $Enums.IssueStatus | null
+  severity: $Enums.Severity | null
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
   failureCategoryId: string | null
+  otherFailureNote: string | null
   investigationDeadline: Date | null
   investigationLocked: boolean | null
   rootCause: string | null
@@ -73,10 +77,12 @@ export type QualityIssueCountAggregateOutputType = {
   images: number
   poCode: number
   status: number
+  severity: number
   areaId: number
   teamId: number
   productionLineId: number
   failureCategoryId: number
+  otherFailureNote: number
   investigationDeadline: number
   investigationLocked: number
   rootCause: number
@@ -96,10 +102,12 @@ export type QualityIssueMinAggregateInputType = {
   images?: true
   poCode?: true
   status?: true
+  severity?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
   failureCategoryId?: true
+  otherFailureNote?: true
   investigationDeadline?: true
   investigationLocked?: true
   rootCause?: true
@@ -117,10 +125,12 @@ export type QualityIssueMaxAggregateInputType = {
   images?: true
   poCode?: true
   status?: true
+  severity?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
   failureCategoryId?: true
+  otherFailureNote?: true
   investigationDeadline?: true
   investigationLocked?: true
   rootCause?: true
@@ -138,10 +148,12 @@ export type QualityIssueCountAggregateInputType = {
   images?: true
   poCode?: true
   status?: true
+  severity?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
   failureCategoryId?: true
+  otherFailureNote?: true
   investigationDeadline?: true
   investigationLocked?: true
   rootCause?: true
@@ -232,10 +244,12 @@ export type QualityIssueGroupByOutputType = {
   images: string | null
   poCode: string
   status: $Enums.IssueStatus
+  severity: $Enums.Severity
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
   failureCategoryId: string | null
+  otherFailureNote: string | null
   investigationDeadline: Date | null
   investigationLocked: boolean
   rootCause: string | null
@@ -274,10 +288,12 @@ export type QualityIssueWhereInput = {
   images?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   poCode?: Prisma.StringFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
   areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   failureCategoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  otherFailureNote?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   investigationDeadline?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
   investigationLocked?: Prisma.BoolFilter<"QualityIssue"> | boolean
   rootCause?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
@@ -303,10 +319,12 @@ export type QualityIssueOrderByWithRelationInput = {
   images?: Prisma.SortOrderInput | Prisma.SortOrder
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
   teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   productionLineId?: Prisma.SortOrderInput | Prisma.SortOrder
   failureCategoryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  otherFailureNote?: Prisma.SortOrderInput | Prisma.SortOrder
   investigationDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
   investigationLocked?: Prisma.SortOrder
   rootCause?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -335,10 +353,12 @@ export type QualityIssueWhereUniqueInput = Prisma.AtLeast<{
   images?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   poCode?: Prisma.StringFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
   areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   failureCategoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  otherFailureNote?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   investigationDeadline?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
   investigationLocked?: Prisma.BoolFilter<"QualityIssue"> | boolean
   rootCause?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
@@ -364,10 +384,12 @@ export type QualityIssueOrderByWithAggregationInput = {
   images?: Prisma.SortOrderInput | Prisma.SortOrder
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
   teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   productionLineId?: Prisma.SortOrderInput | Prisma.SortOrder
   failureCategoryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  otherFailureNote?: Prisma.SortOrderInput | Prisma.SortOrder
   investigationDeadline?: Prisma.SortOrderInput | Prisma.SortOrder
   investigationLocked?: Prisma.SortOrder
   rootCause?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -391,10 +413,12 @@ export type QualityIssueScalarWhereWithAggregatesInput = {
   images?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   poCode?: Prisma.StringWithAggregatesFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusWithAggregatesFilter<"QualityIssue"> | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityWithAggregatesFilter<"QualityIssue"> | $Enums.Severity
   areaId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   failureCategoryId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
+  otherFailureNote?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   investigationDeadline?: Prisma.DateTimeNullableWithAggregatesFilter<"QualityIssue"> | Date | string | null
   investigationLocked?: Prisma.BoolWithAggregatesFilter<"QualityIssue"> | boolean
   rootCause?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
@@ -411,6 +435,8 @@ export type QualityIssueCreateInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -435,10 +461,12 @@ export type QualityIssueUncheckedCreateInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -457,6 +485,8 @@ export type QualityIssueUpdateInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -481,10 +511,12 @@ export type QualityIssueUncheckedUpdateInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -504,10 +536,12 @@ export type QualityIssueCreateManyInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -524,6 +558,8 @@ export type QualityIssueUpdateManyMutationInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -540,10 +576,12 @@ export type QualityIssueUncheckedUpdateManyInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -571,10 +609,12 @@ export type QualityIssueCountOrderByAggregateInput = {
   images?: Prisma.SortOrder
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
   failureCategoryId?: Prisma.SortOrder
+  otherFailureNote?: Prisma.SortOrder
   investigationDeadline?: Prisma.SortOrder
   investigationLocked?: Prisma.SortOrder
   rootCause?: Prisma.SortOrder
@@ -592,10 +632,12 @@ export type QualityIssueMaxOrderByAggregateInput = {
   images?: Prisma.SortOrder
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
   failureCategoryId?: Prisma.SortOrder
+  otherFailureNote?: Prisma.SortOrder
   investigationDeadline?: Prisma.SortOrder
   investigationLocked?: Prisma.SortOrder
   rootCause?: Prisma.SortOrder
@@ -613,10 +655,12 @@ export type QualityIssueMinOrderByAggregateInput = {
   images?: Prisma.SortOrder
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  severity?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
   failureCategoryId?: Prisma.SortOrder
+  otherFailureNote?: Prisma.SortOrder
   investigationDeadline?: Prisma.SortOrder
   investigationLocked?: Prisma.SortOrder
   rootCause?: Prisma.SortOrder
@@ -888,6 +932,10 @@ export type EnumIssueStatusFieldUpdateOperationsInput = {
   set?: $Enums.IssueStatus
 }
 
+export type EnumSeverityFieldUpdateOperationsInput = {
+  set?: $Enums.Severity
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -930,6 +978,8 @@ export type QualityIssueCreateWithoutAreaInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -953,9 +1003,11 @@ export type QualityIssueUncheckedCreateWithoutAreaInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -983,6 +1035,8 @@ export type QualityIssueCreateWithoutTeamInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1006,9 +1060,11 @@ export type QualityIssueUncheckedCreateWithoutTeamInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1036,6 +1092,8 @@ export type QualityIssueCreateWithoutProductionLineInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1059,9 +1117,11 @@ export type QualityIssueUncheckedCreateWithoutProductionLineInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1109,10 +1169,12 @@ export type QualityIssueScalarWhereInput = {
   images?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   poCode?: Prisma.StringFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
   areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   failureCategoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  otherFailureNote?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   investigationDeadline?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
   investigationLocked?: Prisma.BoolFilter<"QualityIssue"> | boolean
   rootCause?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
@@ -1161,6 +1223,8 @@ export type QualityIssueCreateWithoutFailureCategoryInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1184,9 +1248,11 @@ export type QualityIssueUncheckedCreateWithoutFailureCategoryInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1230,6 +1296,8 @@ export type QualityIssueCreateWithoutReporterInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1252,10 +1320,12 @@ export type QualityIssueUncheckedCreateWithoutReporterInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1283,6 +1353,8 @@ export type QualityIssueCreateWithoutRootCauseDecidedByInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1306,10 +1378,12 @@ export type QualityIssueUncheckedCreateWithoutRootCauseDecidedByInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1368,6 +1442,8 @@ export type QualityIssueCreateWithoutSubmissionsInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1391,10 +1467,12 @@ export type QualityIssueUncheckedCreateWithoutSubmissionsInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1428,6 +1506,8 @@ export type QualityIssueUpdateWithoutSubmissionsInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1451,10 +1531,12 @@ export type QualityIssueUncheckedUpdateWithoutSubmissionsInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1472,6 +1554,8 @@ export type QualityIssueCreateWithoutTaskInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1495,10 +1579,12 @@ export type QualityIssueUncheckedCreateWithoutTaskInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1532,6 +1618,8 @@ export type QualityIssueUpdateWithoutTaskInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1555,10 +1643,12 @@ export type QualityIssueUncheckedUpdateWithoutTaskInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1577,9 +1667,11 @@ export type QualityIssueCreateManyAreaInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1597,9 +1689,11 @@ export type QualityIssueCreateManyTeamInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1617,9 +1711,11 @@ export type QualityIssueCreateManyProductionLineInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1636,6 +1732,8 @@ export type QualityIssueUpdateWithoutAreaInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1659,9 +1757,11 @@ export type QualityIssueUncheckedUpdateWithoutAreaInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1681,9 +1781,11 @@ export type QualityIssueUncheckedUpdateManyWithoutAreaInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1700,6 +1802,8 @@ export type QualityIssueUpdateWithoutTeamInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1723,9 +1827,11 @@ export type QualityIssueUncheckedUpdateWithoutTeamInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1745,9 +1851,11 @@ export type QualityIssueUncheckedUpdateManyWithoutTeamInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1764,6 +1872,8 @@ export type QualityIssueUpdateWithoutProductionLineInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1787,9 +1897,11 @@ export type QualityIssueUncheckedUpdateWithoutProductionLineInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1809,9 +1921,11 @@ export type QualityIssueUncheckedUpdateManyWithoutProductionLineInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1829,9 +1943,11 @@ export type QualityIssueCreateManyFailureCategoryInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1848,6 +1964,8 @@ export type QualityIssueUpdateWithoutFailureCategoryInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1871,9 +1989,11 @@ export type QualityIssueUncheckedUpdateWithoutFailureCategoryInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1893,9 +2013,11 @@ export type QualityIssueUncheckedUpdateManyWithoutFailureCategoryInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1912,10 +2034,12 @@ export type QualityIssueCreateManyReporterInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1933,10 +2057,12 @@ export type QualityIssueCreateManyRootCauseDecidedByInput = {
   images?: string | null
   poCode: string
   status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
+  otherFailureNote?: string | null
   investigationDeadline?: Date | string | null
   investigationLocked?: boolean
   rootCause?: string | null
@@ -1952,6 +2078,8 @@ export type QualityIssueUpdateWithoutReporterInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1974,10 +2102,12 @@ export type QualityIssueUncheckedUpdateWithoutReporterInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1996,10 +2126,12 @@ export type QualityIssueUncheckedUpdateManyWithoutReporterInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2016,6 +2148,8 @@ export type QualityIssueUpdateWithoutRootCauseDecidedByInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2039,10 +2173,12 @@ export type QualityIssueUncheckedUpdateWithoutRootCauseDecidedByInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2061,10 +2197,12 @@ export type QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByInput = {
   images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2112,10 +2250,12 @@ export type QualityIssueSelect<ExtArgs extends runtime.Types.Extensions.Internal
   images?: boolean
   poCode?: boolean
   status?: boolean
+  severity?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
   failureCategoryId?: boolean
+  otherFailureNote?: boolean
   investigationDeadline?: boolean
   investigationLocked?: boolean
   rootCause?: boolean
@@ -2142,10 +2282,12 @@ export type QualityIssueSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   images?: boolean
   poCode?: boolean
   status?: boolean
+  severity?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
   failureCategoryId?: boolean
+  otherFailureNote?: boolean
   investigationDeadline?: boolean
   investigationLocked?: boolean
   rootCause?: boolean
@@ -2169,10 +2311,12 @@ export type QualityIssueSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   images?: boolean
   poCode?: boolean
   status?: boolean
+  severity?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
   failureCategoryId?: boolean
+  otherFailureNote?: boolean
   investigationDeadline?: boolean
   investigationLocked?: boolean
   rootCause?: boolean
@@ -2196,10 +2340,12 @@ export type QualityIssueSelectScalar = {
   images?: boolean
   poCode?: boolean
   status?: boolean
+  severity?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
   failureCategoryId?: boolean
+  otherFailureNote?: boolean
   investigationDeadline?: boolean
   investigationLocked?: boolean
   rootCause?: boolean
@@ -2210,7 +2356,7 @@ export type QualityIssueSelectScalar = {
   updatedAt?: boolean
 }
 
-export type QualityIssueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "description" | "images" | "poCode" | "status" | "areaId" | "teamId" | "productionLineId" | "failureCategoryId" | "investigationDeadline" | "investigationLocked" | "rootCause" | "solution" | "rootCauseDecidedById" | "rootCauseDecidedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["qualityIssue"]>
+export type QualityIssueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "description" | "images" | "poCode" | "status" | "severity" | "areaId" | "teamId" | "productionLineId" | "failureCategoryId" | "otherFailureNote" | "investigationDeadline" | "investigationLocked" | "rootCause" | "solution" | "rootCauseDecidedById" | "rootCauseDecidedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["qualityIssue"]>
 export type QualityIssueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
@@ -2258,10 +2404,12 @@ export type $QualityIssuePayload<ExtArgs extends runtime.Types.Extensions.Intern
     images: string | null
     poCode: string
     status: $Enums.IssueStatus
+    severity: $Enums.Severity
     areaId: string | null
     teamId: string | null
     productionLineId: string | null
     failureCategoryId: string | null
+    otherFailureNote: string | null
     investigationDeadline: Date | null
     investigationLocked: boolean
     rootCause: string | null
@@ -2707,10 +2855,12 @@ export interface QualityIssueFieldRefs {
   readonly images: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly poCode: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly status: Prisma.FieldRef<"QualityIssue", 'IssueStatus'>
+  readonly severity: Prisma.FieldRef<"QualityIssue", 'Severity'>
   readonly areaId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly teamId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly productionLineId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly failureCategoryId: Prisma.FieldRef<"QualityIssue", 'String'>
+  readonly otherFailureNote: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly investigationDeadline: Prisma.FieldRef<"QualityIssue", 'DateTime'>
   readonly investigationLocked: Prisma.FieldRef<"QualityIssue", 'Boolean'>
   readonly rootCause: Prisma.FieldRef<"QualityIssue", 'String'>

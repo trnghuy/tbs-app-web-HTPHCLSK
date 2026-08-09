@@ -71,9 +71,15 @@ Nhiệm vụ của bạn:
    nguyên nhân hợp lý nhất hoặc kết hợp cả hai).
 2. Đề xuất 1 GIẢI PHÁP xử lý cụ thể, khả thi, ngắn gọn (2-4 câu) để khắc phục triệt để nguyên nhân
    gốc đó, không chỉ xử lý phần ngọn.
+3. Đánh giá xem nguyên nhân/giải pháp này có VƯỢT NGOÀI KHẢ NĂNG xử lý ở cấp xưởng/line hay không —
+   ví dụ: cần duyệt ngân sách lớn, cần đầu tư/mua sắm thiết bị mới, cần quyết định cấp quản lý cao
+   hơn, hoặc nguyên nhân thực chất KHÔNG thuộc phạm vi 5M+1E (không phải do con người/máy móc/
+   nguyên liệu/phương pháp/đo lường/môi trường tại xưởng, mà là vấn đề tài chính/chính sách/tổ
+   chức). Nếu đúng như vậy, đặt "outOfScope": true và giải thích ngắn gọn lý do trong "sosReason".
+   Nếu vấn đề vẫn xử lý được trong phạm vi thông thường, đặt "outOfScope": false và "sosReason": "".
 
 Trả lời CHỈ bằng JSON hợp lệ, không kèm markdown, không thêm chữ nào khác:
-{"rootCause":"<nguyên nhân gốc rễ tổng hợp>","solution":"<giải pháp đề xuất>"}`;
+{"rootCause":"<nguyên nhân gốc rễ tổng hợp>","solution":"<giải pháp đề xuất>","outOfScope":<true|false>,"sosReason":"<lý do nếu vượt ngoài khả năng, hoặc chuỗi rỗng>"}`;
 
   let groqRes: Response;
   try {
@@ -105,12 +111,17 @@ Trả lời CHỈ bằng JSON hợp lệ, không kèm markdown, không thêm ch�
     return NextResponse.json({ error: "AI không phản hồi được, thử lại" }, { status: 502 });
   }
 
-  let parsed: { rootCause: string; solution: string };
+  let parsed: { rootCause: string; solution: string; outOfScope?: boolean; sosReason?: string };
   try {
     parsed = JSON.parse(text);
   } catch {
     return NextResponse.json({ error: "AI trả lời sai định dạng, thử lại" }, { status: 502 });
   }
 
-  return NextResponse.json(parsed);
+  return NextResponse.json({
+    rootCause: parsed.rootCause,
+    solution: parsed.solution,
+    outOfScope: !!parsed.outOfScope,
+    sosReason: parsed.sosReason || "",
+  });
 }

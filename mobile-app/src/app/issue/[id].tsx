@@ -4,7 +4,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,6 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/scaled-text";
 import { useAuth } from "@/lib/auth-context";
 import {
   api,
@@ -28,6 +28,7 @@ import {
 import { colors } from "@/constants/colors";
 import { radius } from "@/constants/ui-theme";
 import { PressableScale } from "@/components/pressable-scale";
+import { severityLabel, severityBadgeStyle } from "@/constants/severity";
 
 const statusLabel: Record<IssueStatus, string> = {
   REPORTED: "Vừa báo cáo",
@@ -123,6 +124,17 @@ export default function IssueDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [showInvestigate, setShowInvestigate] = useState(false);
 
+  // Nếu người dùng mở thẳng URL /issue/[id] (tải lại trang, dán link...) thì router không có
+  // lịch sử để quay lại — khi đó điều hướng thẳng về Trang chủ thay vì gọi router.back() (sẽ
+  // báo lỗi "GO_BACK was not handled by any navigator").
+  function goBack() {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/(tabs)");
+    }
+  }
+
   const load = useCallback(async () => {
     if (!token || !id) return;
     const data = await api.getIssue(token, id);
@@ -142,7 +154,7 @@ export default function IssueDetailScreen() {
       <SafeAreaView style={styles.container} edges={["top"]}>
         <StatusBar style="dark" />
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={goBack}>
             <Text style={styles.backBtn}>‹ Quay lại</Text>
           </TouchableOpacity>
         </View>
@@ -180,7 +192,7 @@ export default function IssueDetailScreen() {
     <SafeAreaView style={styles.container} edges={["top"]}>
       <StatusBar style="dark" />
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={goBack}>
           <Text style={styles.backBtn}>‹ Quay lại</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>PO {issue.poCode}</Text>
@@ -191,14 +203,25 @@ export default function IssueDetailScreen() {
         <View style={styles.card}>
           <View style={styles.cardTopRow}>
             <Text style={styles.cardPo}>PO {issue.poCode}</Text>
-            <View style={[styles.badge, { backgroundColor: badge.bg }]}>
-              <Text style={[styles.badgeText, { color: badge.color }]}>{statusLabel[issue.status]}</Text>
+            <View style={{ flexDirection: "row", gap: 6 }}>
+              <View style={[styles.badge, { backgroundColor: severityBadgeStyle[issue.severity].bg }]}>
+                <Text style={[styles.badgeText, { color: severityBadgeStyle[issue.severity].color }]}>
+                  {severityLabel[issue.severity]}
+                </Text>
+              </View>
+              <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+                <Text style={[styles.badgeText, { color: badge.color }]}>{statusLabel[issue.status]}</Text>
+              </View>
             </View>
           </View>
           <Text style={styles.cardDesc}>{issue.description}</Text>
           <Text style={styles.cardMeta}>
             {issue.team?.name || "-"} / {issue.productionLine?.name || "-"}
-            {issue.failureCategory ? ` · ${issue.failureCategory.name}` : ""}
+            {issue.failureCategory
+              ? ` · ${issue.failureCategory.name}`
+              : issue.otherFailureNote
+                ? ` · Lỗi khác: ${issue.otherFailureNote}`
+                : ""}
           </Text>
           <Text style={styles.cardMeta}>Người báo cáo: {issue.reporter?.name}</Text>
           {issue.images && (
@@ -499,19 +522,37 @@ function RootCauseForm({ token, issueId, onDone }: { token: string | null; issue
   const [error, setError] = useState<string | null>(null);
   const [synthesizing, setSynthesizing] = useState(false);
   const [synthesizeError, setSynthesizeError] = useState<string | null>(null);
+  const [sosReason, setSosReason] = useState<string | null>(null);
+  const [sosSending, setSosSending] = useState(false);
+  const [sosSent, setSosSent] = useState(false);
 
   async function handleSynthesize() {
     if (!token) return;
     setSynthesizing(true);
     setSynthesizeError(null);
+    setSosReason(null);
     try {
       const result = await api.synthesizeRootCause(token, issueId);
       setRootCause(result.rootCause);
       setSolution(result.solution);
+      if (result.outOfScope) setSosReason(result.sosReason || "Vượt ngoài khả năng xử lý ở cấp xưởng/line.");
     } catch (e) {
       setSynthesizeError(e instanceof ApiError ? e.message : "Không thể tổng hợp bằng AI");
     } finally {
       setSynthesizing(false);
+    }
+  }
+
+  async function handleSos() {
+    if (!token) return;
+    setSosSending(true);
+    try {
+      await api.sendSos(token, issueId, sosReason || "");
+      setSosSent(true);
+    } catch {
+      // Best-effort — không chặn luồng chính nếu gửi SOS lỗi.
+    } finally {
+      setSosSending(false);
     }
   }
 
@@ -547,6 +588,24 @@ function RootCauseForm({ token, issueId, onDone }: { token: string | null; issue
         </Text>
       </TouchableOpacity>
       {synthesizeError && <Text style={styles.errorText}>{synthesizeError}</Text>}
+
+      {sosReason && (
+        <View style={styles.sosBox}>
+          <Text style={styles.sosBoxTitle}>⚠️ AI đánh giá sự cố này vượt ngoài khả năng xử lý ở xưởng</Text>
+          <Text style={styles.sosBoxReason}>{sosReason}</Text>
+          {sosSent ? (
+            <Text style={styles.sosSentText}>✓ Đã gửi SOS cho Giám đốc</Text>
+          ) : (
+            <PressableScale
+              style={[styles.sosBtn, sosSending && { opacity: 0.6 }]}
+              onPress={handleSos}
+              disabled={sosSending}
+            >
+              <Text style={styles.sosBtnText}>{sosSending ? "Đang gửi..." : "🆘 Gửi SOS cho Giám đốc"}</Text>
+            </PressableScale>
+          )}
+        </View>
+      )}
 
       <LabeledArea label="Nguyên nhân gốc" value={rootCause} onChangeText={setRootCause} />
       <LabeledArea label="Giải pháp đề xuất (không bắt buộc)" value={solution} onChangeText={setSolution} />
@@ -1030,6 +1089,25 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   aiSynthesizeBtnText: { color: colors.primaryDark, fontWeight: "700", fontSize: 13 },
+  sosBox: {
+    backgroundColor: "#FEF2F2",
+    borderWidth: 1,
+    borderColor: colors.danger,
+    borderRadius: radius.sm,
+    padding: 12,
+    marginTop: 10,
+  },
+  sosBoxTitle: { color: colors.danger, fontWeight: "700", fontSize: 13 },
+  sosBoxReason: { color: colors.text, fontSize: 13, marginTop: 6, lineHeight: 19 },
+  sosBtn: {
+    backgroundColor: colors.danger,
+    borderRadius: radius.sm,
+    paddingVertical: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  sosBtnText: { color: colors.white, fontWeight: "700", fontSize: 13 },
+  sosSentText: { color: colors.statusDoneText, fontWeight: "700", fontSize: 13, marginTop: 8 },
   formLabel: { fontSize: 13, fontWeight: "600", color: colors.text, marginTop: 10, marginBottom: 6 },
   input: {
     borderWidth: 1,

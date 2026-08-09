@@ -7,7 +7,6 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -17,11 +16,16 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/scaled-text";
 import { useAuth } from "@/lib/auth-context";
-import { api, QualityIssue, IssueStatus, ApiError, resolveImageUrl, FailureCategory } from "@/lib/api";
+import { api, QualityIssue, IssueStatus, Severity, ApiError, resolveImageUrl, FailureCategory } from "@/lib/api";
 import { colors } from "@/constants/colors";
 import { radius } from "@/constants/ui-theme";
 import { PressableScale } from "@/components/pressable-scale";
+import { ComboBoxField } from "@/components/combo-box-field";
+import { SEVERITY_OPTIONS, severityLabel, severityBadgeStyle } from "@/constants/severity";
+
+const OTHER_FAILURE_ID = "OTHER";
 
 const statusLabel: Record<IssueStatus, string> = {
   REPORTED: "Vừa báo cáo",
@@ -56,16 +60,26 @@ export default function HomeScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [areas, setAreas] = useState<Option[]>([]);
   const [teams, setTeams] = useState<Option[]>([]);
   const [lines, setLines] = useState<Option[]>([]);
   const [failureCategories, setFailureCategories] = useState<FailureCategory[]>([]);
+  const [areaId, setAreaId] = useState("");
   const [teamId, setTeamId] = useState("");
   const [productionLineId, setProductionLineId] = useState("");
   const [failureCategoryId, setFailureCategoryId] = useState("");
+  const [otherFailureNote, setOtherFailureNote] = useState("");
+  const [severity, setSeverity] = useState<Severity | "">("");
   const [poCode, setPoCode] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  const [showLookup, setShowLookup] = useState(false);
+  const [lookupPoCode, setLookupPoCode] = useState("");
+  const [lookupResults, setLookupResults] = useState<QualityIssue[] | null>(null);
+  const [lookupLoading, setLookupLoading] = useState(false);
+  const [lookupError, setLookupError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!token) return;
@@ -89,14 +103,61 @@ export default function HomeScreen() {
     setError(null);
     setShowReportForm(true);
     if (token) {
-      const [teamOpts, lineOpts, failureOpts] = await Promise.all([
-        api.listTeams(token),
-        api.listProductionLines(token),
+      const defaultAreaId = user?.area?.id || "";
+      setAreaId(defaultAreaId);
+      setTeamId("");
+      setProductionLineId("");
+      const [areaOpts, lineOpts, failureOpts] = await Promise.all([
+        api.listAreas(token),
+        api.listProductionLines(token, defaultAreaId || undefined),
         api.listFailureCategories(token),
       ]);
-      setTeams(teamOpts);
+      setAreas(areaOpts);
       setLines(lineOpts);
+      setTeams([]);
       setFailureCategories(failureOpts);
+    }
+  }
+
+  // Phân cấp Khu vực > Chuyền > Tổ: đổi Khu vực thì nạp lại Chuyền đúng khu vực đó, reset Chuyền
+  // + Tổ đã chọn (vì Chuyền chỉ thuộc 1 khu vực, Tổ chỉ thuộc 1 chuyền).
+  async function handleAreaChange(nextAreaId: string) {
+    setAreaId(nextAreaId);
+    setProductionLineId("");
+    setTeamId("");
+    setTeams([]);
+    if (!token) return;
+    const lineOpts = await api.listProductionLines(token, nextAreaId || undefined);
+    setLines(lineOpts);
+  }
+
+  // Đổi Chuyền thì nạp lại Tổ đúng chuyền đó, reset Tổ đã chọn.
+  async function handleLineChange(nextLineId: string) {
+    setProductionLineId(nextLineId);
+    setTeamId("");
+    if (!token) return;
+    const teamOpts = await api.listTeams(token, nextLineId || undefined);
+    setTeams(teamOpts);
+  }
+
+  async function openLookup() {
+    setShowLookup(true);
+    setLookupPoCode("");
+    setLookupResults(null);
+    setLookupError(null);
+  }
+
+  async function handleLookup() {
+    if (!token || !lookupPoCode.trim()) return;
+    setLookupLoading(true);
+    setLookupError(null);
+    try {
+      const data = await api.searchIssuesByPoCode(token, lookupPoCode.trim());
+      setLookupResults(data);
+    } catch (e) {
+      setLookupError(e instanceof ApiError ? e.message : "Không thể tra cứu");
+    } finally {
+      setLookupLoading(false);
     }
   }
 
@@ -125,21 +186,43 @@ export default function HomeScreen() {
       setError("Vui lòng nhập mã PO và mô tả");
       return;
     }
+    if (!areaId) {
+      setError("Vui lòng chọn khu vực/xưởng");
+      return;
+    }
+    if (!severity) {
+      setError("Vui lòng chọn mức độ nghiêm trọng");
+      return;
+    }
+    if (!failureCategoryId) {
+      setError("Vui lòng chọn danh mục lỗi");
+      return;
+    }
+    if (failureCategoryId === OTHER_FAILURE_ID && !otherFailureNote.trim()) {
+      setError("Vui lòng mô tả lỗi khác");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
       await api.reportIssue(token, {
+        areaId,
         teamId: teamId || undefined,
         productionLineId: productionLineId || undefined,
-        failureCategoryId: failureCategoryId || undefined,
+        failureCategoryId: failureCategoryId === OTHER_FAILURE_ID ? undefined : failureCategoryId,
+        otherFailureNote: failureCategoryId === OTHER_FAILURE_ID ? otherFailureNote.trim() : undefined,
+        severity,
         poCode: poCode.trim(),
         description: description.trim(),
         images,
       });
       setShowReportForm(false);
+      setAreaId("");
       setTeamId("");
       setProductionLineId("");
       setFailureCategoryId("");
+      setOtherFailureNote("");
+      setSeverity("");
       setPoCode("");
       setDescription("");
       setImages([]);
@@ -168,14 +251,16 @@ export default function HomeScreen() {
         contentContainerStyle={{ padding: 16, paddingBottom: 28, gap: 10 }}
         ListHeaderComponent={
           <>
-            <PressableScale style={styles.reportCard} onPress={openReportForm}>
-              <Text style={styles.reportCardIcon}>⚠️</Text>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.reportCardTitle}>Báo cáo vấn đề</Text>
-                <Text style={styles.reportCardSubtitle}>Báo cáo sự cố chất lượng đang gặp phải</Text>
-              </View>
-              <Text style={styles.reportCardChevron}>›</Text>
-            </PressableScale>
+            <View style={styles.topRow}>
+              <PressableScale style={styles.topCardPrimary} onPress={openReportForm}>
+                <Text style={styles.topCardIcon}>⚠️</Text>
+                <Text style={styles.topCardTitle}>Báo cáo{"\n"}vấn đề</Text>
+              </PressableScale>
+              <PressableScale style={styles.topCardSecondary} onPress={openLookup}>
+                <Text style={styles.topCardIcon}>🔍</Text>
+                <Text style={styles.topCardTitleDark}>Tra cứu{"\n"}lỗi SP</Text>
+              </PressableScale>
+            </View>
             <Text style={styles.feedTitle}>Hoạt động sự cố gần đây</Text>
           </>
         }
@@ -187,15 +272,23 @@ export default function HomeScreen() {
         }
         renderItem={({ item, index }) => {
           const badge = statusBadgeStyle[item.status];
+          const sevBadge = severityBadgeStyle[item.severity];
           return (
             <Animated.View entering={FadeInDown.delay(Math.min(index, 8) * 45).duration(320)}>
               <PressableScale style={styles.card} onPress={() => router.push(`/issue/${item.id}`)}>
                 <View style={styles.cardTopRow}>
                   <Text style={styles.cardPo}>PO {item.poCode}</Text>
-                  <View style={[styles.badge, { backgroundColor: badge.bg }]}>
-                    <Text style={[styles.badgeText, { color: badge.color }]}>
-                      {statusLabel[item.status]}
-                    </Text>
+                  <View style={{ flexDirection: "row", gap: 6 }}>
+                    <View style={[styles.badge, { backgroundColor: sevBadge.bg }]}>
+                      <Text style={[styles.badgeText, { color: sevBadge.color }]}>
+                        {severityLabel[item.severity]}
+                      </Text>
+                    </View>
+                    <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+                      <Text style={[styles.badgeText, { color: badge.color }]}>
+                        {statusLabel[item.status]}
+                      </Text>
+                    </View>
                   </View>
                 </View>
                 <Text style={styles.cardDesc} numberOfLines={2}>
@@ -203,6 +296,7 @@ export default function HomeScreen() {
                 </Text>
                 <Text style={styles.cardMeta}>
                   {item.team?.name || "-"} / {item.productionLine?.name || "-"}
+                  {item.failureCategory ? ` · ${item.failureCategory.name}` : item.otherFailureNote ? ` · ${item.otherFailureNote}` : ""}
                   {item.task?.assignee ? ` · Bảo trì: ${item.task.assignee.name}` : ""}
                 </Text>
               </PressableScale>
@@ -226,52 +320,53 @@ export default function HomeScreen() {
                 style={styles.input}
               />
 
-              <Text style={styles.formLabel}>Tổ</Text>
-              <View style={styles.pillRow}>
-                {teams.map((t) => (
-                  <TouchableOpacity
-                    key={t.id}
-                    onPress={() => setTeamId(t.id === teamId ? "" : t.id)}
-                    style={[styles.pill, teamId === t.id && styles.pillActive]}
-                  >
-                    <Text style={[styles.pillText, teamId === t.id && styles.pillTextActive]}>
-                      {t.name}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+              <ComboBoxField
+                label="Khu vực / Xưởng"
+                placeholder="Chọn khu vực/xưởng"
+                value={areaId}
+                onChange={handleAreaChange}
+                options={areas}
+              />
 
-              <Text style={styles.formLabel}>Chuyền</Text>
-              <View style={styles.pillRow}>
-                {lines.map((l) => (
-                  <TouchableOpacity
-                    key={l.id}
-                    onPress={() => setProductionLineId(l.id === productionLineId ? "" : l.id)}
-                    style={[styles.pill, productionLineId === l.id && styles.pillActive]}
-                  >
-                    <Text style={[styles.pillText, productionLineId === l.id && styles.pillTextActive]}>
-                      {l.name}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+              <ComboBoxField
+                label="Chuyền"
+                placeholder={areaId ? "Chọn chuyền" : "Chọn khu vực/xưởng trước"}
+                value={productionLineId}
+                onChange={handleLineChange}
+                options={lines}
+              />
 
-              <Text style={styles.formLabel}>Danh mục lỗi</Text>
-              <View style={styles.pillRow}>
-                {failureCategories.map((f) => (
-                  <TouchableOpacity
-                    key={f.id}
-                    onPress={() => setFailureCategoryId(f.id === failureCategoryId ? "" : f.id)}
-                    style={[styles.pill, failureCategoryId === f.id && styles.pillActive]}
-                  >
-                    <Text
-                      style={[styles.pillText, failureCategoryId === f.id && styles.pillTextActive]}
-                    >
-                      {f.name}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+              <ComboBoxField
+                label="Tổ"
+                placeholder={productionLineId ? "Chọn tổ" : "Chọn chuyền trước"}
+                value={teamId}
+                onChange={setTeamId}
+                options={teams}
+              />
+
+              <ComboBoxField
+                label="Danh mục lỗi"
+                placeholder="Chọn danh mục lỗi"
+                value={failureCategoryId}
+                onChange={setFailureCategoryId}
+                options={[...failureCategories, { id: OTHER_FAILURE_ID, name: "Khác" }]}
+              />
+              {failureCategoryId === OTHER_FAILURE_ID && (
+                <TextInput
+                  value={otherFailureNote}
+                  onChangeText={setOtherFailureNote}
+                  placeholder="Mô tả lỗi khác (bắt buộc)"
+                  style={[styles.input, { marginTop: 8 }]}
+                />
+              )}
+
+              <ComboBoxField
+                label="Mức độ nghiêm trọng"
+                placeholder="Chọn mức độ nghiêm trọng"
+                value={severity}
+                onChange={(v) => setSeverity(v as Severity)}
+                options={SEVERITY_OPTIONS}
+              />
 
               <Text style={styles.formLabel}>Mô tả</Text>
               <TextInput
@@ -310,6 +405,87 @@ export default function HomeScreen() {
           </View>
         </View>
       </Modal>
+
+      <Modal visible={showLookup} transparent animationType="fade">
+        <View style={styles.sheetOverlay}>
+          <View style={styles.sheetCard}>
+            <View style={styles.sheetHandle} />
+            <Text style={styles.sheetTitle}>🔍 Tra cứu lỗi SP</Text>
+            <Text style={styles.lookupHint}>
+              Nhập mã PO/SP để xem các vấn đề đã báo cáo trước đó — giúp biết và ngăn ngừa lỗi lặp
+              lại.
+            </Text>
+
+            <View style={styles.lookupRow}>
+              <TextInput
+                value={lookupPoCode}
+                onChangeText={setLookupPoCode}
+                placeholder="Nhập mã PO/SP..."
+                style={[styles.input, { flex: 1 }]}
+                onSubmitEditing={handleLookup}
+              />
+              <TouchableOpacity style={styles.lookupBtn} onPress={handleLookup} disabled={lookupLoading}>
+                {lookupLoading ? <ActivityIndicator color={colors.white} /> : <Text style={styles.lookupBtnText}>Tìm</Text>}
+              </TouchableOpacity>
+            </View>
+
+            {lookupError && <Text style={styles.errorText}>{lookupError}</Text>}
+
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 10 }}>
+              {lookupResults && lookupResults.length === 0 && (
+                <Text style={styles.lookupEmpty}>Chưa có vấn đề nào từng báo cáo cho mã này.</Text>
+              )}
+              <View style={{ gap: 10 }}>
+                {lookupResults?.map((item) => {
+                  const badge = statusBadgeStyle[item.status];
+                  const sevBadge = severityBadgeStyle[item.severity];
+                  return (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.lookupCard}
+                      onPress={() => {
+                        setShowLookup(false);
+                        router.push(`/issue/${item.id}`);
+                      }}
+                    >
+                      <View style={styles.cardTopRow}>
+                        <Text style={styles.cardPo}>PO {item.poCode}</Text>
+                        <View style={{ flexDirection: "row", gap: 6 }}>
+                          <View style={[styles.badge, { backgroundColor: sevBadge.bg }]}>
+                            <Text style={[styles.badgeText, { color: sevBadge.color }]}>
+                              {severityLabel[item.severity]}
+                            </Text>
+                          </View>
+                          <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+                            <Text style={[styles.badgeText, { color: badge.color }]}>
+                              {statusLabel[item.status]}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <Text style={styles.cardDesc}>{item.description}</Text>
+                      {item.rootCause && (
+                        <Text style={styles.lookupRootCause}>🧩 Nguyên nhân gốc: {item.rootCause}</Text>
+                      )}
+                      {item.solution && (
+                        <Text style={styles.lookupSolution}>✅ Giải pháp: {item.solution}</Text>
+                      )}
+                      <Text style={styles.cardMeta}>
+                        {item.area?.name || "-"} · {item.team?.name || "-"} / {item.productionLine?.name || "-"} ·{" "}
+                        {new Date(item.createdAt).toLocaleDateString("vi-VN")}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+
+            <TouchableOpacity onPress={() => setShowLookup(false)} style={[styles.cancelBtn, { alignSelf: "center", marginTop: 8 }]}>
+              <Text style={styles.cancelBtnText}>Đóng</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -336,19 +512,47 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerAvatarText: { color: colors.primaryDark, fontWeight: "700", fontSize: 13 },
-  reportCard: {
-    flexDirection: "row",
+  topRow: { flexDirection: "row", gap: 10, marginBottom: 4 },
+  topCardPrimary: {
+    flex: 1,
     alignItems: "center",
-    gap: 12,
+    gap: 6,
     backgroundColor: colors.primary,
     borderRadius: radius.md,
-    padding: 14,
-    marginBottom: 4,
+    paddingVertical: 16,
   },
-  reportCardIcon: { fontSize: 22 },
-  reportCardTitle: { color: colors.white, fontSize: 15, fontWeight: "700" },
-  reportCardSubtitle: { color: "rgba(255,255,255,0.85)", fontSize: 12, marginTop: 2 },
-  reportCardChevron: { color: colors.white, fontSize: 20 },
+  topCardSecondary: {
+    flex: 1,
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: colors.accentSoft,
+    borderRadius: radius.md,
+    paddingVertical: 16,
+  },
+  topCardIcon: { fontSize: 24 },
+  topCardTitle: { color: colors.white, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
+  topCardTitleDark: { color: colors.primaryDark, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
+  lookupHint: { color: colors.textMuted, fontSize: 12.5, marginTop: -6, marginBottom: 10, lineHeight: 18 },
+  lookupRow: { flexDirection: "row", gap: 8 },
+  lookupBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: radius.sm,
+    paddingHorizontal: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lookupBtnText: { color: colors.white, fontWeight: "700", fontSize: 14 },
+  lookupEmpty: { color: colors.textMuted, textAlign: "center", marginTop: 20, marginBottom: 10 },
+  lookupCard: {
+    backgroundColor: colors.white,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: 14,
+    gap: 6,
+  },
+  lookupRootCause: { color: colors.statusAcceptedText, fontSize: 12.5, lineHeight: 18 },
+  lookupSolution: { color: colors.statusDoneText, fontSize: 12.5, lineHeight: 18 },
   feedTitle: {
     fontSize: 14,
     fontWeight: "600",

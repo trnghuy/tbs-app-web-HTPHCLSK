@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/scaled-text";
 import { useAuth } from "@/lib/auth-context";
 import { api, QualityIssue } from "@/lib/api";
 import { colors } from "@/constants/colors";

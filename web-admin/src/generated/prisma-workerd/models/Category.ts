@@ -41,6 +41,8 @@ export type CategoryMinAggregateOutputType = {
   colorHex: string | null
   order: number | null
   createdAt: Date | null
+  parentAreaId: string | null
+  parentLineId: string | null
 }
 
 export type CategoryMaxAggregateOutputType = {
@@ -50,6 +52,8 @@ export type CategoryMaxAggregateOutputType = {
   colorHex: string | null
   order: number | null
   createdAt: Date | null
+  parentAreaId: string | null
+  parentLineId: string | null
 }
 
 export type CategoryCountAggregateOutputType = {
@@ -59,6 +63,8 @@ export type CategoryCountAggregateOutputType = {
   colorHex: number
   order: number
   createdAt: number
+  parentAreaId: number
+  parentLineId: number
   _all: number
 }
 
@@ -78,6 +84,8 @@ export type CategoryMinAggregateInputType = {
   colorHex?: true
   order?: true
   createdAt?: true
+  parentAreaId?: true
+  parentLineId?: true
 }
 
 export type CategoryMaxAggregateInputType = {
@@ -87,6 +95,8 @@ export type CategoryMaxAggregateInputType = {
   colorHex?: true
   order?: true
   createdAt?: true
+  parentAreaId?: true
+  parentLineId?: true
 }
 
 export type CategoryCountAggregateInputType = {
@@ -96,6 +106,8 @@ export type CategoryCountAggregateInputType = {
   colorHex?: true
   order?: true
   createdAt?: true
+  parentAreaId?: true
+  parentLineId?: true
   _all?: true
 }
 
@@ -192,6 +204,8 @@ export type CategoryGroupByOutputType = {
   colorHex: string | null
   order: number
   createdAt: Date
+  parentAreaId: string | null
+  parentLineId: string | null
   _count: CategoryCountAggregateOutputType | null
   _avg: CategoryAvgAggregateOutputType | null
   _sum: CategorySumAggregateOutputType | null
@@ -224,6 +238,12 @@ export type CategoryWhereInput = {
   colorHex?: Prisma.StringNullableFilter<"Category"> | string | null
   order?: Prisma.IntFilter<"Category"> | number
   createdAt?: Prisma.DateTimeFilter<"Category"> | Date | string
+  parentAreaId?: Prisma.StringNullableFilter<"Category"> | string | null
+  parentLineId?: Prisma.StringNullableFilter<"Category"> | string | null
+  parentArea?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  childrenByArea?: Prisma.CategoryListRelationFilter
+  parentLine?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  childrenByLine?: Prisma.CategoryListRelationFilter
   usersByArea?: Prisma.UserListRelationFilter
   issuesByArea?: Prisma.QualityIssueListRelationFilter
   issuesByTeam?: Prisma.QualityIssueListRelationFilter
@@ -237,6 +257,12 @@ export type CategoryOrderByWithRelationInput = {
   colorHex?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  parentAreaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentLineId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentArea?: Prisma.CategoryOrderByWithRelationInput
+  childrenByArea?: Prisma.CategoryOrderByRelationAggregateInput
+  parentLine?: Prisma.CategoryOrderByWithRelationInput
+  childrenByLine?: Prisma.CategoryOrderByRelationAggregateInput
   usersByArea?: Prisma.UserOrderByRelationAggregateInput
   issuesByArea?: Prisma.QualityIssueOrderByRelationAggregateInput
   issuesByTeam?: Prisma.QualityIssueOrderByRelationAggregateInput
@@ -254,6 +280,12 @@ export type CategoryWhereUniqueInput = Prisma.AtLeast<{
   colorHex?: Prisma.StringNullableFilter<"Category"> | string | null
   order?: Prisma.IntFilter<"Category"> | number
   createdAt?: Prisma.DateTimeFilter<"Category"> | Date | string
+  parentAreaId?: Prisma.StringNullableFilter<"Category"> | string | null
+  parentLineId?: Prisma.StringNullableFilter<"Category"> | string | null
+  parentArea?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  childrenByArea?: Prisma.CategoryListRelationFilter
+  parentLine?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  childrenByLine?: Prisma.CategoryListRelationFilter
   usersByArea?: Prisma.UserListRelationFilter
   issuesByArea?: Prisma.QualityIssueListRelationFilter
   issuesByTeam?: Prisma.QualityIssueListRelationFilter
@@ -267,6 +299,8 @@ export type CategoryOrderByWithAggregationInput = {
   colorHex?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  parentAreaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentLineId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CategoryCountOrderByAggregateInput
   _avg?: Prisma.CategoryAvgOrderByAggregateInput
   _max?: Prisma.CategoryMaxOrderByAggregateInput
@@ -284,6 +318,8 @@ export type CategoryScalarWhereWithAggregatesInput = {
   colorHex?: Prisma.StringNullableWithAggregatesFilter<"Category"> | string | null
   order?: Prisma.IntWithAggregatesFilter<"Category"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Category"> | Date | string
+  parentAreaId?: Prisma.StringNullableWithAggregatesFilter<"Category"> | string | null
+  parentLineId?: Prisma.StringNullableWithAggregatesFilter<"Category"> | string | null
 }
 
 export type CategoryCreateInput = {
@@ -293,6 +329,10 @@ export type CategoryCreateInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
@@ -306,6 +346,10 @@ export type CategoryUncheckedCreateInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
@@ -319,6 +363,10 @@ export type CategoryUpdateInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
@@ -332,6 +380,10 @@ export type CategoryUncheckedUpdateInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
@@ -345,6 +397,8 @@ export type CategoryCreateManyInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
 }
 
 export type CategoryUpdateManyMutationInput = {
@@ -363,6 +417,23 @@ export type CategoryUncheckedUpdateManyInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CategoryNullableScalarRelationFilter = {
+  is?: Prisma.CategoryWhereInput | null
+  isNot?: Prisma.CategoryWhereInput | null
+}
+
+export type CategoryListRelationFilter = {
+  every?: Prisma.CategoryWhereInput
+  some?: Prisma.CategoryWhereInput
+  none?: Prisma.CategoryWhereInput
+}
+
+export type CategoryOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type CategoryTypeNameCompoundUniqueInput = {
@@ -377,6 +448,8 @@ export type CategoryCountOrderByAggregateInput = {
   colorHex?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  parentAreaId?: Prisma.SortOrder
+  parentLineId?: Prisma.SortOrder
 }
 
 export type CategoryAvgOrderByAggregateInput = {
@@ -390,6 +463,8 @@ export type CategoryMaxOrderByAggregateInput = {
   colorHex?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  parentAreaId?: Prisma.SortOrder
+  parentLineId?: Prisma.SortOrder
 }
 
 export type CategoryMinOrderByAggregateInput = {
@@ -399,15 +474,52 @@ export type CategoryMinOrderByAggregateInput = {
   colorHex?: Prisma.SortOrder
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  parentAreaId?: Prisma.SortOrder
+  parentLineId?: Prisma.SortOrder
 }
 
 export type CategorySumOrderByAggregateInput = {
   order?: Prisma.SortOrder
 }
 
-export type CategoryNullableScalarRelationFilter = {
-  is?: Prisma.CategoryWhereInput | null
-  isNot?: Prisma.CategoryWhereInput | null
+export type CategoryCreateNestedOneWithoutChildrenByAreaInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedCreateWithoutChildrenByAreaInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutChildrenByAreaInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryCreateNestedManyWithoutParentAreaInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput> | Prisma.CategoryCreateWithoutParentAreaInput[] | Prisma.CategoryUncheckedCreateWithoutParentAreaInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentAreaInput | Prisma.CategoryCreateOrConnectWithoutParentAreaInput[]
+  createMany?: Prisma.CategoryCreateManyParentAreaInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryCreateNestedOneWithoutChildrenByLineInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByLineInput, Prisma.CategoryUncheckedCreateWithoutChildrenByLineInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutChildrenByLineInput
+  connect?: Prisma.CategoryWhereUniqueInput
+}
+
+export type CategoryCreateNestedManyWithoutParentLineInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput> | Prisma.CategoryCreateWithoutParentLineInput[] | Prisma.CategoryUncheckedCreateWithoutParentLineInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentLineInput | Prisma.CategoryCreateOrConnectWithoutParentLineInput[]
+  createMany?: Prisma.CategoryCreateManyParentLineInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUncheckedCreateNestedManyWithoutParentAreaInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput> | Prisma.CategoryCreateWithoutParentAreaInput[] | Prisma.CategoryUncheckedCreateWithoutParentAreaInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentAreaInput | Prisma.CategoryCreateOrConnectWithoutParentAreaInput[]
+  createMany?: Prisma.CategoryCreateManyParentAreaInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+}
+
+export type CategoryUncheckedCreateNestedManyWithoutParentLineInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput> | Prisma.CategoryCreateWithoutParentLineInput[] | Prisma.CategoryUncheckedCreateWithoutParentLineInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentLineInput | Prisma.CategoryCreateOrConnectWithoutParentLineInput[]
+  createMany?: Prisma.CategoryCreateManyParentLineInputEnvelope
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -432,6 +544,82 @@ export type IntFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type CategoryUpdateOneWithoutChildrenByAreaNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedCreateWithoutChildrenByAreaInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutChildrenByAreaInput
+  upsert?: Prisma.CategoryUpsertWithoutChildrenByAreaInput
+  disconnect?: Prisma.CategoryWhereInput | boolean
+  delete?: Prisma.CategoryWhereInput | boolean
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutChildrenByAreaInput, Prisma.CategoryUpdateWithoutChildrenByAreaInput>, Prisma.CategoryUncheckedUpdateWithoutChildrenByAreaInput>
+}
+
+export type CategoryUpdateManyWithoutParentAreaNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput> | Prisma.CategoryCreateWithoutParentAreaInput[] | Prisma.CategoryUncheckedCreateWithoutParentAreaInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentAreaInput | Prisma.CategoryCreateOrConnectWithoutParentAreaInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutParentAreaInput | Prisma.CategoryUpsertWithWhereUniqueWithoutParentAreaInput[]
+  createMany?: Prisma.CategoryCreateManyParentAreaInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutParentAreaInput | Prisma.CategoryUpdateWithWhereUniqueWithoutParentAreaInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutParentAreaInput | Prisma.CategoryUpdateManyWithWhereWithoutParentAreaInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUpdateOneWithoutChildrenByLineNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByLineInput, Prisma.CategoryUncheckedCreateWithoutChildrenByLineInput>
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutChildrenByLineInput
+  upsert?: Prisma.CategoryUpsertWithoutChildrenByLineInput
+  disconnect?: Prisma.CategoryWhereInput | boolean
+  delete?: Prisma.CategoryWhereInput | boolean
+  connect?: Prisma.CategoryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutChildrenByLineInput, Prisma.CategoryUpdateWithoutChildrenByLineInput>, Prisma.CategoryUncheckedUpdateWithoutChildrenByLineInput>
+}
+
+export type CategoryUpdateManyWithoutParentLineNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput> | Prisma.CategoryCreateWithoutParentLineInput[] | Prisma.CategoryUncheckedCreateWithoutParentLineInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentLineInput | Prisma.CategoryCreateOrConnectWithoutParentLineInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutParentLineInput | Prisma.CategoryUpsertWithWhereUniqueWithoutParentLineInput[]
+  createMany?: Prisma.CategoryCreateManyParentLineInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutParentLineInput | Prisma.CategoryUpdateWithWhereUniqueWithoutParentLineInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutParentLineInput | Prisma.CategoryUpdateManyWithWhereWithoutParentLineInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUncheckedUpdateManyWithoutParentAreaNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput> | Prisma.CategoryCreateWithoutParentAreaInput[] | Prisma.CategoryUncheckedCreateWithoutParentAreaInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentAreaInput | Prisma.CategoryCreateOrConnectWithoutParentAreaInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutParentAreaInput | Prisma.CategoryUpsertWithWhereUniqueWithoutParentAreaInput[]
+  createMany?: Prisma.CategoryCreateManyParentAreaInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutParentAreaInput | Prisma.CategoryUpdateWithWhereUniqueWithoutParentAreaInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutParentAreaInput | Prisma.CategoryUpdateManyWithWhereWithoutParentAreaInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+}
+
+export type CategoryUncheckedUpdateManyWithoutParentLineNestedInput = {
+  create?: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput> | Prisma.CategoryCreateWithoutParentLineInput[] | Prisma.CategoryUncheckedCreateWithoutParentLineInput[]
+  connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutParentLineInput | Prisma.CategoryCreateOrConnectWithoutParentLineInput[]
+  upsert?: Prisma.CategoryUpsertWithWhereUniqueWithoutParentLineInput | Prisma.CategoryUpsertWithWhereUniqueWithoutParentLineInput[]
+  createMany?: Prisma.CategoryCreateManyParentLineInputEnvelope
+  set?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  disconnect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  delete?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  connect?: Prisma.CategoryWhereUniqueInput | Prisma.CategoryWhereUniqueInput[]
+  update?: Prisma.CategoryUpdateWithWhereUniqueWithoutParentLineInput | Prisma.CategoryUpdateWithWhereUniqueWithoutParentLineInput[]
+  updateMany?: Prisma.CategoryUpdateManyWithWhereWithoutParentLineInput | Prisma.CategoryUpdateManyWithWhereWithoutParentLineInput[]
+  deleteMany?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
 }
 
 export type CategoryCreateNestedOneWithoutUsersByAreaInput = {
@@ -498,6 +686,294 @@ export type CategoryUpdateOneWithoutIssuesByProductionLineNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutIssuesByProductionLineInput, Prisma.CategoryUpdateWithoutIssuesByProductionLineInput>, Prisma.CategoryUncheckedUpdateWithoutIssuesByProductionLineInput>
 }
 
+export type CategoryCreateWithoutChildrenByAreaInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryUncheckedCreateWithoutChildrenByAreaInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryCreateOrConnectWithoutChildrenByAreaInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedCreateWithoutChildrenByAreaInput>
+}
+
+export type CategoryCreateWithoutParentAreaInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryUncheckedCreateWithoutParentAreaInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryCreateOrConnectWithoutParentAreaInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput>
+}
+
+export type CategoryCreateManyParentAreaInputEnvelope = {
+  data: Prisma.CategoryCreateManyParentAreaInput | Prisma.CategoryCreateManyParentAreaInput[]
+}
+
+export type CategoryCreateWithoutChildrenByLineInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryUncheckedCreateWithoutChildrenByLineInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryCreateOrConnectWithoutChildrenByLineInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByLineInput, Prisma.CategoryUncheckedCreateWithoutChildrenByLineInput>
+}
+
+export type CategoryCreateWithoutParentLineInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryUncheckedCreateWithoutParentLineInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentAreaId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
+  usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
+  issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
+}
+
+export type CategoryCreateOrConnectWithoutParentLineInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput>
+}
+
+export type CategoryCreateManyParentLineInputEnvelope = {
+  data: Prisma.CategoryCreateManyParentLineInput | Prisma.CategoryCreateManyParentLineInput[]
+}
+
+export type CategoryUpsertWithoutChildrenByAreaInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedUpdateWithoutChildrenByAreaInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedCreateWithoutChildrenByAreaInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutChildrenByAreaInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutChildrenByAreaInput, Prisma.CategoryUncheckedUpdateWithoutChildrenByAreaInput>
+}
+
+export type CategoryUpdateWithoutChildrenByAreaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutChildrenByAreaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUpsertWithWhereUniqueWithoutParentAreaInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutParentAreaInput, Prisma.CategoryUncheckedUpdateWithoutParentAreaInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutParentAreaInput, Prisma.CategoryUncheckedCreateWithoutParentAreaInput>
+}
+
+export type CategoryUpdateWithWhereUniqueWithoutParentAreaInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutParentAreaInput, Prisma.CategoryUncheckedUpdateWithoutParentAreaInput>
+}
+
+export type CategoryUpdateManyWithWhereWithoutParentAreaInput = {
+  where: Prisma.CategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutParentAreaInput>
+}
+
+export type CategoryScalarWhereInput = {
+  AND?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+  OR?: Prisma.CategoryScalarWhereInput[]
+  NOT?: Prisma.CategoryScalarWhereInput | Prisma.CategoryScalarWhereInput[]
+  id?: Prisma.StringFilter<"Category"> | string
+  type?: Prisma.EnumCategoryTypeFilter<"Category"> | $Enums.CategoryType
+  name?: Prisma.StringFilter<"Category"> | string
+  colorHex?: Prisma.StringNullableFilter<"Category"> | string | null
+  order?: Prisma.IntFilter<"Category"> | number
+  createdAt?: Prisma.DateTimeFilter<"Category"> | Date | string
+  parentAreaId?: Prisma.StringNullableFilter<"Category"> | string | null
+  parentLineId?: Prisma.StringNullableFilter<"Category"> | string | null
+}
+
+export type CategoryUpsertWithoutChildrenByLineInput = {
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutChildrenByLineInput, Prisma.CategoryUncheckedUpdateWithoutChildrenByLineInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutChildrenByLineInput, Prisma.CategoryUncheckedCreateWithoutChildrenByLineInput>
+  where?: Prisma.CategoryWhereInput
+}
+
+export type CategoryUpdateToOneWithWhereWithoutChildrenByLineInput = {
+  where?: Prisma.CategoryWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutChildrenByLineInput, Prisma.CategoryUncheckedUpdateWithoutChildrenByLineInput>
+}
+
+export type CategoryUpdateWithoutChildrenByLineInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutChildrenByLineInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUpsertWithWhereUniqueWithoutParentLineInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CategoryUpdateWithoutParentLineInput, Prisma.CategoryUncheckedUpdateWithoutParentLineInput>
+  create: Prisma.XOR<Prisma.CategoryCreateWithoutParentLineInput, Prisma.CategoryUncheckedCreateWithoutParentLineInput>
+}
+
+export type CategoryUpdateWithWhereUniqueWithoutParentLineInput = {
+  where: Prisma.CategoryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CategoryUpdateWithoutParentLineInput, Prisma.CategoryUncheckedUpdateWithoutParentLineInput>
+}
+
+export type CategoryUpdateManyWithWhereWithoutParentLineInput = {
+  where: Prisma.CategoryScalarWhereInput
+  data: Prisma.XOR<Prisma.CategoryUpdateManyMutationInput, Prisma.CategoryUncheckedUpdateManyWithoutParentLineInput>
+}
+
 export type CategoryCreateWithoutUsersByAreaInput = {
   id?: string
   type: $Enums.CategoryType
@@ -505,6 +981,10 @@ export type CategoryCreateWithoutUsersByAreaInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
   issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
   issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
@@ -517,6 +997,10 @@ export type CategoryUncheckedCreateWithoutUsersByAreaInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
   issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
@@ -545,6 +1029,10 @@ export type CategoryUpdateWithoutUsersByAreaInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
   issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
@@ -557,6 +1045,10 @@ export type CategoryUncheckedUpdateWithoutUsersByAreaInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
   issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
@@ -569,6 +1061,10 @@ export type CategoryCreateWithoutIssuesByAreaInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
   issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
@@ -581,6 +1077,10 @@ export type CategoryUncheckedCreateWithoutIssuesByAreaInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
@@ -598,6 +1098,10 @@ export type CategoryCreateWithoutIssuesByTeamInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
   issuesByProductionLine?: Prisma.QualityIssueCreateNestedManyWithoutProductionLineInput
@@ -610,6 +1114,10 @@ export type CategoryUncheckedCreateWithoutIssuesByTeamInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutProductionLineInput
@@ -627,6 +1135,10 @@ export type CategoryCreateWithoutIssuesByProductionLineInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentArea?: Prisma.CategoryCreateNestedOneWithoutChildrenByAreaInput
+  childrenByArea?: Prisma.CategoryCreateNestedManyWithoutParentAreaInput
+  parentLine?: Prisma.CategoryCreateNestedOneWithoutChildrenByLineInput
+  childrenByLine?: Prisma.CategoryCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueCreateNestedManyWithoutTeamInput
@@ -639,6 +1151,10 @@ export type CategoryUncheckedCreateWithoutIssuesByProductionLineInput = {
   colorHex?: string | null
   order?: number
   createdAt?: Date | string
+  parentAreaId?: string | null
+  parentLineId?: string | null
+  childrenByArea?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentAreaInput
+  childrenByLine?: Prisma.CategoryUncheckedCreateNestedManyWithoutParentLineInput
   usersByArea?: Prisma.UserUncheckedCreateNestedManyWithoutAreaInput
   issuesByArea?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutAreaInput
   issuesByTeam?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutTeamInput
@@ -667,6 +1183,10 @@ export type CategoryUpdateWithoutIssuesByAreaInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
@@ -679,6 +1199,10 @@ export type CategoryUncheckedUpdateWithoutIssuesByAreaInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
@@ -702,6 +1226,10 @@ export type CategoryUpdateWithoutIssuesByTeamInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
@@ -714,6 +1242,10 @@ export type CategoryUncheckedUpdateWithoutIssuesByTeamInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
   issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
@@ -737,6 +1269,10 @@ export type CategoryUpdateWithoutIssuesByProductionLineInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
@@ -749,9 +1285,117 @@ export type CategoryUncheckedUpdateWithoutIssuesByProductionLineInput = {
   colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
   usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
   issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
   issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
+}
+
+export type CategoryCreateManyParentAreaInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentLineId?: string | null
+}
+
+export type CategoryCreateManyParentLineInput = {
+  id?: string
+  type: $Enums.CategoryType
+  name: string
+  colorHex?: string | null
+  order?: number
+  createdAt?: Date | string
+  parentAreaId?: string | null
+}
+
+export type CategoryUpdateWithoutParentAreaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  parentLine?: Prisma.CategoryUpdateOneWithoutChildrenByLineNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutParentAreaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateManyWithoutParentAreaInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type CategoryUpdateWithoutParentLineInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentArea?: Prisma.CategoryUpdateOneWithoutChildrenByAreaNestedInput
+  childrenByArea?: Prisma.CategoryUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateWithoutParentLineInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  childrenByArea?: Prisma.CategoryUncheckedUpdateManyWithoutParentAreaNestedInput
+  childrenByLine?: Prisma.CategoryUncheckedUpdateManyWithoutParentLineNestedInput
+  usersByArea?: Prisma.UserUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByArea?: Prisma.QualityIssueUncheckedUpdateManyWithoutAreaNestedInput
+  issuesByTeam?: Prisma.QualityIssueUncheckedUpdateManyWithoutTeamNestedInput
+  issuesByProductionLine?: Prisma.QualityIssueUncheckedUpdateManyWithoutProductionLineNestedInput
+}
+
+export type CategoryUncheckedUpdateManyWithoutParentLineInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumCategoryTypeFieldUpdateOperationsInput | $Enums.CategoryType
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  colorHex?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentAreaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -760,6 +1404,8 @@ export type CategoryUncheckedUpdateWithoutIssuesByProductionLineInput = {
  */
 
 export type CategoryCountOutputType = {
+  childrenByArea: number
+  childrenByLine: number
   usersByArea: number
   issuesByArea: number
   issuesByTeam: number
@@ -767,6 +1413,8 @@ export type CategoryCountOutputType = {
 }
 
 export type CategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  childrenByArea?: boolean | CategoryCountOutputTypeCountChildrenByAreaArgs
+  childrenByLine?: boolean | CategoryCountOutputTypeCountChildrenByLineArgs
   usersByArea?: boolean | CategoryCountOutputTypeCountUsersByAreaArgs
   issuesByArea?: boolean | CategoryCountOutputTypeCountIssuesByAreaArgs
   issuesByTeam?: boolean | CategoryCountOutputTypeCountIssuesByTeamArgs
@@ -781,6 +1429,20 @@ export type CategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the CategoryCountOutputType
    */
   select?: Prisma.CategoryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountChildrenByAreaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * CategoryCountOutputType without action
+ */
+export type CategoryCountOutputTypeCountChildrenByLineArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CategoryWhereInput
 }
 
 /**
@@ -819,6 +1481,12 @@ export type CategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   colorHex?: boolean
   order?: boolean
   createdAt?: boolean
+  parentAreaId?: boolean
+  parentLineId?: boolean
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  childrenByArea?: boolean | Prisma.Category$childrenByAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
+  childrenByLine?: boolean | Prisma.Category$childrenByLineArgs<ExtArgs>
   usersByArea?: boolean | Prisma.Category$usersByAreaArgs<ExtArgs>
   issuesByArea?: boolean | Prisma.Category$issuesByAreaArgs<ExtArgs>
   issuesByTeam?: boolean | Prisma.Category$issuesByTeamArgs<ExtArgs>
@@ -833,6 +1501,10 @@ export type CategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   colorHex?: boolean
   order?: boolean
   createdAt?: boolean
+  parentAreaId?: boolean
+  parentLineId?: boolean
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
 export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -842,6 +1514,10 @@ export type CategorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   colorHex?: boolean
   order?: boolean
   createdAt?: boolean
+  parentAreaId?: boolean
+  parentLineId?: boolean
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
 }, ExtArgs["result"]["category"]>
 
 export type CategorySelectScalar = {
@@ -851,22 +1527,38 @@ export type CategorySelectScalar = {
   colorHex?: boolean
   order?: boolean
   createdAt?: boolean
+  parentAreaId?: boolean
+  parentLineId?: boolean
 }
 
-export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "colorHex" | "order" | "createdAt", ExtArgs["result"]["category"]>
+export type CategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "name" | "colorHex" | "order" | "createdAt" | "parentAreaId" | "parentLineId", ExtArgs["result"]["category"]>
 export type CategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  childrenByArea?: boolean | Prisma.Category$childrenByAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
+  childrenByLine?: boolean | Prisma.Category$childrenByLineArgs<ExtArgs>
   usersByArea?: boolean | Prisma.Category$usersByAreaArgs<ExtArgs>
   issuesByArea?: boolean | Prisma.Category$issuesByAreaArgs<ExtArgs>
   issuesByTeam?: boolean | Prisma.Category$issuesByTeamArgs<ExtArgs>
   issuesByProductionLine?: boolean | Prisma.Category$issuesByProductionLineArgs<ExtArgs>
   _count?: boolean | Prisma.CategoryCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type CategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
+}
+export type CategoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  parentArea?: boolean | Prisma.Category$parentAreaArgs<ExtArgs>
+  parentLine?: boolean | Prisma.Category$parentLineArgs<ExtArgs>
+}
 
 export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Category"
   objects: {
+    parentArea: Prisma.$CategoryPayload<ExtArgs> | null
+    childrenByArea: Prisma.$CategoryPayload<ExtArgs>[]
+    parentLine: Prisma.$CategoryPayload<ExtArgs> | null
+    childrenByLine: Prisma.$CategoryPayload<ExtArgs>[]
     usersByArea: Prisma.$UserPayload<ExtArgs>[]
     issuesByArea: Prisma.$QualityIssuePayload<ExtArgs>[]
     issuesByTeam: Prisma.$QualityIssuePayload<ExtArgs>[]
@@ -879,6 +1571,8 @@ export type $CategoryPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     colorHex: string | null
     order: number
     createdAt: Date
+    parentAreaId: string | null
+    parentLineId: string | null
   }, ExtArgs["result"]["category"]>
   composites: {}
 }
@@ -1273,6 +1967,10 @@ readonly fields: CategoryFieldRefs;
  */
 export interface Prisma__CategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  parentArea<T extends Prisma.Category$parentAreaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$parentAreaArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  childrenByArea<T extends Prisma.Category$childrenByAreaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$childrenByAreaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  parentLine<T extends Prisma.Category$parentLineArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$parentLineArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  childrenByLine<T extends Prisma.Category$childrenByLineArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$childrenByLineArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   usersByArea<T extends Prisma.Category$usersByAreaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$usersByAreaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   issuesByArea<T extends Prisma.Category$issuesByAreaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$issuesByAreaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityIssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   issuesByTeam<T extends Prisma.Category$issuesByTeamArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Category$issuesByTeamArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityIssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1312,6 +2010,8 @@ export interface CategoryFieldRefs {
   readonly colorHex: Prisma.FieldRef<"Category", 'String'>
   readonly order: Prisma.FieldRef<"Category", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Category", 'DateTime'>
+  readonly parentAreaId: Prisma.FieldRef<"Category", 'String'>
+  readonly parentLineId: Prisma.FieldRef<"Category", 'String'>
 }
     
 
@@ -1564,6 +2264,10 @@ export type CategoryCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many Categories.
    */
   data: Prisma.CategoryCreateManyInput | Prisma.CategoryCreateManyInput[]
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1634,6 +2338,10 @@ export type CategoryUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many Categories to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1700,6 +2408,92 @@ export type CategoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Categories to delete.
    */
   limit?: number
+}
+
+/**
+ * Category.parentArea
+ */
+export type Category$parentAreaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * Category.childrenByArea
+ */
+export type Category$childrenByAreaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+  orderBy?: Prisma.CategoryOrderByWithRelationInput | Prisma.CategoryOrderByWithRelationInput[]
+  cursor?: Prisma.CategoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CategoryScalarFieldEnum | Prisma.CategoryScalarFieldEnum[]
+}
+
+/**
+ * Category.parentLine
+ */
+export type Category$parentLineArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * Category.childrenByLine
+ */
+export type Category$childrenByLineArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Category
+   */
+  select?: Prisma.CategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Category
+   */
+  omit?: Prisma.CategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CategoryInclude<ExtArgs> | null
+  where?: Prisma.CategoryWhereInput
+  orderBy?: Prisma.CategoryOrderByWithRelationInput | Prisma.CategoryOrderByWithRelationInput[]
+  cursor?: Prisma.CategoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CategoryScalarFieldEnum | Prisma.CategoryScalarFieldEnum[]
 }
 
 /**

@@ -14,7 +14,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     return NextResponse.json({ error: "Không tìm thấy danh mục" }, { status: 404 });
   }
 
-  const { name, colorHex, order } = body;
+  const { name, colorHex, order, parentAreaId, parentLineId } = body;
 
   if (name && name !== current.name) {
     const existing = await prisma.category.findUnique({
@@ -25,13 +25,44 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     }
   }
 
+  let nextParentAreaId: string | null = current.parentAreaId;
+  let nextParentLineId: string | null = current.parentLineId;
+
+  if (current.type === "TEAM" || current.type === "PRODUCTION_LINE") {
+    nextParentAreaId = parentAreaId !== undefined ? parentAreaId : current.parentAreaId;
+    if (!nextParentAreaId) {
+      return NextResponse.json({ error: "Vui lòng chọn Khu vực/Xưởng" }, { status: 400 });
+    }
+    const area = await prisma.category.findUnique({ where: { id: nextParentAreaId } });
+    if (!area || area.type !== "AREA") {
+      return NextResponse.json({ error: "Khu vực/Xưởng không hợp lệ" }, { status: 400 });
+    }
+  }
+
+  if (current.type === "TEAM") {
+    nextParentLineId = parentLineId !== undefined ? parentLineId : current.parentLineId;
+    if (!nextParentLineId) {
+      return NextResponse.json({ error: "Vui lòng chọn Chuyền" }, { status: 400 });
+    }
+    const line = await prisma.category.findUnique({ where: { id: nextParentLineId } });
+    if (!line || line.type !== "PRODUCTION_LINE") {
+      return NextResponse.json({ error: "Chuyền không hợp lệ" }, { status: 400 });
+    }
+    if (line.parentAreaId !== nextParentAreaId) {
+      return NextResponse.json({ error: "Chuyền đã chọn không thuộc Khu vực/Xưởng đã chọn" }, { status: 400 });
+    }
+  }
+
   const category = await prisma.category.update({
     where: { id },
     data: {
       name,
       colorHex: colorHex ?? undefined,
       order,
+      parentAreaId: current.type === "AREA" ? undefined : nextParentAreaId,
+      parentLineId: current.type === "TEAM" ? nextParentLineId : undefined,
     },
+    include: { parentArea: true, parentLine: true },
   });
 
   return NextResponse.json(category);

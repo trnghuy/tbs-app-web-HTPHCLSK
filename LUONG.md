@@ -33,13 +33,31 @@ Dữ liệu nền có sẵn (Admin đã tạo trước, seed sẵn):
 
 ## Luồng xử lý 1 vấn đề — từng bước, ai làm gì, đăng nhập tài khoản nào
 
+### Trang chủ — 2 ô đầu màn hình
+Nửa trên Trang chủ chia 2 ô: **trái = "⚠️ Báo cáo vấn đề"**, **phải = "🔍 Tra cứu lỗi SP"**.
+- **Tra cứu lỗi SP**: bấm vào → nhập mã PO/SP (gõ 1 phần cũng được, tìm gần đúng) → hiện danh
+  sách các vấn đề đã báo cáo trước đó cho mã đó (mô tả, trạng thái, mức độ, nguyên nhân gốc, giải
+  pháp nếu đã có) — giúp người dùng biết và ngăn ngừa lỗi lặp lại trước khi báo cáo mới. Tra cứu
+  không giới hạn khu vực/vai trò (ai cũng tra được, không chỉ phiếu của mình).
+
 ### Bước 1 — Báo cáo vấn đề (bất kỳ ai)
-- Đăng nhập mobile bằng **bất kỳ tài khoản nào** (kể cả `NV001`), vào tab **Trang chủ**.
-- Bấm nút **"Báo cáo vấn đề"** → điền Tổ, Chuyền, Danh mục lỗi, Mã PO (gõ tự do, vd `PO-001`),
-  Mô tả, ảnh (tuỳ chọn) → **Gửi báo cáo**.
-- Hệ thống tạo phiếu, gán khu vực theo đúng khu vực của người báo cáo, trạng thái **"Vừa báo
-  cáo"**, đặt hạn điều tra 15 phút, và gửi thông báo cho 3 vai trò cùng khu vực: QA, Trưởng line,
-  Công nghệ.
+- Đăng nhập mobile bằng **bất kỳ tài khoản nào** (kể cả `NV001`), vào tab **Trang chủ** → bấm
+  **"⚠️ Báo cáo vấn đề"**.
+- Điền theo thứ tự, **tất cả đều dạng combobox** (bấm mở danh sách, chọn 1 giá trị):
+  1. **Khu vực / Xưởng** — bắt buộc, mặc định gợi ý đúng khu vực của người đang đăng nhập nhưng
+     có thể đổi sang khu vực khác nếu phát hiện sự cố ở nơi khác. **Đây là khu vực dùng để định
+     tuyến thông báo** — chỉ QA/Trưởng line/Công nghệ/Trưởng phòng ban/Bảo trì **cùng khu vực đã
+     chọn** mới liên quan tới phiếu này (đã test cách ly: QA khu vực A không thấy phiếu khu vực B).
+  2. **Chuyền** — danh sách tự động lọc theo đúng Khu vực vừa chọn (đổi Khu vực thì nạp lại).
+  2b. **Tổ** — danh sách tự động lọc theo đúng Chuyền vừa chọn (đổi Chuyền thì nạp lại). Phân cấp
+     đúng thực tế: **Khu vực/Xưởng → Chuyền → Tổ** (Tổ nằm trong Chuyền, Chuyền nằm trong Xưởng).
+  3. **Danh mục lỗi** — có sẵn lựa chọn **"Khác"**; nếu chọn "Khác" bắt buộc phải mô tả thêm.
+  4. **Mức độ nghiêm trọng** — Thấp/Trung bình/Cao/Khẩn cấp, bắt buộc chọn.
+  - Cuối cùng: Mã PO (gõ tự do, vd `PO-001`), Mô tả, ảnh (tuỳ chọn) → **Gửi báo cáo**.
+- Hệ thống tạo phiếu theo đúng Khu vực đã chọn, trạng thái **"Vừa báo cáo"**, đặt hạn điều tra 15
+  phút, và gửi thông báo cho 3 vai trò cùng khu vực đó: QA, Trưởng line, Công nghệ (phiếu mức
+  "Khẩn cấp"/"Cao" có tiền tố 🚨/⚠️ trong tiêu đề thông báo).
+- Thẻ phiếu (Trang chủ, chi tiết) hiển thị badge màu theo mức độ nghiêm trọng bên cạnh trạng thái.
 
 ### Bước 2 — 3 vai trò điều tra 5M+1E (độc lập, mỗi người 1 form riêng, AI hỗ trợ hỏi xoáy 5 Whys)
 - Đăng nhập lần lượt bằng **`QA001`**, **`LL001`**, **`CN001`**. Phiếu sự cố sẽ xuất hiện ngay ở
@@ -52,12 +70,19 @@ Dữ liệu nền có sẵn (Admin đã tạo trước, seed sẵn):
   phòng ban.
 - Cần cả 3 tài khoản đăng nhập/nộp riêng lẻ để đủ dữ liệu cho bước tổng hợp nguyên nhân.
 
-### Bước 3 — Trưởng line tổng hợp nguyên nhân & giải pháp
+### Bước 3 — Trưởng line tổng hợp nguyên nhân & giải pháp (AI hỗ trợ + SOS)
 - Khi đủ 3/3 bản 5M+1E, hệ thống gửi thông báo riêng cho **Trưởng line**: thẻ thông báo hiện thêm
   phần **"🧩 Tổng hợp nguyên nhân & Giải pháp"**.
-- Đăng nhập **`LL001`**, vào lại phiếu đó → thấy cả 3 bản 5M+1E hiển thị cạnh nhau.
-- Điền **Nguyên nhân gốc** (bắt buộc) + **Giải pháp đề xuất** (tuỳ chọn) → **Chốt nguyên nhân &
-  Giải pháp**.
+- Đăng nhập **`LL001`**, vào lại phiếu đó → thấy cả 3 bản 5M+1E hiển thị cạnh nhau (mỗi bản có
+  khung nổi bật riêng "Nguyên nhân gốc" theo người điền).
+- Bấm **"🤖 AI tổng hợp 3 nguyên nhân & gợi ý giải pháp"** → AI đọc cả 3 bản, gộp thành 1 nguyên
+  nhân gốc thống nhất + đề xuất giải pháp, tự điền vào form (vẫn chỉnh sửa được).
+- **Nếu AI đánh giá sự cố vượt ngoài khả năng xử lý ở xưởng/line** (liên quan ngân sách lớn, cần
+  quyết định cấp quản lý cao hơn, hoặc không thuộc phạm vi 5M+1E) → hiện khung cảnh báo kèm nút
+  **"🆘 Gửi SOS cho Giám đốc"** — bấm vào gửi thông báo thẳng cho Giám đốc (`GD001`), không phụ
+  thuộc khu vực.
+- Điền/chỉnh **Nguyên nhân gốc** (bắt buộc) + **Giải pháp đề xuất** (tuỳ chọn) → **Chốt nguyên
+  nhân & Giải pháp**.
 - Trạng thái phiếu chuyển **"Đã có nguyên nhân"**, thông báo (kèm giải pháp) gửi cho Trưởng line +
   Trưởng phòng ban.
 
@@ -119,6 +144,16 @@ Dữ liệu nền có sẵn (Admin đã tạo trước, seed sẵn):
 
 Admin (`ADM001`, web http://localhost:3000) chỉ dùng để quản lý danh mục/nhân sự và xem
 Dashboard/Top 5 lỗi — không tham gia luồng xử lý.
+
+### Quản lý Khu vực / Chuyền / Tổ theo từng xưởng (Admin, web)
+Phân cấp đúng thực tế: **Khu vực/Xưởng → Chuyền → Tổ**.
+- **Danh mục → Chuyền** → "+ Thêm mục": bắt buộc chọn **Khu vực/Xưởng**.
+- **Danh mục → Tổ** → "+ Thêm mục": bắt buộc chọn **cả Khu vực/Xưởng lẫn Chuyền** (chọn Khu vực
+  trước để lọc ra đúng danh sách Chuyền thuộc khu vực đó, rồi mới chọn Chuyền). Đã test: thiếu
+  Chuyền bị chặn tạo, có đủ cả 2 thì tạo thành công và hiện đúng cả 2 cột trong bảng.
+- Mục đích: quản lý riêng theo từng xưởng khi có nhiều khu vực (VD: Xưởng A, Xưởng B — mỗi xưởng
+  có Chuyền/Tổ riêng, không lẫn lộn), và mobile lọc đúng Chuyền theo Khu vực, đúng Tổ theo Chuyền
+  ở form báo cáo.
 
 ## Test nhanh các mốc thời gian (tuỳ chọn, không bắt buộc)
 
