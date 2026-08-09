@@ -42,22 +42,41 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     prisma.qualityIssue.update({ where: { id: task.issueId }, data: { status: "IN_PROGRESS" } }),
   ]);
 
-  await sendPushToUsers(prisma, [task.issue.reporterId], {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: task.issueId,
+    userId: payload.userId,
+    action: "TASK_ACCEPTED",
+    oldStatus: "ASSIGNED",
+    newStatus: "IN_PROGRESS",
+    note: `KTV ${payload.name} nhận việc lúc ${now.toLocaleTimeString("vi-VN")}`,
+  });
+
+  // 2. Dispatch thông báo tới Người báo cáo và Trưởng line
+  const { createAndDispatchNotification, dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await createAndDispatchNotification(prisma, [task.issue.reporterId], {
     title: `Đã nhận việc — PO ${task.issue.poCode}`,
-    body: `${payload.name} đã nhận xử lý sự cố bạn báo lúc ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}.`,
+    message: `${payload.name} đã nhận xử lý sự cố bạn báo lúc ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}.`,
+    kind: "TASK_ACCEPTED",
+    issueId: task.issueId,
     data: { type: "TASK_ACCEPTED", issueId: task.issueId, taskId: id },
   });
-  await sendPushToUsersByRoleInArea(
+
+  await dispatchRoleNotificationsInArea(
     prisma,
     ["LINE_LEADER"],
     task.issue.areaId,
     {
       title: `Đã nhận việc — PO ${task.issue.poCode}`,
-      body: `${payload.name} đã nhận việc lúc ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}.`,
+      message: `${payload.name} đã nhận việc lúc ${now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}.`,
+      kind: "TASK_ACCEPTED",
+      issueId: task.issueId,
       data: { type: "TASK_ACCEPTED", issueId: task.issueId, taskId: id },
     },
-    payload.userId,
+    { excludeUserId: payload.userId },
   );
 
   return NextResponse.json(updatedTask);
 }
+

@@ -54,17 +54,34 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       prisma.qualityIssue.update({ where: { id: task.issueId }, data: { status: "DONE" } }),
     ]);
 
-    await sendPushToUsers(prisma, [task.issue.reporterId, task.assigneeId], {
+    // 1. Ghi log Audit Trail
+    const { logAuditEvent } = await import("@/lib/audit-logger");
+    await logAuditEvent(prisma, {
+      issueId: task.issueId,
+      userId: payload.userId,
+      action: "ISSUE_CLOSED",
+      oldStatus: "IN_PROGRESS",
+      newStatus: "DONE",
+      note: `Trưởng line ${payload.name} xác nhận đóng sự cố thành công sau thời gian theo dõi.`,
+    });
+
+    // 2. Dispatch thông báo tới Người báo cáo & KTV
+    const { createAndDispatchNotification, dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+    await createAndDispatchNotification(prisma, [task.issue.reporterId, task.assigneeId], {
       title: `Đã đóng vấn đề — PO ${task.issue.poCode}`,
-      body: `Trưởng line đã xác nhận đóng vấn đề sau thời gian theo dõi.`,
+      message: "Trưởng line đã xác nhận đóng vấn đề sau thời gian theo dõi.",
+      kind: "ISSUE_RESOLVED",
+      issueId: task.issueId,
       data: { type: "TASK_VERIFIED", issueId: task.issueId, taskId: id },
     });
 
     // Giám đốc — phạm vi toàn nhà máy, không giới hạn khu vực — nhận thông báo khi 1 sự cố
     // hoàn tất toàn bộ luồng xử lý.
-    await sendPushToUsersByRoleInArea(prisma, ["DIRECTOR"], null, {
+    await dispatchRoleNotificationsInArea(prisma, ["DIRECTOR"], null, {
       title: `Đã hoàn thành — PO ${task.issue.poCode}`,
-      body: `Sự cố đã được xử lý xong: ${task.issue.description}`,
+      message: `Sự cố đã được xử lý xong: ${task.issue.description}`,
+      kind: "ISSUE_RESOLVED",
+      issueId: task.issueId,
       data: { type: "ISSUE_RESOLVED", issueId: task.issueId },
     });
 
@@ -84,11 +101,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }),
   ]);
 
-  await sendPushToUsersByRoleInArea(prisma, ["QA", "LINE_LEADER", "TECHNOLOGY"], task.issue.areaId, {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: task.issueId,
+    userId: payload.userId,
+    action: "ISSUE_REOPENED",
+    oldStatus: "DONE",
+    newStatus: "INVESTIGATING",
+    note: `Trưởng line ${payload.name} yêu cầu kiểm tra lại do sự cố tái diễn trong lúc theo dõi. Mở lại điều tra 5M+1E.`,
+  });
+
+  // 2. Dispatch thông báo mở lại cho QA, Trưởng line, Công nghệ
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(prisma, ["QA", "LINE_LEADER", "TECHNOLOGY"], task.issue.areaId, {
     title: `Cần kiểm tra lại — PO ${task.issue.poCode}`,
-    body: "Trưởng line yêu cầu kiểm tra lại — cần điều tra lại 5M+1E.",
+    message: "Trưởng line yêu cầu kiểm tra lại — cần điều tra lại 5M+1E.",
+    kind: "NEED_INVESTIGATE",
+    issueId: task.issueId,
     data: { type: "REOPENED", issueId: task.issueId, taskId: id },
   });
 
   return NextResponse.json(updatedTask);
 }
+

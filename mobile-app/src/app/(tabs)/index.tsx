@@ -90,8 +90,15 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       load();
-    }, [load]),
+      const timer = setInterval(() => {
+        if (token) {
+          api.listMyIssues(token).then((data) => setIssues(data)).catch(() => {});
+        }
+      }, 4000);
+      return () => clearInterval(timer);
+    }, [load, token]),
   );
+
 
   async function onRefresh() {
     setRefreshing(true);
@@ -512,26 +519,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerAvatarText: { color: colors.primaryDark, fontWeight: "700", fontSize: 13 },
-  topRow: { flexDirection: "row", gap: 10, marginBottom: 4 },
+  topRow: { flexDirection: "row", gap: 12, marginBottom: 8 },
   topCardPrimary: {
     flex: 1,
     alignItems: "center",
     gap: 6,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.white,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
     borderRadius: radius.md,
     paddingVertical: 16,
+    shadowColor: colors.primary,
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 2,
   },
   topCardSecondary: {
     flex: 1,
     alignItems: "center",
     gap: 6,
-    backgroundColor: colors.accentSoft,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.border,
     borderRadius: radius.md,
     paddingVertical: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 1,
   },
   topCardIcon: { fontSize: 24 },
-  topCardTitle: { color: colors.white, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
-  topCardTitleDark: { color: colors.primaryDark, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
+  topCardTitle: { color: colors.primary, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
+  topCardTitleDark: { color: colors.text, fontSize: 13.5, fontWeight: "700", textAlign: "center" },
+
   lookupHint: { color: colors.textMuted, fontSize: 12.5, marginTop: -6, marginBottom: 10, lineHeight: 18 },
   lookupRow: { flexDirection: "row", gap: 8 },
   lookupBtn: {

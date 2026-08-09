@@ -75,16 +75,31 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     await prisma.qualityIssue.update({ where: { id }, data: { status: "INVESTIGATING" } });
   }
 
+  // Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: id,
+    userId: payload.userId,
+    action: "INVESTIGATION_SUBMITTED",
+    oldStatus: issue.status,
+    newStatus: issue.status === "REPORTED" ? "INVESTIGATING" : issue.status,
+    note: `${payload.name} (${payload.role}) nộp bản 5M+1E. Kết luận nguyên nhân: ${rootCause}`,
+  });
+
   // Đủ cả 3 bản 5M+1E (QA + Trưởng line + Công nghệ) — báo cho Trưởng line vào tổng hợp nguyên
   // nhân + giải pháp.
   const submissionCount = await prisma.fiveMOneESubmission.count({ where: { issueId: id } });
   if (submissionCount >= 3) {
-    await sendPushToUsersByRoleInArea(prisma, ["LINE_LEADER"], issue.areaId, {
+    const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+    await dispatchRoleNotificationsInArea(prisma, ["LINE_LEADER"], issue.areaId, {
       title: `Đủ 3 bản 5M+1E — PO ${issue.poCode}`,
-      body: "Vào tổng hợp nguyên nhân gốc và giải pháp.",
+      message: "Vào tổng hợp nguyên nhân gốc và giải pháp.",
+      kind: "NEED_ROOT_CAUSE",
+      issueId: id,
       data: { type: "NEED_ROOT_CAUSE", issueId: id },
     });
   }
 
   return NextResponse.json(submission, { status: 201 });
 }
+

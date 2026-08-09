@@ -48,9 +48,22 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       },
     });
 
-    await sendPushToUsers(prisma, [task.assigneeId], {
+    // 1. Ghi log Audit Trail
+    const { logAuditEvent } = await import("@/lib/audit-logger");
+    await logAuditEvent(prisma, {
+      issueId: task.issueId,
+      userId: payload.userId,
+      action: "REPAIR_CONFIRMED",
+      note: `Trưởng line ${payload.name} xác nhận sửa chữa CHƯA ĐẠT, yêu cầu KTV làm lại.`,
+    });
+
+    // 2. Dispatch thông báo tới Bảo trì
+    const { createAndDispatchNotification } = await import("@/lib/notifications-service");
+    await createAndDispatchNotification(prisma, [task.assigneeId], {
       title: `Cần làm lại — PO ${task.issue.poCode}`,
-      body: "Trưởng line xác nhận sửa chữa chưa đạt yêu cầu — vui lòng làm lại.",
+      message: "Trưởng line xác nhận sửa chữa chưa đạt yêu cầu — vui lòng làm lại.",
+      kind: "REPAIR_REJECTED",
+      issueId: task.issueId,
       data: { type: "REPAIR_REJECTED", issueId: task.issueId, taskId: id },
     });
 
@@ -66,11 +79,25 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     },
   });
 
-  await sendPushToUsersByRoleInArea(prisma, ["DEPARTMENT_HEAD"], task.issue.areaId, {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: task.issueId,
+    userId: payload.userId,
+    action: "REPAIR_CONFIRMED",
+    note: `Trưởng line ${payload.name} xác nhận sửa chữa ĐẠT YÊU CẦU, bắt đầu theo dõi 3-48h.`,
+  });
+
+  // 2. Dispatch thông báo tới Trưởng phòng ban
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(prisma, ["DEPARTMENT_HEAD"], task.issue.areaId, {
     title: `Đang theo dõi sau sửa chữa — PO ${task.issue.poCode}`,
-    body: "Trưởng line xác nhận sửa chữa đạt yêu cầu, đang trong giai đoạn theo dõi 3-48h.",
+    message: "Trưởng line xác nhận sửa chữa đạt yêu cầu, đang trong giai đoạn theo dõi 3-48h.",
+    kind: "MONITORING_STARTED",
+    issueId: task.issueId,
     data: { type: "MONITORING_STARTED", issueId: task.issueId, taskId: id },
   });
 
   return NextResponse.json(updatedTask);
 }
+

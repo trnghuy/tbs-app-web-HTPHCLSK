@@ -1,4 +1,33 @@
-const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3001";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const DEFAULT_API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
+const STORAGE_KEY_API_URL = "@tbs_server_url";
+
+let cachedApiUrl: string = DEFAULT_API_URL;
+
+// Khởi tạo URL máy chủ từ cache AsyncStorage
+AsyncStorage.getItem(STORAGE_KEY_API_URL).then((saved) => {
+  if (saved && saved.trim()) {
+    cachedApiUrl = saved.trim().replace(/\/+$/, "");
+  }
+}).catch(() => {});
+
+export async function getServerUrl(): Promise<string> {
+  try {
+    const saved = await AsyncStorage.getItem(STORAGE_KEY_API_URL);
+    if (saved && saved.trim()) {
+      cachedApiUrl = saved.trim().replace(/\/+$/, "");
+      return cachedApiUrl;
+    }
+  } catch {}
+  return cachedApiUrl || DEFAULT_API_URL;
+}
+
+export async function setServerUrl(newUrl: string): Promise<void> {
+  const cleanUrl = newUrl.trim().replace(/\/+$/, "");
+  cachedApiUrl = cleanUrl;
+  await AsyncStorage.setItem(STORAGE_KEY_API_URL, cleanUrl);
+}
 
 export type Role =
   | "ADMIN"
@@ -113,8 +142,31 @@ export type QualityIssue = {
   task: MaintenanceTask | null;
 };
 
+export type AuditLogItem = {
+  id: string;
+  issueId: string;
+  userId?: string | null;
+  user?: User | null;
+  action:
+    | "REPORTED"
+    | "INVESTIGATION_SUBMITTED"
+    | "ROOT_CAUSE_DECIDED"
+    | "SOS_SENT"
+    | "TASK_ASSIGNED"
+    | "TASK_ACCEPTED"
+    | "REPAIR_COMPLETED"
+    | "REPAIR_CONFIRMED"
+    | "ISSUE_CLOSED"
+    | "ISSUE_REOPENED";
+  oldStatus?: string | null;
+  newStatus?: string | null;
+  note?: string | null;
+  createdAt: string;
+};
+
 export type NotificationItem =
   | { kind: "NEED_INVESTIGATE"; id: string; createdAt: string; issue: QualityIssue }
+  | { kind: "FYI_REPORTED"; id: string; createdAt: string; issue: QualityIssue }
   | { kind: "NEED_ROOT_CAUSE"; id: string; createdAt: string; issue: QualityIssue }
   | { kind: "NEED_ASSIGN"; id: string; createdAt: string; issue: QualityIssue }
   | { kind: "TASK_ASSIGNED"; id: string; createdAt: string; task: MaintenanceTask & { issue: QualityIssue } }
@@ -137,8 +189,9 @@ async function request<T>(
   options: { method?: string; body?: unknown; token?: string | null } = {},
 ): Promise<T> {
   const { method = "GET", body, token } = options;
+  const baseUrl = await getServerUrl();
 
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(`${baseUrl}${path}`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -195,6 +248,9 @@ export const api = {
   listMyIssues: (token: string) => request<QualityIssue[]>("/api/mobile/issues", { token }),
 
   getIssue: (token: string, id: string) => request<QualityIssue>(`/api/mobile/issues/${id}`, { token }),
+
+  getAuditLogs: (token: string, id: string) =>
+    request<AuditLogItem[]>(`/api/mobile/issues/${id}/audit-logs`, { token }),
 
   searchIssuesByPoCode: (token: string, poCode: string) =>
     request<QualityIssue[]>(`/api/mobile/issues/search?poCode=${encodeURIComponent(poCode)}`, { token }),
@@ -308,6 +364,13 @@ export const api = {
   listNotifications: (token: string) =>
     request<NotificationItem[]>("/api/mobile/notifications", { token }),
 
+  markNotificationsAsRead: (token: string, data?: { notificationIds?: string[]; all?: boolean }) =>
+    request<{ success: boolean }>("/api/mobile/notifications/read", {
+      method: "POST",
+      token,
+      body: data || { all: true },
+    }),
+
   uploadImage: (token: string, base64: string, mimeType: string) =>
     request<{ url: string }>("/api/mobile/upload", {
       method: "POST",
@@ -324,7 +387,7 @@ export const api = {
 };
 
 export function resolveImageUrl(path: string) {
-  return path.startsWith("http") ? path : `${API_URL}${path}`;
+  return path.startsWith("http") ? path : `${cachedApiUrl || DEFAULT_API_URL}${path}`;
 }
 
-export { API_URL, ApiError };
+export { cachedApiUrl as API_URL, ApiError };

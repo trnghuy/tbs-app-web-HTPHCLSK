@@ -51,13 +51,33 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }),
   ]);
 
-  // Cả Trưởng line (người xác nhận) và Trưởng phòng ban (người giao việc) đều được báo khi bảo
-  // trì hoàn thành.
-  await sendPushToUsersByRoleInArea(prisma, ["LINE_LEADER", "DEPARTMENT_HEAD"], task.issue.areaId, {
-    title: `Đã hoàn thành sửa chữa — PO ${task.issue.poCode}`,
-    body: `${payload.name} đã hoàn thành. Trưởng line vào kiểm tra xem đã đạt yêu cầu chưa.`,
-    data: { type: "TASK_DONE", issueId: task.issueId, taskId: id },
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: task.issueId,
+    userId: payload.userId,
+    action: "REPAIR_COMPLETED",
+    oldStatus: "IN_PROGRESS",
+    newStatus: "DONE",
+    note: `KTV ${payload.name} hoàn thành sửa chữa: ${repairDetail}`,
   });
+
+  // 2. Dispatch thông báo tới Trưởng line và Trưởng phòng ban
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(
+    prisma,
+    ["LINE_LEADER", "DEPARTMENT_HEAD"],
+    task.issue.areaId,
+    {
+      title: `Đã hoàn thành sửa chữa — PO ${task.issue.poCode}`,
+      message: `${payload.name} đã hoàn thành. Trưởng line vào kiểm tra xem đã đạt yêu cầu chưa.`,
+      kind: "NEED_REPAIR_REVIEW",
+      issueId: task.issueId,
+      data: { type: "TASK_DONE", issueId: task.issueId, taskId: id },
+    },
+    { excludeUserId: payload.userId },
+  );
 
   return NextResponse.json(updatedTask);
 }
+

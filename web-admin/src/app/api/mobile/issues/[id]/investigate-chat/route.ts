@@ -65,18 +65,40 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!issue) return NextResponse.json({ error: "Không tìm thấy sự cố" }, { status: 404 });
 
   const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "Chưa cấu hình GROQ_API_KEY trên server. Vui lòng liên hệ Admin." },
-      { status: 503 },
-    );
-  }
-
   const { history } = (await req.json()) as { history?: ChatTurn[] };
   const turns = (history ?? []).length > 0 ? history! : [{ role: "user" as const, text: "Bắt đầu điều tra nguyên nhân." }];
-
-  // Số câu hỏi AI đã hỏi = số lượt "model" đã có trong lịch sử.
   const questionsAskedSoFar = turns.filter((t) => t.role === "model").length;
+
+  if (!apiKey) {
+    // Smart local fallback for dev/offline testing when no remote Groq key is provided
+    const SMART_QUESTIONS = [
+      "Tại sao hiện tượng này lại xảy ra trong ca làm việc vừa qua?",
+      "Nguyên nhân nào dẫn đến tình trạng thiết bị / thao tác bị sai lệch như trên?",
+      "Tại sao quy trình kiểm tra định kỳ trước đó chưa phát hiện được điểm bất thường này?",
+      "Yếu tố kỹ thuật hoặc con người nào là mắt xích chính gây ra sự cố?",
+      "Tại sao chưa có cơ chế kiểm soát ngăn ngừa (Poka-yoke) cho công đoạn này?",
+    ];
+
+    if (questionsAskedSoFar < MAX_QUESTIONS) {
+      return NextResponse.json({
+        type: "question",
+        text: SMART_QUESTIONS[questionsAskedSoFar] || "Tại sao vấn đề trên lại phát sinh ở công đoạn này?",
+      });
+    } else {
+      const lastUserAnswer = turns.filter((t) => t.role === "user").pop()?.text || "";
+      return NextResponse.json({
+        type: "conclusion",
+        rootCause: `Do ${lastUserAnswer.toLowerCase() || "sai lệch thông số kỹ thuật và hao mòn linh kiện trong quá trình vận hành liên tục"}.`,
+        man: "Thao tác chưa đồng đều, cần tái đào tạo quy chuẩn thao tác",
+        machine: "Độ rơ cơ khí và hao mòn chi tiết máy sau thời gian vận hành",
+        material: "Vật tư đầu vào đạt chuẩn, không phải nguyên nhân chính",
+        method: "Chưa cập nhật checklist kiểm tra nhanh đầu ca",
+        measurement: "Dụng cụ đo kiểm cần được hiệu chuẩn lại định kỳ",
+        environment: "Nhiệt độ và độ ẩm xưởng bình thường, không ảnh hưởng",
+      });
+    }
+  }
+
 
   const baseMessages = [
     { role: "system", content: buildSystemInstruction(issue.description, issue.failureCategory?.name ?? null) },

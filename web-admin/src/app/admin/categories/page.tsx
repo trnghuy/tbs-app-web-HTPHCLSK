@@ -80,24 +80,30 @@ function CategoriesPageInner() {
   const extraCols = EXTRA_COLS[type] || 0;
 
   const filtered = useMemo(() => {
+    if (!Array.isArray(items)) return [];
     const q = search.trim().toLowerCase();
     if (!q) return items;
-    return items.filter((c) => c.name.toLowerCase().includes(q));
+    return items.filter((c) => c && c.name && c.name.toLowerCase().includes(q));
   }, [items, search]);
 
   // Chuyền hiển thị trong combobox chọn của form Tổ — lọc theo đúng Khu vực đang chọn trong form.
   const linesInSelectedArea = useMemo(
-    () => lines.filter((l) => l.parentAreaId === form.parentAreaId),
+    () => (Array.isArray(lines) ? lines.filter((l) => l && l.parentAreaId === form.parentAreaId) : []),
     [lines, form.parentAreaId],
   );
 
   async function load() {
     setLoading(true);
-    const url = usesCategoryTypeQuery(type) ? `${apiBase(type)}?type=${type}` : apiBase(type);
-    const res = await fetch(url);
-    const data = await res.json();
-    setItems(data);
-    setLoading(false);
+    try {
+      const url = usesCategoryTypeQuery(type) ? `${apiBase(type)}?type=${type}` : apiBase(type);
+      const res = await fetch(url);
+      const data = res.ok ? await res.json() : [];
+      setItems(Array.isArray(data) ? data : []);
+    } catch {
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -105,16 +111,19 @@ function CategoriesPageInner() {
     setSearch("");
     if (needsParentArea(type)) {
       fetch("/api/categories?type=AREA")
-        .then((r) => r.json())
-        .then(setAreas);
+        .then((r) => (r.ok ? r.json() : []))
+        .then((d) => setAreas(Array.isArray(d) ? d : []))
+        .catch(() => setAreas([]));
     }
     if (needsParentLine(type)) {
       fetch("/api/categories?type=PRODUCTION_LINE")
-        .then((r) => r.json())
-        .then(setLines);
+        .then((r) => (r.ok ? r.json() : []))
+        .then((d) => setLines(Array.isArray(d) ? d : []))
+        .catch(() => setLines([]));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
+
 
   function openCreate() {
     setEditing(null);

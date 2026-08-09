@@ -1,5 +1,4 @@
 import { getPrisma } from "@/lib/prisma";
-import { ClipboardList, Hourglass, Wrench, CheckCircle2 } from "lucide-react";
 import ReportsCharts from "./reports-charts-lazy";
 import { PageHeader } from "@/components/page-header";
 import AreaFilter from "./area-filter";
@@ -8,16 +7,35 @@ const TREND_DAYS = 14;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const STATUS_LABEL: Record<string, string> = {
-  REPORTED: "Vừa báo cáo",
-  INVESTIGATING: "Đang điều tra",
-  ROOT_CAUSE_FOUND: "Đã có nguyên nhân",
+  REPORTED: "Chờ tiếp nhận",
+  INVESTIGATING: "Đang phân tích 5M+1E",
+  ROOT_CAUSE_FOUND: "Đã chốt nguyên nhân",
   ASSIGNED: "Đã giao việc",
-  IN_PROGRESS: "Đang xử lý",
+  IN_PROGRESS: "Đang sửa chữa",
   DONE: "Hoàn thành",
+};
+
+const STATUS_DOT: Record<string, string> = {
+  REPORTED: "bg-amber-500",
+  INVESTIGATING: "bg-blue-500",
+  ROOT_CAUSE_FOUND: "bg-violet-500",
+  ASSIGNED: "bg-cyan-500",
+  IN_PROGRESS: "bg-rose-500",
+  DONE: "bg-emerald-600",
 };
 
 function dayKey(d: Date) {
   return d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
+}
+
+function timeAgo(iso: string | Date) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins} phút trước`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} giờ trước`;
+  const days = Math.floor(hrs / 24);
+  return `${days} ngày trước`;
 }
 
 export default async function AdminDashboard({
@@ -58,12 +76,13 @@ export default async function AdminDashboard({
     prisma.qualityIssue.findMany({
       where: { ...issueWhere, status: { not: "DONE" } },
       orderBy: { createdAt: "asc" },
-      take: 8,
+      take: 10,
       select: {
         id: true,
         poCode: true,
         description: true,
         status: true,
+        severity: true,
         createdAt: true,
         reporter: { select: { name: true } },
         team: { select: { name: true } },
@@ -82,44 +101,13 @@ export default async function AdminDashboard({
     }),
   ]);
 
-  const kpiCards = [
-    {
-      label: "Tổng số phiếu",
-      value: totalCount,
-      unit: "Phiếu",
-      icon: ClipboardList,
-      iconBg: "bg-blue-100",
-      iconColor: "text-blue-600",
-    },
-    {
-      label: "Đang xử lý",
-      value: openCount,
-      unit: "Phiếu",
-      icon: Hourglass,
-      iconBg: "bg-amber-100",
-      iconColor: "text-amber-600",
-    },
-    {
-      label: "Cần điều tra 5M+1E",
-      value: statusGroups.find((g) => g.status === "REPORTED" || g.status === "INVESTIGATING")
-        ? statusGroups
-            .filter((g) => g.status === "REPORTED" || g.status === "INVESTIGATING")
-            .reduce((sum, g) => sum + g._count._all, 0)
-        : 0,
-      unit: "Phiếu",
-      icon: Wrench,
-      iconBg: "bg-rose-100",
-      iconColor: "text-rose-600",
-    },
-    {
-      label: "Đã hoàn thành",
-      value: doneCount,
-      unit: "Phiếu",
-      icon: CheckCircle2,
-      iconBg: "bg-emerald-100",
-      iconColor: "text-emerald-600",
-    },
-  ];
+  const investigatingCount = statusGroups
+    .filter((g) => g.status === "REPORTED" || g.status === "INVESTIGATING")
+    .reduce((sum, g) => sum + g._count._all, 0);
+
+  const assignedCount = statusGroups
+    .filter((g) => g.status === "ASSIGNED" || g.status === "IN_PROGRESS")
+    .reduce((sum, g) => sum + g._count._all, 0);
 
   const issuesByStatus = statusGroups.map((g) => ({
     status: g.status,
@@ -146,7 +134,6 @@ export default async function AdminDashboard({
     .map(([area, count]) => ({ area, count }))
     .sort((a, b) => b.count - a.count);
 
-  // --- Top 5 lỗi: rank, tên lỗi, số lượng, thời gian xử lý trung bình ---
   const failureStats = new Map<string, { count: number; totalMinutes: number; withDuration: number }>();
   for (const task of tasksForDuration) {
     const name = task.issue.failureCategory?.name || "Chưa phân loại";
@@ -164,29 +151,60 @@ export default async function AdminDashboard({
     .map(([name, s]) => ({
       name,
       count: s.count,
-      avgHours: s.withDuration > 0 ? Number((s.totalMinutes / s.withDuration / 60).toFixed(1)) : null,
+      avgMinutes: s.withDuration > 0 ? Math.round(s.totalMinutes / s.withDuration) : null,
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
 
-  return (
-    <div>
-      <PageHeader title="Tổng quan">
-        <AreaFilter areas={areas} />
-      </PageHeader>
+  // ─── KPI Metric Cards (matching portal style) ───
+  const kpiCards = [
+    { label: "Tổng sự cố", value: totalCount, color: "slate", icon: "📋" },
+    { label: "Đang xử lý", value: openCount, color: "amber", icon: "⏳" },
+    { label: "Cần điều tra 5M+1E", value: investigatingCount, color: "rose", icon: "🔍" },
+    { label: "Đã giao KTV sửa", value: assignedCount, color: "blue", icon: "🔧" },
+    { label: "Hoàn thành", value: doneCount, color: "emerald", icon: "✅" },
+  ];
 
-      <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+  const colorMap: Record<string, { bg: string; border: string; text: string; dot: string }> = {
+    slate:   { bg: "bg-slate-50",  border: "border-slate-200",  text: "text-slate-700",  dot: "bg-slate-400" },
+    amber:   { bg: "bg-amber-50",  border: "border-amber-200",  text: "text-amber-700",  dot: "bg-amber-500" },
+    rose:    { bg: "bg-rose-50",   border: "border-rose-200",   text: "text-rose-700",   dot: "bg-rose-500" },
+    blue:    { bg: "bg-blue-50",   border: "border-blue-200",   text: "text-blue-700",   dot: "bg-blue-500" },
+    emerald: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", dot: "bg-emerald-500" },
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Header Row */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-lg font-bold tracking-tight text-slate-900">Tổng quan Nhà Máy</h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Dữ liệu thời gian thực · Cập nhật tự động
+          </p>
+        </div>
+        <AreaFilter areas={areas} />
+      </div>
+
+      {/* ─── KPI Metric Row ─── */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {kpiCards.map((c) => {
-          const Icon = c.icon;
+          const cm = colorMap[c.color];
           return (
-            <div key={c.label} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm">
-              <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${c.iconBg}`}>
-                <Icon size={20} className={c.iconColor} />
+            <div
+              key={c.label}
+              className={`relative overflow-hidden rounded-2xl border ${cm.border} ${cm.bg} p-4 transition-shadow hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)]`}
+            >
+              <div className="flex items-start justify-between">
+                <span className="text-lg">{c.icon}</span>
+                <span className={`h-2 w-2 rounded-full ${cm.dot} ring-2 ring-white`} />
               </div>
-              <div className="min-w-0">
-                <div className="truncate text-xl font-bold text-slate-800">{c.value}</div>
-                <div className="truncate text-xs text-slate-500">
-                  {c.label} · {c.unit}
+              <div className="mt-3">
+                <div className={`text-2xl font-extrabold tracking-tight ${cm.text} tabular-nums`}>
+                  {c.value}
+                </div>
+                <div className="text-[11px] font-semibold text-slate-600 mt-0.5">
+                  {c.label}
                 </div>
               </div>
             </div>
@@ -194,39 +212,58 @@ export default async function AdminDashboard({
         })}
       </div>
 
-      <h2 className="mb-4 text-lg font-semibold text-slate-800">Báo cáo &amp; Thống kê</h2>
-      <ReportsCharts issuesByStatus={issuesByStatus} issuesByDay={issuesByDay} issuesByArea={issuesByArea} />
-
-      <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
-          <h2 className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 text-base font-bold text-rose-600">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-rose-600" />
-            Top 5 lỗi thường gặp
+      {/* ─── Charts Section ─── */}
+      <div>
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <h2 className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
+            Phân Tích & Biểu Đồ
           </h2>
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-500">
-              <tr>
-                <th className="px-5 py-2">#</th>
-                <th className="px-5 py-2">Tên lỗi</th>
-                <th className="px-5 py-2 text-right">Số lượng</th>
-                <th className="px-5 py-2 text-right">TB xử lý (giờ)</th>
+        </div>
+        <ReportsCharts issuesByStatus={issuesByStatus} issuesByDay={issuesByDay} issuesByArea={issuesByArea} />
+      </div>
+
+      {/* ─── Bottom Tables ─── */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        {/* Top 5 Lỗi */}
+        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
+            <div className="flex items-center gap-2.5">
+              <span className="h-2 w-2 rounded-full bg-rose-500" />
+              <h2 className="text-sm font-bold text-slate-900">Top 5 Lỗi Thường Gặp</h2>
+            </div>
+            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold text-slate-600">
+              {top5Failures.length} lỗi
+            </span>
+          </div>
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-slate-500">
+                <th className="w-10 px-5 py-2.5 font-bold">#</th>
+                <th className="px-5 py-2.5 font-bold">Danh mục lỗi</th>
+                <th className="px-5 py-2.5 text-right font-bold">Số lượng</th>
+                <th className="px-5 py-2.5 text-right font-bold">TB xử lý</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-50">
               {top5Failures.length === 0 && (
                 <tr>
-                  <td className="px-5 py-4 text-slate-400" colSpan={4}>
-                    Không có dữ liệu
+                  <td className="px-5 py-10 text-center text-slate-400" colSpan={4}>
+                    Chưa có dữ liệu sự cố nào
                   </td>
                 </tr>
               )}
               {top5Failures.map((f, i) => (
-                <tr key={f.name} className="border-t border-slate-100">
-                  <td className="px-5 py-2 font-mono">{i + 1}</td>
-                  <td className="px-5 py-2">{f.name}</td>
-                  <td className="px-5 py-2 text-right font-semibold text-rose-600">{f.count}</td>
-                  <td className="px-5 py-2 text-right text-slate-600">
-                    {f.avgHours != null ? f.avgHours : "-"}
+                <tr key={f.name} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="px-5 py-3 text-xs font-bold text-slate-400 tabular-nums">{i + 1}</td>
+                  <td className="px-5 py-3 font-semibold text-slate-800">{f.name}</td>
+                  <td className="px-5 py-3 text-right font-bold text-rose-600 tabular-nums">{f.count}</td>
+                  <td className="px-5 py-3 text-right text-slate-600 tabular-nums">
+                    {f.avgMinutes != null
+                      ? f.avgMinutes >= 60
+                        ? `${(f.avgMinutes / 60).toFixed(1)}h`
+                        : `${f.avgMinutes} phút`
+                      : "—"}
                   </td>
                 </tr>
               ))}
@@ -234,47 +271,49 @@ export default async function AdminDashboard({
           </table>
         </div>
 
-        <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
-          <h2 className="flex items-center gap-2 border-b border-slate-100 px-5 py-4 text-base font-bold text-amber-600">
-            <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-amber-600" />
-            Sự cố cần xử lý gấp
-          </h2>
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-500">
-              <tr>
-                <th className="px-5 py-2">PO</th>
-                <th className="px-5 py-2">Tổ / Chuyền</th>
-                <th className="px-5 py-2">Trạng thái</th>
-                <th className="px-5 py-2">Thời gian</th>
+        {/* Sự cố đang mở */}
+        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
+            <div className="flex items-center gap-2.5">
+              <span className="h-2 w-2 rounded-full bg-amber-500" />
+              <h2 className="text-sm font-bold text-slate-900">Sự Cố Đang Mở</h2>
+            </div>
+            <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-[11px] font-bold text-amber-700">
+              {openIssues.length} phiếu
+            </span>
+          </div>
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-slate-100 bg-slate-50/80 text-slate-500">
+                <th className="px-5 py-2.5 font-bold">PO</th>
+                <th className="px-5 py-2.5 font-bold">Khu vực</th>
+                <th className="px-5 py-2.5 font-bold">Trạng thái</th>
+                <th className="px-5 py-2.5 font-bold">Từ lúc</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-50">
               {openIssues.length === 0 && (
                 <tr>
-                  <td className="px-5 py-4 text-slate-400" colSpan={4}>
-                    Không có sự cố nào đang chờ xử lý
+                  <td className="px-5 py-10 text-center text-slate-400" colSpan={4}>
+                    Không có sự cố nào đang mở
                   </td>
                 </tr>
               )}
               {openIssues.map((issue) => (
-                <tr key={issue.id} className="border-t border-slate-100">
-                  <td className="px-5 py-2 font-mono">{issue.poCode}</td>
-                  <td className="px-5 py-2">
-                    {issue.team?.name || "-"} / {issue.productionLine?.name || "-"}
+                <tr key={issue.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="px-5 py-3">
+                    <span className="font-mono text-[11px] font-bold text-slate-800">{issue.poCode}</span>
                   </td>
-                  <td className="px-5 py-2">
-                    <span className="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700">
+                  <td className="px-5 py-3 text-slate-600">
+                    {issue.team?.name || "—"} / {issue.productionLine?.name || "—"}
+                  </td>
+                  <td className="px-5 py-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-700">
+                      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[issue.status] || "bg-slate-400"}`} />
                       {STATUS_LABEL[issue.status] || issue.status}
                     </span>
                   </td>
-                  <td className="px-5 py-2 text-slate-600">
-                    {new Date(issue.createdAt).toLocaleString("vi-VN", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </td>
+                  <td className="px-5 py-3 text-slate-500">{timeAgo(issue.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

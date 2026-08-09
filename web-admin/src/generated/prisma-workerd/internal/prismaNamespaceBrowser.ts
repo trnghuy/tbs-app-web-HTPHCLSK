@@ -51,13 +51,18 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Factory: 'Factory',
+  Department: 'Department',
+  DepartmentMember: 'DepartmentMember',
   Category: 'Category',
   IssueFailureCategory: 'IssueFailureCategory',
   PartCategory: 'PartCategory',
   User: 'User',
   QualityIssue: 'QualityIssue',
   FiveMOneESubmission: 'FiveMOneESubmission',
-  MaintenanceTask: 'MaintenanceTask'
+  MaintenanceTask: 'MaintenanceTask',
+  AuditLog: 'AuditLog',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -73,6 +78,41 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const FactoryScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FactoryScalarFieldEnum = (typeof FactoryScalarFieldEnum)[keyof typeof FactoryScalarFieldEnum]
+
+
+export const DepartmentScalarFieldEnum = {
+  id: 'id',
+  factoryId: 'factoryId',
+  code: 'code',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
+
+
+export const DepartmentMemberScalarFieldEnum = {
+  id: 'id',
+  departmentId: 'departmentId',
+  userId: 'userId',
+  isHead: 'isHead',
+  createdAt: 'createdAt'
+} as const
+
+export type DepartmentMemberScalarFieldEnum = (typeof DepartmentMemberScalarFieldEnum)[keyof typeof DepartmentMemberScalarFieldEnum]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -80,6 +120,7 @@ export const CategoryScalarFieldEnum = {
   colorHex: 'colorHex',
   order: 'order',
   createdAt: 'createdAt',
+  factoryId: 'factoryId',
   parentAreaId: 'parentAreaId',
   parentLineId: 'parentLineId'
 } as const
@@ -116,8 +157,11 @@ export const UserScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   pushToken: 'pushToken',
   role: 'role',
+  mustChangePassword: 'mustChangePassword',
+  passwordChangedAt: 'passwordChangedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  factoryId: 'factoryId',
   areaId: 'areaId'
 } as const
 
@@ -132,6 +176,7 @@ export const QualityIssueScalarFieldEnum = {
   poCode: 'poCode',
   status: 'status',
   severity: 'severity',
+  factoryId: 'factoryId',
   areaId: 'areaId',
   teamId: 'teamId',
   productionLineId: 'productionLineId',
@@ -194,6 +239,35 @@ export const MaintenanceTaskScalarFieldEnum = {
 } as const
 
 export type MaintenanceTaskScalarFieldEnum = (typeof MaintenanceTaskScalarFieldEnum)[keyof typeof MaintenanceTaskScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  issueId: 'issueId',
+  userId: 'userId',
+  action: 'action',
+  oldStatus: 'oldStatus',
+  newStatus: 'newStatus',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  issueId: 'issueId',
+  title: 'title',
+  message: 'message',
+  kind: 'kind',
+  isRead: 'isRead',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {

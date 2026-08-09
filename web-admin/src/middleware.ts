@@ -23,17 +23,41 @@ export default auth((req) => {
     return withCors(NextResponse.next(), req);
   }
 
-  const isAdminRoute = pathname.startsWith("/admin");
-  if (!isAdminRoute) return NextResponse.next();
+  const userRole = (req.auth?.user as { role?: string } | undefined)?.role;
 
-  if (!req.auth) {
-    const loginUrl = new URL("/login", req.nextUrl.origin);
-    return NextResponse.redirect(loginUrl);
+  if (pathname === "/login") {
+    if (req.auth) {
+      const redirectTarget = userRole === "ADMIN" ? "/admin" : "/portal";
+      return NextResponse.redirect(new URL(redirectTarget, req.nextUrl.origin));
+    }
+    return NextResponse.next();
+  }
+
+  const isAdminRoute = pathname.startsWith("/admin");
+  if (isAdminRoute) {
+    if (!req.auth) {
+      const loginUrl = new URL("/login", req.nextUrl.origin);
+      return NextResponse.redirect(loginUrl);
+    }
+    if (userRole !== "ADMIN") {
+      return NextResponse.redirect(new URL("/portal", req.nextUrl.origin));
+    }
+    return NextResponse.next();
+  }
+
+  const isPortalRoute = pathname.startsWith("/portal");
+  if (isPortalRoute) {
+    if (!req.auth) {
+      const loginUrl = new URL("/login", req.nextUrl.origin);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
   }
 
   return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/mobile/:path*"],
+  matcher: ["/admin/:path*", "/portal/:path*", "/login", "/api/mobile/:path*"],
 };
+

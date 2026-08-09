@@ -116,17 +116,36 @@ export async function POST(req: Request) {
   });
 
   const severityPrefix = severity === "URGENT" ? "🚨 KHẨN CẤP — " : severity === "HIGH" ? "⚠️ Mức cao — " : "";
-  await sendPushToUsersByRoleInArea(
+  
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: issue.id,
+    userId: payload.userId,
+    action: "REPORTED",
+    newStatus: "REPORTED",
+    note: `${payload.name} báo cáo sự cố PO ${issue.poCode}: ${description}`,
+  });
+
+  // 2. Gửi thông báo đa kênh tới QA/Trưởng line/Công nghệ + thông báo FYI cho Operator cùng khu vực
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(
     prisma,
     INVESTIGATOR_ROLES,
     issue.areaId,
     {
       title: `${severityPrefix}Sự cố mới — PO ${issue.poCode}`,
-      body: `${payload.name} báo cáo: ${description}`,
+      message: `${payload.name} báo cáo: ${description}`,
+      kind: "NEED_INVESTIGATE",
+      issueId: issue.id,
       data: { type: "NEED_INVESTIGATE", issueId: issue.id },
     },
-    payload.userId,
+    {
+      excludeUserId: payload.userId,
+      includeOperatorFyi: true,
+    },
   );
 
   return NextResponse.json(issue, { status: 201 });
 }
+

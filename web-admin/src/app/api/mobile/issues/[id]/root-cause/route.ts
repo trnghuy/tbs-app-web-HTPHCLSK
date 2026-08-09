@@ -35,11 +35,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     },
   });
 
-  await sendPushToUsersByRoleInArea(prisma, ["DEPARTMENT_HEAD"], issue.areaId, {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: id,
+    userId: payload.userId,
+    action: "ROOT_CAUSE_DECIDED",
+    oldStatus: issue.status,
+    newStatus: "ROOT_CAUSE_FOUND",
+    note: `${payload.name} chốt nguyên nhân gốc: ${rootCause}.${solution ? ` Đề xuất giải pháp: ${solution}` : ""}`,
+  });
+
+  // 2. Thông báo cho Trưởng phòng ban cùng khu vực
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(prisma, ["DEPARTMENT_HEAD"], issue.areaId, {
     title: `Đã có nguyên nhân gốc — PO ${issue.poCode}`,
-    body: rootCause,
+    message: rootCause,
+    kind: "NEED_ASSIGN",
+    issueId: id,
     data: { type: "NEED_ASSIGN", issueId: id },
   });
 
   return NextResponse.json(updated);
 }
+

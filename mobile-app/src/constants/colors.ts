@@ -1,30 +1,30 @@
 export const colors = {
-  primary: "#1F5C3F",
-  primaryDark: "#163C2E",
-  primaryLight: "#8DC63F",
-  background: "#F5F6F4",
+  primary: "#005A36",       // TBS Forest Green
+  primaryDark: "#0F2A20",   // Darkest Forest Green
+  primaryLight: "#8DC63F",  // TBS Fresh Accent
+  background: "#FFFFFF",    // Pure White background
+  surfaceBg: "#F8FAFC",     // Soft Slate canvas
   white: "#FFFFFF",
-  text: "#1A1D1B",
-  textMuted: "#6B716C",
-  border: "#E4E6E2",
+  text: "#0F172A",          // Crisp slate-900 text
+  textMuted: "#64748B",     // Slate-500 secondary
+  border: "#E2E8F0",        // Fine clean border
   danger: "#E11D48",
-  success: "#16A34A",
+  success: "#10B981",
   warning: "#F59E0B",
-  bubbleMine: "#E8F5E0",
+  bubbleMine: "#ECFDF5",    // Soft emerald bubble
   bubbleOther: "#FFFFFF",
-  lightGreenBg: "#E8F5E0",
-  // Derived tokens added for the modernized UI pass (existing hues above are unchanged)
+  lightGreenBg: "#F0FDF4",  // Soft emerald canvas
   shadow: "#0F2A1E",
-  overlay: "rgba(11, 31, 22, 0.45)",
-  accentSoft: "#DCEFC9",
-  cardBorder: "#E4E6E2",
-  // Status badge tokens (from the approved ui-preview redesign)
-  statusPendingBg: "#FFF1DE",
-  statusPendingText: "#B5590A",
-  statusAcceptedBg: "#E7F0FA",
-  statusAcceptedText: "#1D5FA8",
-  statusDoneBg: "#E6F4EA",
-  statusDoneText: "#1E7A3D",
-  textSecondary: "#6B716C",
-  textFaint: "#9CA39D",
+  overlay: "rgba(15, 23, 42, 0.5)",
+  accentSoft: "#DCFCE7",
+  cardBorder: "#E2E8F0",
+  // Status badge tokens
+  statusPendingBg: "#FEF3C7",
+  statusPendingText: "#92400E",
+  statusAcceptedBg: "#EFF6FF",
+  statusAcceptedText: "#1D4ED8",
+  statusDoneBg: "#ECFDF5",
+  statusDoneText: "#065F46",
+  textSecondary: "#475569",
+  textFaint: "#94A3B8",
 };

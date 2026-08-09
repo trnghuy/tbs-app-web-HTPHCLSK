@@ -32,7 +32,14 @@ const KIND_META: Record<
     badgeBg: colors.statusPendingBg,
     badgeColor: colors.statusPendingText,
   },
+  FYI_REPORTED: {
+    icon: "📢",
+    title: "[FYI] Sự cố mới tại phân xưởng",
+    badgeBg: "#EFF6FF",
+    badgeColor: "#1D4ED8",
+  },
   NEED_ROOT_CAUSE: {
+
     icon: "🧩",
     title: "Cần chốt nguyên nhân gốc",
     badgeBg: colors.statusAcceptedBg,
@@ -107,8 +114,15 @@ export default function NotificationsScreen() {
   useFocusEffect(
     useCallback(() => {
       load();
-    }, [load]),
+      const timer = setInterval(() => {
+        if (token) {
+          api.listNotifications(token).then((data) => setItems(data)).catch(() => {});
+        }
+      }, 4000);
+      return () => clearInterval(timer);
+    }, [load, token]),
   );
+
 
   async function onRefresh() {
     setRefreshing(true);

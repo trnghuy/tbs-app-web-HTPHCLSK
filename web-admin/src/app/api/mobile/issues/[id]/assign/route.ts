@@ -44,11 +44,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     prisma.qualityIssue.update({ where: { id }, data: { status: "ASSIGNED" } }),
   ]);
 
-  await sendPushToUsers(prisma, [assigneeId], {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: id,
+    userId: payload.userId,
+    action: "TASK_ASSIGNED",
+    oldStatus: "ROOT_CAUSE_FOUND",
+    newStatus: "ASSIGNED",
+    note: `${payload.name} (Trưởng phòng) giao việc cho KTV ${assignee.name} (${assignee.employeeCode})`,
+  });
+
+  // 2. Dispatch thông báo tới Bảo trì
+  const { createAndDispatchNotification } = await import("@/lib/notifications-service");
+  await createAndDispatchNotification(prisma, [assigneeId], {
     title: "Có việc cần trợ giúp",
-    body: `PO ${issue.poCode}: ${issue.description}`,
+    message: `PO ${issue.poCode}: ${issue.description}`,
+    kind: "TASK_ASSIGNED",
+    issueId: id,
     data: { type: "TASK_ASSIGNED", issueId: id, taskId: task.id },
   });
 
   return NextResponse.json(task, { status: 201 });
 }
+

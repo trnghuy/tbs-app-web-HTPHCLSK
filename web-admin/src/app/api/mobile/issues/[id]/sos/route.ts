@@ -21,11 +21,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const { reason } = (await req.json()) as { reason?: string };
 
-  await sendPushToUsersByRoleInArea(prisma, ["DIRECTOR"], null, {
+  // 1. Ghi log Audit Trail
+  const { logAuditEvent } = await import("@/lib/audit-logger");
+  await logAuditEvent(prisma, {
+    issueId: id,
+    userId: payload.userId,
+    action: "SOS_SENT",
+    oldStatus: issue.status,
+    newStatus: issue.status,
+    note: `Trưởng line ${payload.name} gửi cảnh báo SOS tới Giám đốc: ${reason?.trim() || "Vượt ngoài thẩm quyền xử lý tại line"}`,
+  });
+
+  // 2. Dispatch thông báo tới Giám đốc
+  const { dispatchRoleNotificationsInArea } = await import("@/lib/notifications-service");
+  await dispatchRoleNotificationsInArea(prisma, ["DIRECTOR"], null, {
     title: `🆘 SOS — PO ${issue.poCode}`,
-    body: reason?.trim() || `Trưởng line ${payload.name} cần hỗ trợ cho sự cố vượt ngoài khả năng xử lý.`,
+    message: reason?.trim() || `Trưởng line ${payload.name} cần hỗ trợ cho sự cố vượt ngoài khả năng xử lý.`,
+    kind: "SOS_ALERT",
+    issueId: id,
     data: { type: "SOS", issueId: id },
   });
 
   return NextResponse.json({ ok: true });
 }
+

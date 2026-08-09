@@ -33,8 +33,11 @@ export type UserMinAggregateOutputType = {
   avatarUrl: string | null
   pushToken: string | null
   role: $Enums.Role | null
+  mustChangePassword: boolean | null
+  passwordChangedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  factoryId: string | null
   areaId: string | null
 }
 
@@ -47,8 +50,11 @@ export type UserMaxAggregateOutputType = {
   avatarUrl: string | null
   pushToken: string | null
   role: $Enums.Role | null
+  mustChangePassword: boolean | null
+  passwordChangedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  factoryId: string | null
   areaId: string | null
 }
 
@@ -61,8 +67,11 @@ export type UserCountAggregateOutputType = {
   avatarUrl: number
   pushToken: number
   role: number
+  mustChangePassword: number
+  passwordChangedAt: number
   createdAt: number
   updatedAt: number
+  factoryId: number
   areaId: number
   _all: number
 }
@@ -77,8 +86,11 @@ export type UserMinAggregateInputType = {
   avatarUrl?: true
   pushToken?: true
   role?: true
+  mustChangePassword?: true
+  passwordChangedAt?: true
   createdAt?: true
   updatedAt?: true
+  factoryId?: true
   areaId?: true
 }
 
@@ -91,8 +103,11 @@ export type UserMaxAggregateInputType = {
   avatarUrl?: true
   pushToken?: true
   role?: true
+  mustChangePassword?: true
+  passwordChangedAt?: true
   createdAt?: true
   updatedAt?: true
+  factoryId?: true
   areaId?: true
 }
 
@@ -105,8 +120,11 @@ export type UserCountAggregateInputType = {
   avatarUrl?: true
   pushToken?: true
   role?: true
+  mustChangePassword?: true
+  passwordChangedAt?: true
   createdAt?: true
   updatedAt?: true
+  factoryId?: true
   areaId?: true
   _all?: true
 }
@@ -192,8 +210,11 @@ export type UserGroupByOutputType = {
   avatarUrl: string | null
   pushToken: string | null
   role: $Enums.Role
+  mustChangePassword: boolean
+  passwordChangedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  factoryId: string | null
   areaId: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
@@ -227,16 +248,23 @@ export type UserWhereInput = {
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   pushToken?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  passwordChangedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  factoryId?: Prisma.StringNullableFilter<"User"> | string | null
   areaId?: Prisma.StringNullableFilter<"User"> | string | null
+  factory?: Prisma.XOR<Prisma.FactoryNullableScalarRelationFilter, Prisma.FactoryWhereInput> | null
   area?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  departmentMemberships?: Prisma.DepartmentMemberListRelationFilter
   reportedIssues?: Prisma.QualityIssueListRelationFilter
   rootCauseDecisions?: Prisma.QualityIssueListRelationFilter
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionListRelationFilter
   assignedTasks?: Prisma.MaintenanceTaskListRelationFilter
   assigneeTasks?: Prisma.MaintenanceTaskListRelationFilter
   verifiedTasks?: Prisma.MaintenanceTaskListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -248,16 +276,23 @@ export type UserOrderByWithRelationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  passwordChangedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
+  factory?: Prisma.FactoryOrderByWithRelationInput
   area?: Prisma.CategoryOrderByWithRelationInput
+  departmentMemberships?: Prisma.DepartmentMemberOrderByRelationAggregateInput
   reportedIssues?: Prisma.QualityIssueOrderByRelationAggregateInput
   rootCauseDecisions?: Prisma.QualityIssueOrderByRelationAggregateInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionOrderByRelationAggregateInput
   assignedTasks?: Prisma.MaintenanceTaskOrderByRelationAggregateInput
   assigneeTasks?: Prisma.MaintenanceTaskOrderByRelationAggregateInput
   verifiedTasks?: Prisma.MaintenanceTaskOrderByRelationAggregateInput
+  auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -272,16 +307,23 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   pushToken?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  passwordChangedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  factoryId?: Prisma.StringNullableFilter<"User"> | string | null
   areaId?: Prisma.StringNullableFilter<"User"> | string | null
+  factory?: Prisma.XOR<Prisma.FactoryNullableScalarRelationFilter, Prisma.FactoryWhereInput> | null
   area?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
+  departmentMemberships?: Prisma.DepartmentMemberListRelationFilter
   reportedIssues?: Prisma.QualityIssueListRelationFilter
   rootCauseDecisions?: Prisma.QualityIssueListRelationFilter
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionListRelationFilter
   assignedTasks?: Prisma.MaintenanceTaskListRelationFilter
   assigneeTasks?: Prisma.MaintenanceTaskListRelationFilter
   verifiedTasks?: Prisma.MaintenanceTaskListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id" | "employeeCode">
 
 export type UserOrderByWithAggregationInput = {
@@ -293,8 +335,11 @@ export type UserOrderByWithAggregationInput = {
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  passwordChangedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -313,8 +358,11 @@ export type UserScalarWhereWithAggregatesInput = {
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   pushToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  mustChangePassword?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  passwordChangedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  factoryId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   areaId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
@@ -327,15 +375,21 @@ export type UserCreateInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -347,15 +401,21 @@ export type UserUncheckedCreateInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -367,15 +427,21 @@ export type UserUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -387,15 +453,21 @@ export type UserUncheckedUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -407,8 +479,11 @@ export type UserCreateManyInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
 }
 
@@ -421,6 +496,8 @@ export type UserUpdateManyMutationInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -434,8 +511,11 @@ export type UserUncheckedUpdateManyInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -449,6 +529,11 @@ export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   employeeCode?: Prisma.SortOrder
@@ -458,8 +543,11 @@ export type UserCountOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  passwordChangedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
 }
 
@@ -472,8 +560,11 @@ export type UserMaxOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  passwordChangedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
 }
 
@@ -486,19 +577,73 @@ export type UserMinOrderByAggregateInput = {
   avatarUrl?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  passwordChangedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
-}
-
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
 }
 
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserCreateNestedManyWithoutFactoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput> | Prisma.UserCreateWithoutFactoryInput[] | Prisma.UserUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFactoryInput | Prisma.UserCreateOrConnectWithoutFactoryInput[]
+  createMany?: Prisma.UserCreateManyFactoryInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutFactoryInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput> | Prisma.UserCreateWithoutFactoryInput[] | Prisma.UserUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFactoryInput | Prisma.UserCreateOrConnectWithoutFactoryInput[]
+  createMany?: Prisma.UserCreateManyFactoryInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutFactoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput> | Prisma.UserCreateWithoutFactoryInput[] | Prisma.UserUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFactoryInput | Prisma.UserCreateOrConnectWithoutFactoryInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFactoryInput | Prisma.UserUpsertWithWhereUniqueWithoutFactoryInput[]
+  createMany?: Prisma.UserCreateManyFactoryInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFactoryInput | Prisma.UserUpdateWithWhereUniqueWithoutFactoryInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFactoryInput | Prisma.UserUpdateManyWithWhereWithoutFactoryInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutFactoryNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput> | Prisma.UserCreateWithoutFactoryInput[] | Prisma.UserUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFactoryInput | Prisma.UserCreateOrConnectWithoutFactoryInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutFactoryInput | Prisma.UserUpsertWithWhereUniqueWithoutFactoryInput[]
+  createMany?: Prisma.UserCreateManyFactoryInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutFactoryInput | Prisma.UserUpdateWithWhereUniqueWithoutFactoryInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutFactoryInput | Prisma.UserUpdateManyWithWhereWithoutFactoryInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutDepartmentMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedCreateWithoutDepartmentMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepartmentMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDepartmentMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedCreateWithoutDepartmentMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepartmentMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutDepartmentMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDepartmentMembershipsInput, Prisma.UserUpdateWithoutDepartmentMembershipsInput>, Prisma.UserUncheckedUpdateWithoutDepartmentMembershipsInput>
 }
 
 export type UserCreateNestedManyWithoutAreaInput = {
@@ -545,6 +690,10 @@ export type UserUncheckedUpdateManyWithoutAreaNestedInput = {
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UserCreateNestedOneWithoutReportedIssuesInput = {
@@ -635,6 +784,247 @@ export type UserUpdateOneWithoutVerifiedTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerifiedTasksInput, Prisma.UserUpdateWithoutVerifiedTasksInput>, Prisma.UserUncheckedUpdateWithoutVerifiedTasksInput>
 }
 
+export type UserCreateNestedOneWithoutAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  upsert?: Prisma.UserUpsertWithoutAuditLogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserCreateWithoutFactoryInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFactoryInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFactoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput>
+}
+
+export type UserCreateManyFactoryInputEnvelope = {
+  data: Prisma.UserCreateManyFactoryInput | Prisma.UserCreateManyFactoryInput[]
+}
+
+export type UserUpsertWithWhereUniqueWithoutFactoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFactoryInput, Prisma.UserUncheckedUpdateWithoutFactoryInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFactoryInput, Prisma.UserUncheckedCreateWithoutFactoryInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutFactoryInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFactoryInput, Prisma.UserUncheckedUpdateWithoutFactoryInput>
+}
+
+export type UserUpdateManyWithWhereWithoutFactoryInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutFactoryInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  employeeCode?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  passwordHash?: Prisma.StringFilter<"User"> | string
+  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  pushToken?: Prisma.StringNullableFilter<"User"> | string | null
+  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  passwordChangedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  factoryId?: Prisma.StringNullableFilter<"User"> | string | null
+  areaId?: Prisma.StringNullableFilter<"User"> | string | null
+}
+
+export type UserCreateWithoutDepartmentMembershipsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
+  area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDepartmentMembershipsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factoryId?: string | null
+  areaId?: string | null
+  reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDepartmentMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedCreateWithoutDepartmentMembershipsInput>
+}
+
+export type UserUpsertWithoutDepartmentMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedUpdateWithoutDepartmentMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedCreateWithoutDepartmentMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDepartmentMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDepartmentMembershipsInput, Prisma.UserUncheckedUpdateWithoutDepartmentMembershipsInput>
+}
+
+export type UserUpdateWithoutDepartmentMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDepartmentMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutAreaInput = {
   id?: string
   employeeCode: string
@@ -644,14 +1034,20 @@ export type UserCreateWithoutAreaInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAreaInput = {
@@ -663,14 +1059,20 @@ export type UserUncheckedCreateWithoutAreaInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAreaInput = {
@@ -698,23 +1100,6 @@ export type UserUpdateManyWithWhereWithoutAreaInput = {
   data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutAreaInput>
 }
 
-export type UserScalarWhereInput = {
-  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
-  OR?: Prisma.UserScalarWhereInput[]
-  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
-  id?: Prisma.StringFilter<"User"> | string
-  employeeCode?: Prisma.StringFilter<"User"> | string
-  name?: Prisma.StringFilter<"User"> | string
-  phone?: Prisma.StringNullableFilter<"User"> | string | null
-  passwordHash?: Prisma.StringFilter<"User"> | string
-  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
-  pushToken?: Prisma.StringNullableFilter<"User"> | string | null
-  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
-  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  areaId?: Prisma.StringNullableFilter<"User"> | string | null
-}
-
 export type UserCreateWithoutReportedIssuesInput = {
   id?: string
   employeeCode: string
@@ -724,14 +1109,20 @@ export type UserCreateWithoutReportedIssuesInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReportedIssuesInput = {
@@ -743,14 +1134,20 @@ export type UserUncheckedCreateWithoutReportedIssuesInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReportedIssuesInput = {
@@ -767,14 +1164,20 @@ export type UserCreateWithoutRootCauseDecisionsInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRootCauseDecisionsInput = {
@@ -786,14 +1189,20 @@ export type UserUncheckedCreateWithoutRootCauseDecisionsInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRootCauseDecisionsInput = {
@@ -821,14 +1230,20 @@ export type UserUpdateWithoutReportedIssuesInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportedIssuesInput = {
@@ -840,14 +1255,20 @@ export type UserUncheckedUpdateWithoutReportedIssuesInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutRootCauseDecisionsInput = {
@@ -870,14 +1291,20 @@ export type UserUpdateWithoutRootCauseDecisionsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRootCauseDecisionsInput = {
@@ -889,14 +1316,20 @@ export type UserUncheckedUpdateWithoutRootCauseDecisionsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFiveMOneESubmissionsInput = {
@@ -908,14 +1341,20 @@ export type UserCreateWithoutFiveMOneESubmissionsInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFiveMOneESubmissionsInput = {
@@ -927,14 +1366,20 @@ export type UserUncheckedCreateWithoutFiveMOneESubmissionsInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFiveMOneESubmissionsInput = {
@@ -962,14 +1407,20 @@ export type UserUpdateWithoutFiveMOneESubmissionsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFiveMOneESubmissionsInput = {
@@ -981,14 +1432,20 @@ export type UserUncheckedUpdateWithoutFiveMOneESubmissionsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -1000,14 +1457,20 @@ export type UserCreateWithoutAssignedTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -1019,14 +1482,20 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -1043,14 +1512,20 @@ export type UserCreateWithoutAssigneeTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssigneeTasksInput = {
@@ -1062,14 +1537,20 @@ export type UserUncheckedCreateWithoutAssigneeTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssigneeTasksInput = {
@@ -1086,14 +1567,20 @@ export type UserCreateWithoutVerifiedTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
   area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerifiedTasksInput = {
@@ -1105,14 +1592,20 @@ export type UserUncheckedCreateWithoutVerifiedTasksInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
   areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
   reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerifiedTasksInput = {
@@ -1140,14 +1633,20 @@ export type UserUpdateWithoutAssignedTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -1159,14 +1658,20 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutAssigneeTasksInput = {
@@ -1189,14 +1694,20 @@ export type UserUpdateWithoutAssigneeTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssigneeTasksInput = {
@@ -1208,14 +1719,20 @@ export type UserUncheckedUpdateWithoutAssigneeTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutVerifiedTasksInput = {
@@ -1238,14 +1755,20 @@ export type UserUpdateWithoutVerifiedTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
   area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerifiedTasksInput = {
@@ -1257,14 +1780,334 @@ export type UserUncheckedUpdateWithoutVerifiedTasksInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAuditLogsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
+  area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAuditLogsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factoryId?: string | null
+  areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAuditLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+}
+
+export type UserUpsertWithoutAuditLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type UserUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutUsersInput
+  area?: Prisma.CategoryCreateNestedOneWithoutUsersByAreaInput
+  departmentMemberships?: Prisma.DepartmentMemberCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  factoryId?: string | null
+  areaId?: string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedCreateNestedManyWithoutUserInput
+  reportedIssues?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutReporterInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedCreateNestedManyWithoutRootCauseDecidedByInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutSubmitterInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssignedByInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutAssigneeInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedCreateNestedManyWithoutVerifiedByInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyFactoryInput = {
+  id?: string
+  employeeCode: string
+  name: string
+  phone?: string | null
+  passwordHash: string
+  avatarUrl?: string | null
+  pushToken?: string | null
+  role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  areaId?: string | null
+}
+
+export type UserUpdateWithoutFactoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  area?: Prisma.CategoryUpdateOneWithoutUsersByAreaNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFactoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
+  reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
+  rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
+  fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
+  assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
+  assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutFactoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCode?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCreateManyAreaInput = {
@@ -1276,8 +2119,11 @@ export type UserCreateManyAreaInput = {
   avatarUrl?: string | null
   pushToken?: string | null
   role?: $Enums.Role
+  mustChangePassword?: boolean
+  passwordChangedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factoryId?: string | null
 }
 
 export type UserUpdateWithoutAreaInput = {
@@ -1289,14 +2135,20 @@ export type UserUpdateWithoutAreaInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutUsersNestedInput
+  departmentMemberships?: Prisma.DepartmentMemberUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAreaInput = {
@@ -1308,14 +2160,20 @@ export type UserUncheckedUpdateWithoutAreaInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departmentMemberships?: Prisma.DepartmentMemberUncheckedUpdateManyWithoutUserNestedInput
   reportedIssues?: Prisma.QualityIssueUncheckedUpdateManyWithoutReporterNestedInput
   rootCauseDecisions?: Prisma.QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByNestedInput
   fiveMOneESubmissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutSubmitterNestedInput
   assignedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssignedByNestedInput
   assigneeTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutAssigneeNestedInput
   verifiedTasks?: Prisma.MaintenanceTaskUncheckedUpdateManyWithoutVerifiedByNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutAreaInput = {
@@ -1327,8 +2185,11 @@ export type UserUncheckedUpdateManyWithoutAreaInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passwordChangedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1337,21 +2198,27 @@ export type UserUncheckedUpdateManyWithoutAreaInput = {
  */
 
 export type UserCountOutputType = {
+  departmentMemberships: number
   reportedIssues: number
   rootCauseDecisions: number
   fiveMOneESubmissions: number
   assignedTasks: number
   assigneeTasks: number
   verifiedTasks: number
+  auditLogs: number
+  notifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  departmentMemberships?: boolean | UserCountOutputTypeCountDepartmentMembershipsArgs
   reportedIssues?: boolean | UserCountOutputTypeCountReportedIssuesArgs
   rootCauseDecisions?: boolean | UserCountOutputTypeCountRootCauseDecisionsArgs
   fiveMOneESubmissions?: boolean | UserCountOutputTypeCountFiveMOneESubmissionsArgs
   assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
   assigneeTasks?: boolean | UserCountOutputTypeCountAssigneeTasksArgs
   verifiedTasks?: boolean | UserCountOutputTypeCountVerifiedTasksArgs
+  auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -1362,6 +2229,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDepartmentMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DepartmentMemberWhereInput
 }
 
 /**
@@ -1406,6 +2280,20 @@ export type UserCountOutputTypeCountVerifiedTasksArgs<ExtArgs extends runtime.Ty
   where?: Prisma.MaintenanceTaskWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1416,16 +2304,23 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   avatarUrl?: boolean
   pushToken?: boolean
   role?: boolean
+  mustChangePassword?: boolean
+  passwordChangedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  factoryId?: boolean
   areaId?: boolean
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
+  departmentMemberships?: boolean | Prisma.User$departmentMembershipsArgs<ExtArgs>
   reportedIssues?: boolean | Prisma.User$reportedIssuesArgs<ExtArgs>
   rootCauseDecisions?: boolean | Prisma.User$rootCauseDecisionsArgs<ExtArgs>
   fiveMOneESubmissions?: boolean | Prisma.User$fiveMOneESubmissionsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   assigneeTasks?: boolean | Prisma.User$assigneeTasksArgs<ExtArgs>
   verifiedTasks?: boolean | Prisma.User$verifiedTasksArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1438,9 +2333,13 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   pushToken?: boolean
   role?: boolean
+  mustChangePassword?: boolean
+  passwordChangedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  factoryId?: boolean
   areaId?: boolean
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1453,9 +2352,13 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   avatarUrl?: boolean
   pushToken?: boolean
   role?: boolean
+  mustChangePassword?: boolean
+  passwordChangedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  factoryId?: boolean
   areaId?: boolean
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1468,39 +2371,52 @@ export type UserSelectScalar = {
   avatarUrl?: boolean
   pushToken?: boolean
   role?: boolean
+  mustChangePassword?: boolean
+  passwordChangedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  factoryId?: boolean
   areaId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeCode" | "name" | "phone" | "passwordHash" | "avatarUrl" | "pushToken" | "role" | "createdAt" | "updatedAt" | "areaId", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "employeeCode" | "name" | "phone" | "passwordHash" | "avatarUrl" | "pushToken" | "role" | "mustChangePassword" | "passwordChangedAt" | "createdAt" | "updatedAt" | "factoryId" | "areaId", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
+  departmentMemberships?: boolean | Prisma.User$departmentMembershipsArgs<ExtArgs>
   reportedIssues?: boolean | Prisma.User$reportedIssuesArgs<ExtArgs>
   rootCauseDecisions?: boolean | Prisma.User$rootCauseDecisionsArgs<ExtArgs>
   fiveMOneESubmissions?: boolean | Prisma.User$fiveMOneESubmissionsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   assigneeTasks?: boolean | Prisma.User$assigneeTasksArgs<ExtArgs>
   verifiedTasks?: boolean | Prisma.User$verifiedTasksArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
 }
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  factory?: boolean | Prisma.User$factoryArgs<ExtArgs>
   area?: boolean | Prisma.User$areaArgs<ExtArgs>
 }
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    factory: Prisma.$FactoryPayload<ExtArgs> | null
     area: Prisma.$CategoryPayload<ExtArgs> | null
+    departmentMemberships: Prisma.$DepartmentMemberPayload<ExtArgs>[]
     reportedIssues: Prisma.$QualityIssuePayload<ExtArgs>[]
     rootCauseDecisions: Prisma.$QualityIssuePayload<ExtArgs>[]
     fiveMOneESubmissions: Prisma.$FiveMOneESubmissionPayload<ExtArgs>[]
     assignedTasks: Prisma.$MaintenanceTaskPayload<ExtArgs>[]
     assigneeTasks: Prisma.$MaintenanceTaskPayload<ExtArgs>[]
     verifiedTasks: Prisma.$MaintenanceTaskPayload<ExtArgs>[]
+    auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1511,8 +2427,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     avatarUrl: string | null
     pushToken: string | null
     role: $Enums.Role
+    mustChangePassword: boolean
+    passwordChangedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    factoryId: string | null
     areaId: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -1908,13 +2827,17 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  factory<T extends Prisma.User$factoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$factoryArgs<ExtArgs>>): Prisma.Prisma__FactoryClient<runtime.Types.Result.GetResult<Prisma.$FactoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   area<T extends Prisma.User$areaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$areaArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  departmentMemberships<T extends Prisma.User$departmentMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$departmentMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepartmentMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportedIssues<T extends Prisma.User$reportedIssuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportedIssuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityIssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rootCauseDecisions<T extends Prisma.User$rootCauseDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rootCauseDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QualityIssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fiveMOneESubmissions<T extends Prisma.User$fiveMOneESubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fiveMOneESubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FiveMOneESubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedTasks<T extends Prisma.User$assignedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assigneeTasks<T extends Prisma.User$assigneeTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assigneeTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   verifiedTasks<T extends Prisma.User$verifiedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verifiedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1952,8 +2875,11 @@ export interface UserFieldRefs {
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
   readonly pushToken: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly mustChangePassword: Prisma.FieldRef<"User", 'Boolean'>
+  readonly passwordChangedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly factoryId: Prisma.FieldRef<"User", 'String'>
   readonly areaId: Prisma.FieldRef<"User", 'String'>
 }
     
@@ -2354,6 +3280,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.factory
+ */
+export type User$factoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Factory
+   */
+  select?: Prisma.FactorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Factory
+   */
+  omit?: Prisma.FactoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FactoryInclude<ExtArgs> | null
+  where?: Prisma.FactoryWhereInput
+}
+
+/**
  * User.area
  */
 export type User$areaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2370,6 +3315,30 @@ export type User$areaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
    */
   include?: Prisma.CategoryInclude<ExtArgs> | null
   where?: Prisma.CategoryWhereInput
+}
+
+/**
+ * User.departmentMemberships
+ */
+export type User$departmentMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DepartmentMember
+   */
+  select?: Prisma.DepartmentMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DepartmentMember
+   */
+  omit?: Prisma.DepartmentMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DepartmentMemberInclude<ExtArgs> | null
+  where?: Prisma.DepartmentMemberWhereInput
+  orderBy?: Prisma.DepartmentMemberOrderByWithRelationInput | Prisma.DepartmentMemberOrderByWithRelationInput[]
+  cursor?: Prisma.DepartmentMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DepartmentMemberScalarFieldEnum | Prisma.DepartmentMemberScalarFieldEnum[]
 }
 
 /**
@@ -2514,6 +3483,54 @@ export type User$verifiedTasksArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.MaintenanceTaskScalarFieldEnum | Prisma.MaintenanceTaskScalarFieldEnum[]
+}
+
+/**
+ * User.auditLogs
+ */
+export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

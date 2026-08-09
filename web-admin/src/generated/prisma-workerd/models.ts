@@ -8,6 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Factory'
+export type * from './models/Department'
+export type * from './models/DepartmentMember'
 export type * from './models/Category'
 export type * from './models/IssueFailureCategory'
 export type * from './models/PartCategory'
@@ -15,4 +18,6 @@ export type * from './models/User'
 export type * from './models/QualityIssue'
 export type * from './models/FiveMOneESubmission'
 export type * from './models/MaintenanceTask'
+export type * from './models/AuditLog'
+export type * from './models/Notification'
 export type * from './commonInputTypes'

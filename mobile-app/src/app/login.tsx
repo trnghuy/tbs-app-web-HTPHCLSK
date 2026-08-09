@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -11,33 +12,50 @@ import { Redirect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Text } from "@/components/scaled-text";
 import { useAuth } from "@/lib/auth-context";
-import { ApiError } from "@/lib/api";
+import { ApiError, getServerUrl, setServerUrl } from "@/lib/api";
 import { colors } from "@/constants/colors";
 import { BrandMark } from "@/components/brand-mark";
 
-// ─── DEMO_QUICK_LOGIN — chỉ dùng để demo, xoá cả khối này (và <QuickLoginRow/> bên dưới) khi
-// triển khai thật, quay lại đăng nhập nhập tay bình thường. ─────────────────────────────────
+// ─── DANH SÁCH 8 VAI TRÒ KIỂM THỬ NHANH (1-CHẠM) ───────────────────────────
 const DEMO_ACCOUNTS: { code: string; label: string; icon: string }[] = [
-  { code: "NV001", label: "Vận hành", icon: "🧑‍🏭" },
+  { code: "NV001", label: "Vận hành", icon: "👷" },
   { code: "QA001", label: "QA", icon: "🔍" },
-  { code: "LL001", label: "Trưởng line", icon: "🧑‍🔧" },
-  { code: "CN001", label: "Công nghệ", icon: "🧪" },
-  { code: "TP001", label: "Trưởng phòng ban", icon: "🗂️" },
-  { code: "BT001", label: "Bảo trì", icon: "🛠️" },
-  { code: "GD001", label: "Giám đốc", icon: "🎯" },
+  { code: "LL001", label: "Trưởng line", icon: "👔" },
+  { code: "CN001", label: "Công nghệ", icon: "⚙️" },
+  { code: "TP001", label: "Trưởng phòng", icon: "📋" },
+  { code: "BT001", label: "Bảo trì", icon: "🔧" },
+  { code: "GD001", label: "Giám đốc", icon: "🏢" },
+  { code: "ADM001", label: "Admin", icon: "🛡️" },
 ];
 const DEMO_PASSWORD = "123456";
-// ─────────────────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function LoginScreen() {
   const { token, login } = useAuth();
   const [employeeCode, setEmployeeCode] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+
+  // Server URL Configuration state
+  const [serverHost, setServerHost] = useState("Đang tải...");
+  const [showServerModal, setShowServerModal] = useState(false);
+  const [customServer, setCustomServer] = useState("");
+
+  useEffect(() => {
+    getServerUrl().then((url) => setServerHost(url));
+  }, []);
 
   if (token) return <Redirect href="/(tabs)" />;
+
+  function handleSelectRole(code: string) {
+    setEmployeeCode(code);
+    setPassword(DEMO_PASSWORD);
+    setSelectedRole(code);
+    setError(null);
+  }
 
   async function doLogin(code: string, pass: string) {
     setError(null);
@@ -45,13 +63,17 @@ export default function LoginScreen() {
     try {
       await login(code.trim(), pass);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : "Không thể đăng nhập");
+      setError(e instanceof ApiError ? e.message : "Không thể kết nối tới máy chủ.");
     } finally {
       setLoading(false);
     }
   }
 
   async function handleLogin() {
+    if (!employeeCode.trim() || !password.trim()) {
+      setError("Vui lòng điền tên đăng nhập và mật khẩu.");
+      return;
+    }
     await doLogin(employeeCode, password);
   }
 
@@ -61,134 +83,348 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <StatusBar style="dark" />
-      <View style={styles.card}>
-        <View style={styles.logoWrap}>
-          <BrandMark size={48} />
-        </View>
-        <Text style={styles.title}>Quản Lý Sự Cố Chất Lượng</Text>
-        <Text style={styles.subtitle}>Đăng nhập để tiếp tục</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.card}>
+          {/* Logo container */}
+          <View style={styles.logoWrap}>
+            <BrandMark size={44} />
+          </View>
 
-        {/* DEMO_QUICK_LOGIN — xoá cả block này khi triển khai thật */}
-        <Text style={styles.label}>Demo: chọn nhanh vai trò</Text>
-        <View style={styles.demoRow}>
-          {DEMO_ACCOUNTS.map((acc) => (
-            <TouchableOpacity
-              key={acc.code}
-              style={styles.demoPill}
-              onPress={() => doLogin(acc.code, DEMO_PASSWORD)}
-              disabled={loading}
-            >
-              <Text style={styles.demoPillText}>
-                {acc.icon} {acc.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.divider} />
-        {/* /DEMO_QUICK_LOGIN */}
+          {/* Title & Brand Slogan */}
+          <Text style={styles.brandTitle}>TBS HTPH-CLSK</Text>
+          <Text style={styles.brandSubtitle}>
+            Hệ Thống Phản Hồi & Xử Lý Sự Cố Chất Lượng
+          </Text>
 
-        <Text style={styles.label}>Tên đăng nhập</Text>
-        <TextInput
-          value={employeeCode}
-          onChangeText={setEmployeeCode}
-          autoCapitalize="characters"
-          placeholder="Nhập tên đăng nhập"
-          placeholderTextColor={colors.textMuted}
-          style={styles.input}
-        />
+          <View style={styles.infoPill}>
+            <Text style={styles.infoPillText}>🌿 Cổng Đăng Nhập Di Động Phân Xưởng</Text>
+          </View>
 
-        <Text style={styles.label}>Mật khẩu</Text>
-        <View style={styles.passwordWrap}>
+          {/* 1-Tap Quick Role Picker */}
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Chọn nhanh vai trò kiểm thử</Text>
+            <View style={styles.badgeCount}>
+              <Text style={styles.badgeCountText}>8 Roles</Text>
+            </View>
+          </View>
+
+          <View style={styles.demoGrid}>
+            {DEMO_ACCOUNTS.map((acc) => {
+              const isSelected = employeeCode === acc.code || selectedRole === acc.code;
+              return (
+                <TouchableOpacity
+                  key={acc.code}
+                  style={[
+                    styles.demoPill,
+                    isSelected && styles.demoPillActive,
+                  ]}
+                  onPress={() => handleSelectRole(acc.code)}
+                  disabled={loading}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.demoPillIcon}>{acc.icon}</Text>
+                  <Text
+                    style={[
+                      styles.demoPillText,
+                      isSelected && styles.demoPillTextActive,
+                    ]}
+                  >
+                    {acc.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          <View style={styles.divider} />
+
+          {/* Input: Username */}
+          <Text style={styles.label}>Tên đăng nhập (Mã nhân viên)</Text>
           <TextInput
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-            placeholder="Nhập mật khẩu"
-            placeholderTextColor={colors.textMuted}
-            style={styles.passwordInput}
+            value={employeeCode}
+            onChangeText={(v) => {
+              setEmployeeCode(v);
+              setSelectedRole(null);
+            }}
+            autoCapitalize="characters"
+            placeholder="VD: NV001, QA001, LL001..."
+            placeholderTextColor="#94A3B8"
+            style={styles.input}
           />
+
+          {/* Input: Password */}
+          <Text style={styles.label}>Mật khẩu</Text>
+          <View style={styles.passwordWrap}>
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              placeholder="Nhập mật khẩu"
+              placeholderTextColor="#94A3B8"
+              style={styles.passwordInput}
+            />
+            <TouchableOpacity
+              style={styles.eyeButton}
+              onPress={() => setShowPassword((s) => !s)}
+            >
+              <Text style={styles.eyeIcon}>{showPassword ? "🙈" : "👁"}</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.hintText}>
+            Mật khẩu mặc định: <Text style={styles.hintBold}>123456</Text>
+          </Text>
+
+          {/* Error message */}
+          {error && (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error}</Text>
+            </View>
+          )}
+
+          {/* Primary Submit Button (TBS Green) */}
           <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword((s) => !s)}
+            style={[styles.button, loading && styles.buttonDisabled]}
+            onPress={handleLogin}
+            disabled={loading}
+            activeOpacity={0.85}
           >
-            <Text style={styles.eyeIcon}>{showPassword ? "🙈" : "👁"}</Text>
+            <Text style={styles.buttonText}>
+              {loading ? "Đang kết nối hệ thống..." : "Đăng Nhập"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Server Config Button */}
+          <TouchableOpacity
+            style={styles.serverButton}
+            onPress={async () => {
+              const current = await getServerUrl();
+              setCustomServer(current);
+              setShowServerModal(true);
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.serverButtonText}>⚙️ Máy chủ: {serverHost}</Text>
           </TouchableOpacity>
         </View>
+      </ScrollView>
 
-        {error && <Text style={styles.error}>{error}</Text>}
-
-        <TouchableOpacity
-          style={[styles.button, loading && { opacity: 0.6 }]}
-          onPress={handleLogin}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>{loading ? "Đang đăng nhập..." : "Đăng nhập"}</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Modal Cấu hình Server URL */}
+      {showServerModal && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Cấu Hình Địa Chỉ Máy Chủ</Text>
+            <Text style={styles.modalSub}>
+              Nhập IP máy chủ phân xưởng hoặc Domain của hệ thống TBS HTPH-CLSK
+            </Text>
+            <TextInput
+              value={customServer}
+              onChangeText={setCustomServer}
+              placeholder="VD: http://192.168.1.100:3000"
+              placeholderTextColor="#94A3B8"
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.modalInput}
+            />
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                style={styles.modalCancel}
+                onPress={() => setShowServerModal(false)}
+              >
+                <Text style={styles.modalCancelText}>Hủy</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalSave}
+                onPress={async () => {
+                  if (customServer.trim()) {
+                    await setServerUrl(customServer.trim());
+                    setServerHost(customServer.trim());
+                  }
+                  setShowServerModal(false);
+                }}
+              >
+                <Text style={styles.modalSaveText}>Lưu Cấu Hình</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  // DEMO_QUICK_LOGIN — xoá cùng lúc với block JSX phía trên khi triển khai thật
-  demoRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  demoPill: {
-    borderWidth: 1,
-    borderColor: colors.primary,
-    borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    backgroundColor: colors.accentSoft,
-  },
-  demoPillText: { color: colors.primaryDark, fontWeight: "600", fontSize: 12.5 },
-  divider: { height: 1, backgroundColor: colors.border, marginTop: 18 },
   container: {
     flex: 1,
-    backgroundColor: colors.lightGreenBg,
+    backgroundColor: "#F8FAFC",
+  },
+  scrollContent: {
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 24,
+    paddingVertical: 32,
+    paddingHorizontal: 16,
   },
   card: {
     width: "100%",
-    maxWidth: 360,
-    backgroundColor: colors.white,
-    borderRadius: 20,
-    padding: 24,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 4,
+    maxWidth: 420,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 28,
+    padding: 28,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    shadowColor: "#005A36",
+    shadowOpacity: 0.1,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
   logoWrap: {
     alignSelf: "center",
-    marginBottom: 16,
-    padding: 10,
-    borderRadius: 14,
+    marginBottom: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: "#E2E8F0",
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
-  title: { fontSize: 17, fontWeight: "700", color: colors.text, textAlign: "center" },
-  subtitle: { fontSize: 13, color: colors.textMuted, textAlign: "center", marginTop: 4, marginBottom: 20 },
-  label: { fontSize: 13, fontWeight: "600", color: colors.text, marginBottom: 6, marginTop: 12 },
+  brandTitle: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#0F172A",
+    textAlign: "center",
+    letterSpacing: 0.3,
+  },
+  brandSubtitle: {
+    fontSize: 12.5,
+    color: "#005A36",
+    fontWeight: "600",
+    textAlign: "center",
+    marginTop: 4,
+    marginBottom: 12,
+  },
+  infoPill: {
+    alignSelf: "center",
+    backgroundColor: "#F0FDF4",
+    borderWidth: 1,
+    borderColor: "#DCFCE7",
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    marginBottom: 18,
+  },
+  infoPillText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#005A36",
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#475569",
+    textTransform: "uppercase",
+    letterSpacing: 0.4,
+  },
+  badgeCount: {
+    backgroundColor: "#ECFDF5",
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  badgeCountText: {
+    fontSize: 10,
+    fontWeight: "800",
+    color: "#005A36",
+  },
+  demoGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 7,
+  },
+  demoPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    backgroundColor: "#F8FAFC",
+  },
+  demoPillActive: {
+    borderColor: "#005A36",
+    backgroundColor: "#005A36",
+    shadowColor: "#005A36",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  demoPillIcon: {
+    fontSize: 13,
+  },
+  demoPillText: {
+    color: "#334155",
+    fontWeight: "600",
+    fontSize: 11.5,
+  },
+  demoPillTextActive: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#F1F5F9",
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 12.5,
+    fontWeight: "700",
+    color: "#334155",
+    marginBottom: 6,
+    marginTop: 10,
+  },
   input: {
     borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
+    borderColor: "#CBD5E1",
+    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    fontSize: 15,
+    fontSize: 14,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
   },
-  passwordWrap: { position: "relative", justifyContent: "center" },
+  passwordWrap: {
+    position: "relative",
+    justifyContent: "center",
+  },
   passwordInput: {
     borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
+    borderColor: "#CBD5E1",
+    borderRadius: 12,
     paddingHorizontal: 14,
     paddingRight: 44,
     paddingVertical: 12,
-    fontSize: 15,
+    fontSize: 14,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
   },
   eyeButton: {
     position: "absolute",
@@ -196,21 +432,142 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 6,
   },
-  eyeIcon: { fontSize: 17 },
-  error: {
-    color: colors.danger,
+  eyeIcon: {
+    fontSize: 16,
+  },
+  hintText: {
+    fontSize: 11,
+    color: "#64748B",
+    marginTop: 5,
+  },
+  hintBold: {
+    fontWeight: "700",
+    color: "#005A36",
+  },
+  errorBox: {
     marginTop: 12,
-    backgroundColor: "#FEE2E2",
+    backgroundColor: "#FEF2F2",
+    borderColor: "#FCA5A5",
+    borderWidth: 1,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
+  },
+  errorText: {
+    color: "#B91C1C",
+    fontSize: 12,
+    fontWeight: "600",
   },
   button: {
-    marginTop: 24,
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-    paddingVertical: 14,
+    marginTop: 20,
+    backgroundColor: "#005A36",
+    borderRadius: 14,
+    paddingVertical: 15,
     alignItems: "center",
+    shadowColor: "#005A36",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
-  buttonText: { color: colors.white, fontWeight: "700", fontSize: 15 },
+  buttonDisabled: {
+    opacity: 0.65,
+  },
+  buttonText: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+    fontSize: 15,
+    letterSpacing: 0.3,
+  },
+  serverButton: {
+    marginTop: 16,
+    alignSelf: "center",
+    backgroundColor: "#F1F5F9",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 999,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+  },
+  serverButtonText: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#475569",
+  },
+  modalOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(15, 23, 42, 0.6)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  modalCard: {
+    width: "100%",
+    maxWidth: 380,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 22,
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#0F172A",
+  },
+  modalSub: {
+    fontSize: 12,
+    color: "#64748B",
+    marginTop: 4,
+    marginBottom: 14,
+    lineHeight: 18,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#CBD5E1",
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 13.5,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
+    marginBottom: 16,
+  },
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 10,
+  },
+  modalCancel: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+  },
+  modalCancelText: {
+    fontSize: 13,
+    color: "#64748B",
+    fontWeight: "600",
+  },
+  modalSave: {
+    backgroundColor: "#005A36",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    shadowColor: "#005A36",
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  modalSaveText: {
+    fontSize: 13,
+    color: "#FFFFFF",
+    fontWeight: "700",
+  },
 });

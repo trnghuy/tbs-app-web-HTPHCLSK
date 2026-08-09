@@ -1,15 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Warm paper background instead of cold slate */
+  --background: #f9f8f6;
+  --foreground: #1e1b18;
 
-  /* TBS Group brand greens */
-  --brand-darkest: #0f2a20;
-  --brand-dark: #163c2e;
-  --brand: #1f5c3f;
+  /* TBS Group brand green palette - refined */
+  --brand-darkest: #0a1f16;
+  --brand-dark: #0f2e21;
+  --brand: #005a36;
+  --brand-emerald: #1f5c3f;
+  --brand-mid: #0d7a47;
   --brand-light: #8dc63f;
-  --brand-lighter: #e8f5e0;
+  --brand-lighter: #e6f4e8;
+  --brand-soft: #f4faf5;
+
+  /* Warm gray scale */
+  --warm-50: #faf9f7;
+  --warm-100: #f5f2ef;
+  --warm-200: #e8e4de;
+  --warm-300: #d4cfc7;
+  --warm-400: #a8a196;
+  --warm-500: #78716c;
+  --warm-600: #57534e;
+  --warm-700: #44403c;
+  --warm-800: #2d2a27;
+  --warm-900: #1e1b18;
+
+  /* Semantic tokens */
+  --surface: #ffffff;
+  --surface-raised: #fdfcfb;
+  --border: #e8e4de;
+  --border-hover: #d4cfc7;
+
+  /* Tinted shadows - green tint instead of pure black */
+  --shadow-xs: 0 1px 2px rgba(0, 90, 54, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 90, 54, 0.05), 0 1px 2px rgba(0, 90, 54, 0.03);
+  --shadow-md: 0 4px 12px rgba(0, 90, 54, 0.06), 0 1px 3px rgba(0, 90, 54, 0.04);
+  --shadow-lg: 0 10px 28px rgba(0, 90, 54, 0.08), 0 3px 8px rgba(0, 90, 54, 0.04);
+  --shadow-xl: 0 20px 48px rgba(0, 90, 54, 0.1), 0 4px 16px rgba(0, 90, 54, 0.05);
+
+  /* Radius scale */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -18,21 +58,118 @@
   --color-brand-darkest: var(--brand-darkest);
   --color-brand-dark: var(--brand-dark);
   --color-brand: var(--brand);
+  --color-brand-emerald: var(--brand-emerald);
+  --color-brand-mid: var(--brand-mid);
   --color-brand-light: var(--brand-light);
   --color-brand-lighter: var(--brand-lighter);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-warm-50: var(--warm-50);
+  --color-warm-100: var(--warm-100);
+  --color-warm-200: var(--warm-200);
+  --color-warm-300: var(--warm-300);
+  --color-warm-400: var(--warm-400);
+  --color-warm-500: var(--warm-500);
+  --color-warm-600: var(--warm-600);
+  --color-warm-700: var(--warm-700);
+  --color-warm-800: var(--warm-800);
+  --color-warm-900: var(--warm-900);
+
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+
+  --font-sans: var(--font-be-vietnam), "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Factory Floor Tactile Noise Texture */
+.bg-factory-noise {
+  background-color: #f7f6f2;
+  background-image: 
+    radial-gradient(rgba(0, 90, 54, 0.035) 1px, transparent 1px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+  background-size: 24px 24px, 160px 160px;
 }
 
+/* Base */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-be-vietnam), "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* Typography refinements */
+h1, h2, h3, h4 {
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+
+/* Custom scrollbar - refined */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--warm-300);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
+
+/* Focus ring - subtle green */
+*:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Selection color */
+::selection {
+  background: var(--brand-lighter);
+  color: var(--brand-darkest);
+}
+
+/* Tactile button base */
+.btn-tactile {
+  transition: transform 0.1s var(--ease-out-expo), box-shadow 0.15s var(--ease-out-expo);
+}
+.btn-tactile:active {
+  transform: scale(0.97);
+}
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--warm-100) 25%, var(--warm-200) 50%, var(--warm-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Animate-in utilities */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fade-in 0.2s var(--ease-out-expo);
+}
+.animate-in-up {
+  animation: slide-up 0.25s var(--ease-out-expo);
 }

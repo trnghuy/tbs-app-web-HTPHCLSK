@@ -32,6 +32,7 @@ export type QualityIssueMinAggregateOutputType = {
   poCode: string | null
   status: $Enums.IssueStatus | null
   severity: $Enums.Severity | null
+  factoryId: string | null
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
@@ -55,6 +56,7 @@ export type QualityIssueMaxAggregateOutputType = {
   poCode: string | null
   status: $Enums.IssueStatus | null
   severity: $Enums.Severity | null
+  factoryId: string | null
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
@@ -78,6 +80,7 @@ export type QualityIssueCountAggregateOutputType = {
   poCode: number
   status: number
   severity: number
+  factoryId: number
   areaId: number
   teamId: number
   productionLineId: number
@@ -103,6 +106,7 @@ export type QualityIssueMinAggregateInputType = {
   poCode?: true
   status?: true
   severity?: true
+  factoryId?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
@@ -126,6 +130,7 @@ export type QualityIssueMaxAggregateInputType = {
   poCode?: true
   status?: true
   severity?: true
+  factoryId?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
@@ -149,6 +154,7 @@ export type QualityIssueCountAggregateInputType = {
   poCode?: true
   status?: true
   severity?: true
+  factoryId?: true
   areaId?: true
   teamId?: true
   productionLineId?: true
@@ -245,6 +251,7 @@ export type QualityIssueGroupByOutputType = {
   poCode: string
   status: $Enums.IssueStatus
   severity: $Enums.Severity
+  factoryId: string | null
   areaId: string | null
   teamId: string | null
   productionLineId: string | null
@@ -289,6 +296,7 @@ export type QualityIssueWhereInput = {
   poCode?: Prisma.StringFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
+  factoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
@@ -303,6 +311,7 @@ export type QualityIssueWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
   reporter?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  factory?: Prisma.XOR<Prisma.FactoryNullableScalarRelationFilter, Prisma.FactoryWhereInput> | null
   area?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   team?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   productionLine?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
@@ -310,6 +319,8 @@ export type QualityIssueWhereInput = {
   rootCauseDecidedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   submissions?: Prisma.FiveMOneESubmissionListRelationFilter
   task?: Prisma.XOR<Prisma.MaintenanceTaskNullableScalarRelationFilter, Prisma.MaintenanceTaskWhereInput> | null
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }
 
 export type QualityIssueOrderByWithRelationInput = {
@@ -320,6 +331,7 @@ export type QualityIssueOrderByWithRelationInput = {
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
   teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   productionLineId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,6 +346,7 @@ export type QualityIssueOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   reporter?: Prisma.UserOrderByWithRelationInput
+  factory?: Prisma.FactoryOrderByWithRelationInput
   area?: Prisma.CategoryOrderByWithRelationInput
   team?: Prisma.CategoryOrderByWithRelationInput
   productionLine?: Prisma.CategoryOrderByWithRelationInput
@@ -341,6 +354,8 @@ export type QualityIssueOrderByWithRelationInput = {
   rootCauseDecidedBy?: Prisma.UserOrderByWithRelationInput
   submissions?: Prisma.FiveMOneESubmissionOrderByRelationAggregateInput
   task?: Prisma.MaintenanceTaskOrderByWithRelationInput
+  auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type QualityIssueWhereUniqueInput = Prisma.AtLeast<{
@@ -354,6 +369,7 @@ export type QualityIssueWhereUniqueInput = Prisma.AtLeast<{
   poCode?: Prisma.StringFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
+  factoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
@@ -368,6 +384,7 @@ export type QualityIssueWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
   reporter?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  factory?: Prisma.XOR<Prisma.FactoryNullableScalarRelationFilter, Prisma.FactoryWhereInput> | null
   area?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   team?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   productionLine?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
@@ -375,6 +392,8 @@ export type QualityIssueWhereUniqueInput = Prisma.AtLeast<{
   rootCauseDecidedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   submissions?: Prisma.FiveMOneESubmissionListRelationFilter
   task?: Prisma.XOR<Prisma.MaintenanceTaskNullableScalarRelationFilter, Prisma.MaintenanceTaskWhereInput> | null
+  auditLogs?: Prisma.AuditLogListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
 }, "id">
 
 export type QualityIssueOrderByWithAggregationInput = {
@@ -385,6 +404,7 @@ export type QualityIssueOrderByWithAggregationInput = {
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   areaId?: Prisma.SortOrderInput | Prisma.SortOrder
   teamId?: Prisma.SortOrderInput | Prisma.SortOrder
   productionLineId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -414,6 +434,7 @@ export type QualityIssueScalarWhereWithAggregatesInput = {
   poCode?: Prisma.StringWithAggregatesFilter<"QualityIssue"> | string
   status?: Prisma.EnumIssueStatusWithAggregatesFilter<"QualityIssue"> | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityWithAggregatesFilter<"QualityIssue"> | $Enums.Severity
+  factoryId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   areaId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   teamId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
   productionLineId?: Prisma.StringNullableWithAggregatesFilter<"QualityIssue"> | string | null
@@ -445,6 +466,7 @@ export type QualityIssueCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
@@ -452,6 +474,8 @@ export type QualityIssueCreateInput = {
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateInput = {
@@ -462,6 +486,7 @@ export type QualityIssueUncheckedCreateInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -477,6 +502,8 @@ export type QualityIssueUncheckedCreateInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUpdateInput = {
@@ -495,6 +522,7 @@ export type QualityIssueUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
@@ -502,6 +530,8 @@ export type QualityIssueUpdateInput = {
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateInput = {
@@ -512,6 +542,7 @@ export type QualityIssueUncheckedUpdateInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -527,6 +558,8 @@ export type QualityIssueUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueCreateManyInput = {
@@ -537,6 +570,7 @@ export type QualityIssueCreateManyInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -577,6 +611,7 @@ export type QualityIssueUncheckedUpdateManyInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -610,6 +645,7 @@ export type QualityIssueCountOrderByAggregateInput = {
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
@@ -633,6 +669,7 @@ export type QualityIssueMaxOrderByAggregateInput = {
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
@@ -656,6 +693,7 @@ export type QualityIssueMinOrderByAggregateInput = {
   poCode?: Prisma.SortOrder
   status?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  factoryId?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   teamId?: Prisma.SortOrder
   productionLineId?: Prisma.SortOrder
@@ -674,6 +712,53 @@ export type QualityIssueMinOrderByAggregateInput = {
 export type QualityIssueScalarRelationFilter = {
   is?: Prisma.QualityIssueWhereInput
   isNot?: Prisma.QualityIssueWhereInput
+}
+
+export type QualityIssueNullableScalarRelationFilter = {
+  is?: Prisma.QualityIssueWhereInput | null
+  isNot?: Prisma.QualityIssueWhereInput | null
+}
+
+export type QualityIssueCreateNestedManyWithoutFactoryInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput> | Prisma.QualityIssueCreateWithoutFactoryInput[] | Prisma.QualityIssueUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutFactoryInput | Prisma.QualityIssueCreateOrConnectWithoutFactoryInput[]
+  createMany?: Prisma.QualityIssueCreateManyFactoryInputEnvelope
+  connect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+}
+
+export type QualityIssueUncheckedCreateNestedManyWithoutFactoryInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput> | Prisma.QualityIssueCreateWithoutFactoryInput[] | Prisma.QualityIssueUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutFactoryInput | Prisma.QualityIssueCreateOrConnectWithoutFactoryInput[]
+  createMany?: Prisma.QualityIssueCreateManyFactoryInputEnvelope
+  connect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+}
+
+export type QualityIssueUpdateManyWithoutFactoryNestedInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput> | Prisma.QualityIssueCreateWithoutFactoryInput[] | Prisma.QualityIssueUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutFactoryInput | Prisma.QualityIssueCreateOrConnectWithoutFactoryInput[]
+  upsert?: Prisma.QualityIssueUpsertWithWhereUniqueWithoutFactoryInput | Prisma.QualityIssueUpsertWithWhereUniqueWithoutFactoryInput[]
+  createMany?: Prisma.QualityIssueCreateManyFactoryInputEnvelope
+  set?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  disconnect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  delete?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  connect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  update?: Prisma.QualityIssueUpdateWithWhereUniqueWithoutFactoryInput | Prisma.QualityIssueUpdateWithWhereUniqueWithoutFactoryInput[]
+  updateMany?: Prisma.QualityIssueUpdateManyWithWhereWithoutFactoryInput | Prisma.QualityIssueUpdateManyWithWhereWithoutFactoryInput[]
+  deleteMany?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
+}
+
+export type QualityIssueUncheckedUpdateManyWithoutFactoryNestedInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput> | Prisma.QualityIssueCreateWithoutFactoryInput[] | Prisma.QualityIssueUncheckedCreateWithoutFactoryInput[]
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutFactoryInput | Prisma.QualityIssueCreateOrConnectWithoutFactoryInput[]
+  upsert?: Prisma.QualityIssueUpsertWithWhereUniqueWithoutFactoryInput | Prisma.QualityIssueUpsertWithWhereUniqueWithoutFactoryInput[]
+  createMany?: Prisma.QualityIssueCreateManyFactoryInputEnvelope
+  set?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  disconnect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  delete?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  connect?: Prisma.QualityIssueWhereUniqueInput | Prisma.QualityIssueWhereUniqueInput[]
+  update?: Prisma.QualityIssueUpdateWithWhereUniqueWithoutFactoryInput | Prisma.QualityIssueUpdateWithWhereUniqueWithoutFactoryInput[]
+  updateMany?: Prisma.QualityIssueUpdateManyWithWhereWithoutFactoryInput | Prisma.QualityIssueUpdateManyWithWhereWithoutFactoryInput[]
+  deleteMany?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
 }
 
 export type QualityIssueCreateNestedManyWithoutAreaInput = {
@@ -936,14 +1021,6 @@ export type EnumSeverityFieldUpdateOperationsInput = {
   set?: $Enums.Severity
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type QualityIssueCreateNestedOneWithoutSubmissionsInput = {
   create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutSubmissionsInput, Prisma.QualityIssueUncheckedCreateWithoutSubmissionsInput>
   connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutSubmissionsInput
@@ -972,6 +1049,142 @@ export type QualityIssueUpdateOneRequiredWithoutTaskNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.QualityIssueUpdateToOneWithWhereWithoutTaskInput, Prisma.QualityIssueUpdateWithoutTaskInput>, Prisma.QualityIssueUncheckedUpdateWithoutTaskInput>
 }
 
+export type QualityIssueCreateNestedOneWithoutAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutAuditLogsInput
+  connect?: Prisma.QualityIssueWhereUniqueInput
+}
+
+export type QualityIssueUpdateOneRequiredWithoutAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutAuditLogsInput
+  upsert?: Prisma.QualityIssueUpsertWithoutAuditLogsInput
+  connect?: Prisma.QualityIssueWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QualityIssueUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.QualityIssueUpdateWithoutAuditLogsInput>, Prisma.QualityIssueUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type QualityIssueCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutNotificationsInput, Prisma.QualityIssueUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.QualityIssueWhereUniqueInput
+}
+
+export type QualityIssueUpdateOneWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.QualityIssueCreateWithoutNotificationsInput, Prisma.QualityIssueUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.QualityIssueCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.QualityIssueUpsertWithoutNotificationsInput
+  disconnect?: Prisma.QualityIssueWhereInput | boolean
+  delete?: Prisma.QualityIssueWhereInput | boolean
+  connect?: Prisma.QualityIssueWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.QualityIssueUpdateToOneWithWhereWithoutNotificationsInput, Prisma.QualityIssueUpdateWithoutNotificationsInput>, Prisma.QualityIssueUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type QualityIssueCreateWithoutFactoryInput = {
+  id?: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
+  team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
+  productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
+  failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
+  rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
+  submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueUncheckedCreateWithoutFactoryInput = {
+  id?: string
+  reporterId: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  areaId?: string | null
+  teamId?: string | null
+  productionLineId?: string | null
+  failureCategoryId?: string | null
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedById?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueCreateOrConnectWithoutFactoryInput = {
+  where: Prisma.QualityIssueWhereUniqueInput
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput>
+}
+
+export type QualityIssueCreateManyFactoryInputEnvelope = {
+  data: Prisma.QualityIssueCreateManyFactoryInput | Prisma.QualityIssueCreateManyFactoryInput[]
+}
+
+export type QualityIssueUpsertWithWhereUniqueWithoutFactoryInput = {
+  where: Prisma.QualityIssueWhereUniqueInput
+  update: Prisma.XOR<Prisma.QualityIssueUpdateWithoutFactoryInput, Prisma.QualityIssueUncheckedUpdateWithoutFactoryInput>
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutFactoryInput, Prisma.QualityIssueUncheckedCreateWithoutFactoryInput>
+}
+
+export type QualityIssueUpdateWithWhereUniqueWithoutFactoryInput = {
+  where: Prisma.QualityIssueWhereUniqueInput
+  data: Prisma.XOR<Prisma.QualityIssueUpdateWithoutFactoryInput, Prisma.QualityIssueUncheckedUpdateWithoutFactoryInput>
+}
+
+export type QualityIssueUpdateManyWithWhereWithoutFactoryInput = {
+  where: Prisma.QualityIssueScalarWhereInput
+  data: Prisma.XOR<Prisma.QualityIssueUpdateManyMutationInput, Prisma.QualityIssueUncheckedUpdateManyWithoutFactoryInput>
+}
+
+export type QualityIssueScalarWhereInput = {
+  AND?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
+  OR?: Prisma.QualityIssueScalarWhereInput[]
+  NOT?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
+  id?: Prisma.StringFilter<"QualityIssue"> | string
+  reporterId?: Prisma.StringFilter<"QualityIssue"> | string
+  description?: Prisma.StringFilter<"QualityIssue"> | string
+  images?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  poCode?: Prisma.StringFilter<"QualityIssue"> | string
+  status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
+  factoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  failureCategoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  otherFailureNote?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  investigationDeadline?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
+  investigationLocked?: Prisma.BoolFilter<"QualityIssue"> | boolean
+  rootCause?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  solution?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  rootCauseDecidedById?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
+  rootCauseDecidedAt?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
+}
+
 export type QualityIssueCreateWithoutAreaInput = {
   id?: string
   description: string
@@ -988,12 +1201,15 @@ export type QualityIssueCreateWithoutAreaInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutAreaInput = {
@@ -1004,6 +1220,7 @@ export type QualityIssueUncheckedCreateWithoutAreaInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
@@ -1018,6 +1235,8 @@ export type QualityIssueUncheckedCreateWithoutAreaInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutAreaInput = {
@@ -1045,12 +1264,15 @@ export type QualityIssueCreateWithoutTeamInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutTeamInput = {
@@ -1061,6 +1283,7 @@ export type QualityIssueUncheckedCreateWithoutTeamInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
@@ -1075,6 +1298,8 @@ export type QualityIssueUncheckedCreateWithoutTeamInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutTeamInput = {
@@ -1102,12 +1327,15 @@ export type QualityIssueCreateWithoutProductionLineInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutProductionLineInput = {
@@ -1118,6 +1346,7 @@ export type QualityIssueUncheckedCreateWithoutProductionLineInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   failureCategoryId?: string | null
@@ -1132,6 +1361,8 @@ export type QualityIssueUncheckedCreateWithoutProductionLineInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutProductionLineInput = {
@@ -1157,32 +1388,6 @@ export type QualityIssueUpdateWithWhereUniqueWithoutAreaInput = {
 export type QualityIssueUpdateManyWithWhereWithoutAreaInput = {
   where: Prisma.QualityIssueScalarWhereInput
   data: Prisma.XOR<Prisma.QualityIssueUpdateManyMutationInput, Prisma.QualityIssueUncheckedUpdateManyWithoutAreaInput>
-}
-
-export type QualityIssueScalarWhereInput = {
-  AND?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
-  OR?: Prisma.QualityIssueScalarWhereInput[]
-  NOT?: Prisma.QualityIssueScalarWhereInput | Prisma.QualityIssueScalarWhereInput[]
-  id?: Prisma.StringFilter<"QualityIssue"> | string
-  reporterId?: Prisma.StringFilter<"QualityIssue"> | string
-  description?: Prisma.StringFilter<"QualityIssue"> | string
-  images?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  poCode?: Prisma.StringFilter<"QualityIssue"> | string
-  status?: Prisma.EnumIssueStatusFilter<"QualityIssue"> | $Enums.IssueStatus
-  severity?: Prisma.EnumSeverityFilter<"QualityIssue"> | $Enums.Severity
-  areaId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  teamId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  productionLineId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  failureCategoryId?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  otherFailureNote?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  investigationDeadline?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
-  investigationLocked?: Prisma.BoolFilter<"QualityIssue"> | boolean
-  rootCause?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  solution?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  rootCauseDecidedById?: Prisma.StringNullableFilter<"QualityIssue"> | string | null
-  rootCauseDecidedAt?: Prisma.DateTimeNullableFilter<"QualityIssue"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"QualityIssue"> | Date | string
 }
 
 export type QualityIssueUpsertWithWhereUniqueWithoutTeamInput = {
@@ -1233,12 +1438,15 @@ export type QualityIssueCreateWithoutFailureCategoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutFailureCategoryInput = {
@@ -1249,6 +1457,7 @@ export type QualityIssueUncheckedCreateWithoutFailureCategoryInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1263,6 +1472,8 @@ export type QualityIssueUncheckedCreateWithoutFailureCategoryInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutFailureCategoryInput = {
@@ -1305,6 +1516,7 @@ export type QualityIssueCreateWithoutReporterInput = {
   rootCauseDecidedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
@@ -1312,6 +1524,8 @@ export type QualityIssueCreateWithoutReporterInput = {
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutReporterInput = {
@@ -1321,6 +1535,7 @@ export type QualityIssueUncheckedCreateWithoutReporterInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1336,6 +1551,8 @@ export type QualityIssueUncheckedCreateWithoutReporterInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutReporterInput = {
@@ -1363,12 +1580,15 @@ export type QualityIssueCreateWithoutRootCauseDecidedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutRootCauseDecidedByInput = {
@@ -1379,6 +1599,7 @@ export type QualityIssueUncheckedCreateWithoutRootCauseDecidedByInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1393,6 +1614,8 @@ export type QualityIssueUncheckedCreateWithoutRootCauseDecidedByInput = {
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutRootCauseDecidedByInput = {
@@ -1452,12 +1675,15 @@ export type QualityIssueCreateWithoutSubmissionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutSubmissionsInput = {
@@ -1468,6 +1694,7 @@ export type QualityIssueUncheckedCreateWithoutSubmissionsInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1482,6 +1709,8 @@ export type QualityIssueUncheckedCreateWithoutSubmissionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutSubmissionsInput = {
@@ -1516,12 +1745,15 @@ export type QualityIssueUpdateWithoutSubmissionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutSubmissionsInput = {
@@ -1532,6 +1764,7 @@ export type QualityIssueUncheckedUpdateWithoutSubmissionsInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1546,6 +1779,8 @@ export type QualityIssueUncheckedUpdateWithoutSubmissionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueCreateWithoutTaskInput = {
@@ -1564,12 +1799,15 @@ export type QualityIssueCreateWithoutTaskInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
   area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
   team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
   productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
   failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
   rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
   submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueUncheckedCreateWithoutTaskInput = {
@@ -1580,6 +1818,7 @@ export type QualityIssueUncheckedCreateWithoutTaskInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1594,6 +1833,8 @@ export type QualityIssueUncheckedCreateWithoutTaskInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
 }
 
 export type QualityIssueCreateOrConnectWithoutTaskInput = {
@@ -1628,15 +1869,343 @@ export type QualityIssueUpdateWithoutTaskInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutTaskInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueCreateWithoutAuditLogsInput = {
+  id?: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
+  area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
+  team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
+  productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
+  failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
+  rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
+  submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueUncheckedCreateWithoutAuditLogsInput = {
+  id?: string
+  reporterId: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  factoryId?: string | null
+  areaId?: string | null
+  teamId?: string | null
+  productionLineId?: string | null
+  failureCategoryId?: string | null
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedById?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueCreateOrConnectWithoutAuditLogsInput = {
+  where: Prisma.QualityIssueWhereUniqueInput
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedCreateWithoutAuditLogsInput>
+}
+
+export type QualityIssueUpsertWithoutAuditLogsInput = {
+  update: Prisma.XOR<Prisma.QualityIssueUpdateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedUpdateWithoutAuditLogsInput>
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedCreateWithoutAuditLogsInput>
+  where?: Prisma.QualityIssueWhereInput
+}
+
+export type QualityIssueUpdateToOneWithWhereWithoutAuditLogsInput = {
+  where?: Prisma.QualityIssueWhereInput
+  data: Prisma.XOR<Prisma.QualityIssueUpdateWithoutAuditLogsInput, Prisma.QualityIssueUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type QualityIssueUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
+  team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
+  productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
+  failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
+  rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
+  submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueUncheckedUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueCreateWithoutNotificationsInput = {
+  id?: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reporter: Prisma.UserCreateNestedOneWithoutReportedIssuesInput
+  factory?: Prisma.FactoryCreateNestedOneWithoutIssuesInput
+  area?: Prisma.CategoryCreateNestedOneWithoutIssuesByAreaInput
+  team?: Prisma.CategoryCreateNestedOneWithoutIssuesByTeamInput
+  productionLine?: Prisma.CategoryCreateNestedOneWithoutIssuesByProductionLineInput
+  failureCategory?: Prisma.IssueFailureCategoryCreateNestedOneWithoutIssuesInput
+  rootCauseDecidedBy?: Prisma.UserCreateNestedOneWithoutRootCauseDecisionsInput
+  submissions?: Prisma.FiveMOneESubmissionCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  reporterId: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  factoryId?: string | null
+  areaId?: string | null
+  teamId?: string | null
+  productionLineId?: string | null
+  failureCategoryId?: string | null
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedById?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedCreateNestedManyWithoutIssueInput
+  task?: Prisma.MaintenanceTaskUncheckedCreateNestedOneWithoutIssueInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutIssueInput
+}
+
+export type QualityIssueCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.QualityIssueWhereUniqueInput
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutNotificationsInput, Prisma.QualityIssueUncheckedCreateWithoutNotificationsInput>
+}
+
+export type QualityIssueUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.QualityIssueUpdateWithoutNotificationsInput, Prisma.QualityIssueUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.QualityIssueCreateWithoutNotificationsInput, Prisma.QualityIssueUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.QualityIssueWhereInput
+}
+
+export type QualityIssueUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.QualityIssueWhereInput
+  data: Prisma.XOR<Prisma.QualityIssueUpdateWithoutNotificationsInput, Prisma.QualityIssueUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type QualityIssueUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
+  team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
+  productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
+  failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
+  rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
+  submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueCreateManyFactoryInput = {
+  id?: string
+  reporterId: string
+  description: string
+  images?: string | null
+  poCode: string
+  status?: $Enums.IssueStatus
+  severity?: $Enums.Severity
+  areaId?: string | null
+  teamId?: string | null
+  productionLineId?: string | null
+  failureCategoryId?: string | null
+  otherFailureNote?: string | null
+  investigationDeadline?: Date | string | null
+  investigationLocked?: boolean
+  rootCause?: string | null
+  solution?: string | null
+  rootCauseDecidedById?: string | null
+  rootCauseDecidedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type QualityIssueUpdateWithoutFactoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
+  team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
+  productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
+  failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
+  rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
+  submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueUncheckedUpdateWithoutFactoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1658,6 +2227,32 @@ export type QualityIssueUncheckedUpdateWithoutTaskInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
+  task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
+}
+
+export type QualityIssueUncheckedUpdateManyWithoutFactoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  poCode?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
+  severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otherFailureNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investigationDeadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  investigationLocked?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rootCause?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type QualityIssueCreateManyAreaInput = {
@@ -1668,6 +2263,7 @@ export type QualityIssueCreateManyAreaInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   teamId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
@@ -1690,6 +2286,7 @@ export type QualityIssueCreateManyTeamInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   productionLineId?: string | null
   failureCategoryId?: string | null
@@ -1712,6 +2309,7 @@ export type QualityIssueCreateManyProductionLineInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   failureCategoryId?: string | null
@@ -1742,12 +2340,15 @@ export type QualityIssueUpdateWithoutAreaInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutAreaInput = {
@@ -1758,6 +2359,7 @@ export type QualityIssueUncheckedUpdateWithoutAreaInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1772,6 +2374,8 @@ export type QualityIssueUncheckedUpdateWithoutAreaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutAreaInput = {
@@ -1782,6 +2386,7 @@ export type QualityIssueUncheckedUpdateManyWithoutAreaInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1812,12 +2417,15 @@ export type QualityIssueUpdateWithoutTeamInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutTeamInput = {
@@ -1828,6 +2436,7 @@ export type QualityIssueUncheckedUpdateWithoutTeamInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1842,6 +2451,8 @@ export type QualityIssueUncheckedUpdateWithoutTeamInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutTeamInput = {
@@ -1852,6 +2463,7 @@ export type QualityIssueUncheckedUpdateManyWithoutTeamInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1882,12 +2494,15 @@ export type QualityIssueUpdateWithoutProductionLineInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutProductionLineInput = {
@@ -1898,6 +2513,7 @@ export type QualityIssueUncheckedUpdateWithoutProductionLineInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1912,6 +2528,8 @@ export type QualityIssueUncheckedUpdateWithoutProductionLineInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutProductionLineInput = {
@@ -1922,6 +2540,7 @@ export type QualityIssueUncheckedUpdateManyWithoutProductionLineInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   failureCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1944,6 +2563,7 @@ export type QualityIssueCreateManyFailureCategoryInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -1974,12 +2594,15 @@ export type QualityIssueUpdateWithoutFailureCategoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutFailureCategoryInput = {
@@ -1990,6 +2613,7 @@ export type QualityIssueUncheckedUpdateWithoutFailureCategoryInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2004,6 +2628,8 @@ export type QualityIssueUncheckedUpdateWithoutFailureCategoryInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutFailureCategoryInput = {
@@ -2014,6 +2640,7 @@ export type QualityIssueUncheckedUpdateManyWithoutFailureCategoryInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2035,6 +2662,7 @@ export type QualityIssueCreateManyReporterInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -2058,6 +2686,7 @@ export type QualityIssueCreateManyRootCauseDecidedByInput = {
   poCode: string
   status?: $Enums.IssueStatus
   severity?: $Enums.Severity
+  factoryId?: string | null
   areaId?: string | null
   teamId?: string | null
   productionLineId?: string | null
@@ -2087,6 +2716,7 @@ export type QualityIssueUpdateWithoutReporterInput = {
   rootCauseDecidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
@@ -2094,6 +2724,8 @@ export type QualityIssueUpdateWithoutReporterInput = {
   rootCauseDecidedBy?: Prisma.UserUpdateOneWithoutRootCauseDecisionsNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutReporterInput = {
@@ -2103,6 +2735,7 @@ export type QualityIssueUncheckedUpdateWithoutReporterInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2118,6 +2751,8 @@ export type QualityIssueUncheckedUpdateWithoutReporterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutReporterInput = {
@@ -2127,6 +2762,7 @@ export type QualityIssueUncheckedUpdateManyWithoutReporterInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2158,12 +2794,15 @@ export type QualityIssueUpdateWithoutRootCauseDecidedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.UserUpdateOneRequiredWithoutReportedIssuesNestedInput
+  factory?: Prisma.FactoryUpdateOneWithoutIssuesNestedInput
   area?: Prisma.CategoryUpdateOneWithoutIssuesByAreaNestedInput
   team?: Prisma.CategoryUpdateOneWithoutIssuesByTeamNestedInput
   productionLine?: Prisma.CategoryUpdateOneWithoutIssuesByProductionLineNestedInput
   failureCategory?: Prisma.IssueFailureCategoryUpdateOneWithoutIssuesNestedInput
   submissions?: Prisma.FiveMOneESubmissionUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateWithoutRootCauseDecidedByInput = {
@@ -2174,6 +2813,7 @@ export type QualityIssueUncheckedUpdateWithoutRootCauseDecidedByInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2188,6 +2828,8 @@ export type QualityIssueUncheckedUpdateWithoutRootCauseDecidedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submissions?: Prisma.FiveMOneESubmissionUncheckedUpdateManyWithoutIssueNestedInput
   task?: Prisma.MaintenanceTaskUncheckedUpdateOneWithoutIssueNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutIssueNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutIssueNestedInput
 }
 
 export type QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByInput = {
@@ -2198,6 +2840,7 @@ export type QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByInput = {
   poCode?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumIssueStatusFieldUpdateOperationsInput | $Enums.IssueStatus
   severity?: Prisma.EnumSeverityFieldUpdateOperationsInput | $Enums.Severity
+  factoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teamId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productionLineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2219,10 +2862,14 @@ export type QualityIssueUncheckedUpdateManyWithoutRootCauseDecidedByInput = {
 
 export type QualityIssueCountOutputType = {
   submissions: number
+  auditLogs: number
+  notifications: number
 }
 
 export type QualityIssueCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   submissions?: boolean | QualityIssueCountOutputTypeCountSubmissionsArgs
+  auditLogs?: boolean | QualityIssueCountOutputTypeCountAuditLogsArgs
+  notifications?: boolean | QualityIssueCountOutputTypeCountNotificationsArgs
 }
 
 /**
@@ -2242,6 +2889,20 @@ export type QualityIssueCountOutputTypeCountSubmissionsArgs<ExtArgs extends runt
   where?: Prisma.FiveMOneESubmissionWhereInput
 }
 
+/**
+ * QualityIssueCountOutputType without action
+ */
+export type QualityIssueCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
+/**
+ * QualityIssueCountOutputType without action
+ */
+export type QualityIssueCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
 
 export type QualityIssueSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2251,6 +2912,7 @@ export type QualityIssueSelect<ExtArgs extends runtime.Types.Extensions.Internal
   poCode?: boolean
   status?: boolean
   severity?: boolean
+  factoryId?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
@@ -2265,6 +2927,7 @@ export type QualityIssueSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2272,6 +2935,8 @@ export type QualityIssueSelect<ExtArgs extends runtime.Types.Extensions.Internal
   rootCauseDecidedBy?: boolean | Prisma.QualityIssue$rootCauseDecidedByArgs<ExtArgs>
   submissions?: boolean | Prisma.QualityIssue$submissionsArgs<ExtArgs>
   task?: boolean | Prisma.QualityIssue$taskArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.QualityIssue$auditLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.QualityIssue$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.QualityIssueCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qualityIssue"]>
 
@@ -2283,6 +2948,7 @@ export type QualityIssueSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   poCode?: boolean
   status?: boolean
   severity?: boolean
+  factoryId?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
@@ -2297,6 +2963,7 @@ export type QualityIssueSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2312,6 +2979,7 @@ export type QualityIssueSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   poCode?: boolean
   status?: boolean
   severity?: boolean
+  factoryId?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
@@ -2326,6 +2994,7 @@ export type QualityIssueSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2341,6 +3010,7 @@ export type QualityIssueSelectScalar = {
   poCode?: boolean
   status?: boolean
   severity?: boolean
+  factoryId?: boolean
   areaId?: boolean
   teamId?: boolean
   productionLineId?: boolean
@@ -2356,9 +3026,10 @@ export type QualityIssueSelectScalar = {
   updatedAt?: boolean
 }
 
-export type QualityIssueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "description" | "images" | "poCode" | "status" | "severity" | "areaId" | "teamId" | "productionLineId" | "failureCategoryId" | "otherFailureNote" | "investigationDeadline" | "investigationLocked" | "rootCause" | "solution" | "rootCauseDecidedById" | "rootCauseDecidedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["qualityIssue"]>
+export type QualityIssueOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "description" | "images" | "poCode" | "status" | "severity" | "factoryId" | "areaId" | "teamId" | "productionLineId" | "failureCategoryId" | "otherFailureNote" | "investigationDeadline" | "investigationLocked" | "rootCause" | "solution" | "rootCauseDecidedById" | "rootCauseDecidedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["qualityIssue"]>
 export type QualityIssueInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2366,10 +3037,13 @@ export type QualityIssueInclude<ExtArgs extends runtime.Types.Extensions.Interna
   rootCauseDecidedBy?: boolean | Prisma.QualityIssue$rootCauseDecidedByArgs<ExtArgs>
   submissions?: boolean | Prisma.QualityIssue$submissionsArgs<ExtArgs>
   task?: boolean | Prisma.QualityIssue$taskArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.QualityIssue$auditLogsArgs<ExtArgs>
+  notifications?: boolean | Prisma.QualityIssue$notificationsArgs<ExtArgs>
   _count?: boolean | Prisma.QualityIssueCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type QualityIssueIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2378,6 +3052,7 @@ export type QualityIssueIncludeCreateManyAndReturn<ExtArgs extends runtime.Types
 }
 export type QualityIssueIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  factory?: boolean | Prisma.QualityIssue$factoryArgs<ExtArgs>
   area?: boolean | Prisma.QualityIssue$areaArgs<ExtArgs>
   team?: boolean | Prisma.QualityIssue$teamArgs<ExtArgs>
   productionLine?: boolean | Prisma.QualityIssue$productionLineArgs<ExtArgs>
@@ -2389,6 +3064,7 @@ export type $QualityIssuePayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "QualityIssue"
   objects: {
     reporter: Prisma.$UserPayload<ExtArgs>
+    factory: Prisma.$FactoryPayload<ExtArgs> | null
     area: Prisma.$CategoryPayload<ExtArgs> | null
     team: Prisma.$CategoryPayload<ExtArgs> | null
     productionLine: Prisma.$CategoryPayload<ExtArgs> | null
@@ -2396,6 +3072,8 @@ export type $QualityIssuePayload<ExtArgs extends runtime.Types.Extensions.Intern
     rootCauseDecidedBy: Prisma.$UserPayload<ExtArgs> | null
     submissions: Prisma.$FiveMOneESubmissionPayload<ExtArgs>[]
     task: Prisma.$MaintenanceTaskPayload<ExtArgs> | null
+    auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2405,6 +3083,7 @@ export type $QualityIssuePayload<ExtArgs extends runtime.Types.Extensions.Intern
     poCode: string
     status: $Enums.IssueStatus
     severity: $Enums.Severity
+    factoryId: string | null
     areaId: string | null
     teamId: string | null
     productionLineId: string | null
@@ -2813,6 +3492,7 @@ readonly fields: QualityIssueFieldRefs;
 export interface Prisma__QualityIssueClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   reporter<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  factory<T extends Prisma.QualityIssue$factoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$factoryArgs<ExtArgs>>): Prisma.Prisma__FactoryClient<runtime.Types.Result.GetResult<Prisma.$FactoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   area<T extends Prisma.QualityIssue$areaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$areaArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   team<T extends Prisma.QualityIssue$teamArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$teamArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   productionLine<T extends Prisma.QualityIssue$productionLineArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$productionLineArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2820,6 +3500,8 @@ export interface Prisma__QualityIssueClient<T, Null = never, ExtArgs extends run
   rootCauseDecidedBy<T extends Prisma.QualityIssue$rootCauseDecidedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$rootCauseDecidedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   submissions<T extends Prisma.QualityIssue$submissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FiveMOneESubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   task<T extends Prisma.QualityIssue$taskArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$taskArgs<ExtArgs>>): Prisma.Prisma__MaintenanceTaskClient<runtime.Types.Result.GetResult<Prisma.$MaintenanceTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  auditLogs<T extends Prisma.QualityIssue$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.QualityIssue$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QualityIssue$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2856,6 +3538,7 @@ export interface QualityIssueFieldRefs {
   readonly poCode: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly status: Prisma.FieldRef<"QualityIssue", 'IssueStatus'>
   readonly severity: Prisma.FieldRef<"QualityIssue", 'Severity'>
+  readonly factoryId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly areaId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly teamId: Prisma.FieldRef<"QualityIssue", 'String'>
   readonly productionLineId: Prisma.FieldRef<"QualityIssue", 'String'>
@@ -3268,6 +3951,25 @@ export type QualityIssueDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * QualityIssue.factory
+ */
+export type QualityIssue$factoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Factory
+   */
+  select?: Prisma.FactorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Factory
+   */
+  omit?: Prisma.FactoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FactoryInclude<ExtArgs> | null
+  where?: Prisma.FactoryWhereInput
+}
+
+/**
  * QualityIssue.area
  */
 export type QualityIssue$areaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3403,6 +4105,54 @@ export type QualityIssue$taskArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.MaintenanceTaskInclude<ExtArgs> | null
   where?: Prisma.MaintenanceTaskWhereInput
+}
+
+/**
+ * QualityIssue.auditLogs
+ */
+export type QualityIssue$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * QualityIssue.notifications
+ */
+export type QualityIssue$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

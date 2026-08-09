@@ -12,6 +12,12 @@ export async function saveBase64Image(base64: string, mimeType: string | undefin
   const fileName = `${randomUUID()}.${ext}`;
   const buffer = Buffer.from(base64, "base64");
 
+  const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+  if (buffer.byteLength > MAX_SIZE_BYTES) {
+    throw new Error("Kích thước ảnh vượt quá giới hạn cho phép (tối đa 5MB)");
+  }
+
+
   if (isCloudflareWorkersRuntime()) {
     try {
       const { getCloudflareContext } = await import("@opennextjs/cloudflare");

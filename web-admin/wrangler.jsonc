@@ -21,13 +21,8 @@
     {
       "binding": "DB",
       "database_name": "tbs-htph-clsk-db",
-      "database_id": "f16f6633-5d36-457e-945c-bdba8d1b4ce4"
+      "database_id": "807965af-190c-4404-9f32-0043ee77c949"
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "UPLOADS",
-      "bucket_name": "tbs-htph-clsk-uploads"
-    }
-  ]
+  // "r2_buckets": []  ← Bật R2 trong Cloudflare Dashboard rồi bỏ comment
 }

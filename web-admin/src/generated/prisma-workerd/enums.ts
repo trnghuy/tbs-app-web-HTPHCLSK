@@ -79,3 +79,19 @@ export const VerifyStatus = {
 } as const
 
 export type VerifyStatus = (typeof VerifyStatus)[keyof typeof VerifyStatus]
+
+
+export const AuditAction = {
+  REPORTED: 'REPORTED',
+  INVESTIGATION_SUBMITTED: 'INVESTIGATION_SUBMITTED',
+  ROOT_CAUSE_DECIDED: 'ROOT_CAUSE_DECIDED',
+  SOS_SENT: 'SOS_SENT',
+  TASK_ASSIGNED: 'TASK_ASSIGNED',
+  TASK_ACCEPTED: 'TASK_ACCEPTED',
+  REPAIR_COMPLETED: 'REPAIR_COMPLETED',
+  REPAIR_CONFIRMED: 'REPAIR_CONFIRMED',
+  ISSUE_CLOSED: 'ISSUE_CLOSED',
+  ISSUE_REOPENED: 'ISSUE_REOPENED'
+} as const
+
+export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]

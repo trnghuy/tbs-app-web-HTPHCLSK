@@ -19,21 +19,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!employeeCode || !password) return null;
 
         const prisma = await getPrisma();
-        const user = await prisma.user.findUnique({ where: { employeeCode } });
+        const user = await prisma.user.findUnique({
+          where: { employeeCode },
+          include: { area: true },
+        });
         if (!user) return null;
 
         const valid = await bcrypt.compare(password, user.passwordHash);
         if (!valid) return null;
-
-        if (user.role !== "ADMIN") return null;
 
         return {
           id: user.id,
           name: user.name,
           employeeCode: user.employeeCode,
           role: user.role,
+          areaId: user.areaId ?? null,
+          areaName: user.area?.name ?? null,
         };
       },
     }),
   ],
 });
+
