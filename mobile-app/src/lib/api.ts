@@ -391,3 +391,22 @@ export function resolveImageUrl(path: string) {
 }
 
 export { cachedApiUrl as API_URL, ApiError };
+
+// Subscribe to real‑time updates via WebSocket
+export function subscribeUpdates(token: string, onMessage: (msg: any) => void) {
+  // Ensure token is URL‑encoded
+  const wsUrl = `${cachedApiUrl.replace(/^http/, "ws")}/api/notifications/stream?token=${encodeURIComponent(token)}`;
+  const ws = new WebSocket(wsUrl);
+  ws.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      onMessage(data);
+    } catch (e) {
+      console.error("Failed to parse WS message", e);
+    }
+  };
+  ws.onerror = (e) => console.error("WebSocket error", e);
+  ws.onclose = () => console.log("WebSocket connection closed");
+  return ws;
+}
+

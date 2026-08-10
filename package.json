@@ -1,0 +1,10 @@
+{
+  "name": "tbs-htph-clsk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "cf:build": "npm --prefix web-admin run cf:build",
+    "cf:preview": "npm --prefix web-admin run cf:preview",
+    "cf:deploy": "npm --prefix web-admin run cf:deploy"
+  }
+}

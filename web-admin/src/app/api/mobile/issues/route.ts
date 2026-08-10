@@ -1,4 +1,5 @@
 import { getPrisma } from "@/lib/prisma";
+import { broadcast } from "@/lib/notificationHub";
 import { requireMobileAuth } from "@/lib/require-mobile-auth";
 import { userPublicSelect } from "@/lib/selects";
 import { sendPushToUsersByRoleInArea } from "@/lib/push";
@@ -146,6 +147,7 @@ export async function POST(req: Request) {
     },
   );
 
-  return NextResponse.json(issue, { status: 201 });
+  await broadcast(issue.reporterId, "issueCreated", issue);
+    return NextResponse.json(issue, { status: 201 });
 }
 
